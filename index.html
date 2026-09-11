@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الدليل التفاعلي الشامل لتحليل الآلات التتابعية — المنهاج الأكاديمي والاستعداد للإلقاء</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --card-bg: #ffffff;
+      --ink: #1c2733;
+      --muted: #5b6774;
+      --navy: #14304f;
+      --navy-light: #1d4468;
+      --navy-dark: #0e2440;
+      --gold: #b7791f;
+      --gold-light: #d9a441;
+      --cream: #f4efe6;
+      --line: #e4ddcf;
+      --ok: #2f7d5b;
+      --bad: #a13d2d;
+      --p-laith: #0d6e6e;
+      --p-aym: #7c3a2d;
+      --p-abd: #14304f;
+      --p-all: #8a6d1f;
+      --shadow: 0 10px 30px rgba(20, 48, 79, 0.08), 0 2px 6px rgba(20, 48, 79, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+      line-height: 1.65;
+      direction: rtl;
+      padding-bottom: 80px;
+    }
+
+    .en {
+      font-family: Georgia, 'Times New Roman', serif;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    /* Top Banner / Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+      color: #fff;
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 14px 36px rgba(20, 48, 79, 0.2);
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(183, 121, 31, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(183, 121, 31, 0.22);
+      border: 1px solid var(--gold-light);
+      color: var(--gold-light);
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 {
+      font-size: 34px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: #cbd5e1;
+      max-width: 880px;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .team-chips {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .team-chip {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team-chip .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      background: #fff;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: var(--cream);
+      color: var(--navy);
+    }
+
+    .tab-btn.active {
+      background: var(--navy);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(20, 48, 79, 0.2);
+    }
+
+    .tab-btn .badge-num {
+      background: rgba(255, 255, 255, 0.25);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .tab-btn:not(.active) .badge-num {
+      background: var(--line);
+      color: var(--ink);
+    }
+
+    /* Tab Content Panels */
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards and Grids */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Callout Boxes */
+    .callout {
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin: 16px 0;
+      border-right: 5px solid;
+    }
+
+    .callout-info {
+      background: rgba(20, 48, 79, 0.05);
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+
+    .callout-gold {
+      background: rgba(183, 121, 31, 0.08);
+      border-color: var(--gold);
+      color: #784c0c;
+    }
+
+    .callout-success {
+      background: rgba(47, 125, 91, 0.08);
+      border-color: var(--ok);
+      color: #174e36;
+    }
+
+    .callout-warn {
+      background: rgba(161, 61, 45, 0.08);
+      border-color: var(--bad);
+      color: #6b2114;
+    }
+
+    /* Step Pill */
+    .step-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      background: #fff;
+      position: relative;
+    }
+
+    .step-badge {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14.5px;
+    }
+
+    table.data-table th, table.data-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+
+    table.data-table th {
+      background: var(--cream);
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    table.data-table tr:hover {
+      background: rgba(244, 239, 230, 0.5);
+    }
+
+    /* Interactive Simulator Elements */
+    .sim-container {
+      background: #fdfdfc;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .sim-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .sim-input {
+      padding: 8px 14px;
+      font-size: 16px;
+      font-family: monospace;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      width: 220px;
+      font-weight: bold;
+      direction: ltr;
+      text-align: center;
+    }
+
+    .btn {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--navy-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--line);
+    }
+
+    .btn-outline:hover {
+      background: var(--cream);
+    }
+
+    .sim-ribbon {
+      display: flex;
+      gap: 6px;
+      direction: ltr;
+      justify-content: center;
+      margin: 14px 0;
+    }
+
+    .rib-item {
+      width: 38px;
+      height: 38px;
+      line-height: 34px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: 800;
+      background: #fff;
+      color: var(--navy);
+      transition: all 0.25s;
+    }
+
+    .rib-item.active {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold-light);
+      transform: scale(1.18);
+      box-shadow: 0 4px 12px rgba(183, 121, 31, 0.35);
+    }
+
+    .rib-item.done {
+      background: rgba(47, 125, 91, 0.15);
+      border-color: var(--ok);
+      color: var(--ok);
+    }
+
+    .sim-status {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: var(--cream);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      border: 1px solid var(--line);
+    }
+
+    /* Quiz Styles */
+    .quiz-card {
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+
+    .quiz-q {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: right;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #faf8f4;
+      font-family: inherit;
+      font-size: 14.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt:hover {
+      background: var(--cream);
+      border-color: var(--navy);
+    }
+
+    .quiz-opt.correct {
+      background: rgba(47, 125, 91, 0.18) !important;
+      border-color: var(--ok) !important;
+      color: #0d4a2b !important;
+      font-weight: bold;
+    }
+
+    .quiz-opt.wrong {
+      background: rgba(161, 61, 45, 0.18) !important;
+      border-color: var(--bad) !important;
+      color: #5c180e !important;
+    }
+
+    .quiz-explanation {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: rgba(20, 48, 79, 0.06);
+      font-size: 13.5px;
+      border-right: 4px solid var(--navy);
+    }
+
+    /* Speaker Defense Matrix */
+    .speaker-section {
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 24px;
+      background: #fff;
+    }
+
+    .spk-laith { border-color: rgba(13, 110, 110, 0.35); }
+    .spk-aym { border-color: rgba(124, 58, 45, 0.35); }
+    .spk-abd { border-color: rgba(20, 48, 79, 0.35); }
+
+    .spk-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .spk-badge {
+      padding: 4px 14px;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 13.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-badge">مادة نظرية الحوسبة • إشراف: د. رويدا العامري (2026م)</div>
+      <h1>الدليل التفاعلي الشامل لتحليل الآلات التتابعية</h1>
+      <p>
+        المرجع التفاعلي الشامل لعبدالرحمن، ليث، وأيمن: استيعاب المفاهيم النظرية من الصفر، فك أسرار آلات Mealy و Moore، محاكاة كواشف الأنماط، وسيناريو الدفاع الأكاديمي لإبهار الدكتورة في عرض الغد.
+      </p>
+      
+      <div class="team-chips">
+        <div class="team-chip"><span class="dot" style="background:var(--p-laith)"></span>ليث توفيق الجعفري (الشرائح 1-4، 11)</div>
+        <div class="team-chip"><span class="dot" style="background:var(--p-aym)"></span>أيمن النزيلي (الشرائح 5-7، 12)</div>
+        <div class="team-chip"><span class="dot" style="background:var(--p-abd)"></span>عبدالرحمن إسماعيل سيف (الشرائح 8-10، 13)</div>
+        <div class="team-chip"><span class="dot" style="background:var(--gold)"></span>الفريق معاً (الشريحة 14)</div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    
+    <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+      <a href="presentation.html" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #b7791f; color: #ffffff; text-decoration: none; padding: 11px 24px; border-radius: 12px; font-weight: 800; font-size: 14.5px; box-shadow: 0 4px 14px rgba(183,121,31,0.35); transition: transform 0.2s;">
+        <span>عرض الشرائح التقديمية (Slides Deck)</span>
+      </a>
+      <a href="presentation_notes.pdf" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #ffffff; text-decoration: none; padding: 11px 24px; border-radius: 12px; font-weight: 800; font-size: 14.5px; backdrop-filter: blur(4px); transition: background 0.2s;">
+        <span>تحميل المذكرة الرسمية كاملة (PDF)</span>
+      </a>
+    </div>
+
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab(0)"><span class="badge-num">1</span>المدخل البديهي</button>
+      <button class="tab-btn" onclick="switchTab(1)"><span class="badge-num">2</span>Mealy مقابل Moore</button>
+      <button class="tab-btn" onclick="switchTab(2)"><span class="badge-num">3</span>خطوات التحليل الأربع</button>
+      <button class="tab-btn" onclick="switchTab(3)"><span class="badge-num">4</span>المعمل التفاعلي الحي</button>
+      <button class="tab-btn" onclick="switchTab(4)"><span class="badge-num">5</span>سر انشطار الحالات</button>
+      <button class="tab-btn" onclick="switchTab(5)"><span class="badge-num">6</span>خطة الإلقاء والدفاع</button>
+      <button class="tab-btn" onclick="switchTab(6)"><span class="badge-num">7</span>الاختبار الذاتي</button>
+    </nav>
+
+    <!-- ==================== TAB 1: THE INTUITIVE FOUNDATION ==================== -->
+    <section class="tab-panel active" id="tab-0">
+      <div class="card">
+        <div class="card-title">
+          <span>1. لماذا نحتاج الآلات التتابعية؟ (ما قبل الآلات)</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Sequential vs. Finite Automata</span>
+        </div>
+
+        <p style="font-size:16px; margin-bottom:14px;">
+          تخيل أنك في امتحان، والدكتورة رويدا سألتك فجأة: <b>«يا بني، درسنا الـ DFA والـ NFA لأسابيع... لماذا نوجع رؤوسنا بآلات Mealy و Moore؟ ما الذي ينقص الـ DFA؟»</b>
+        </p>
+
+        <div class="callout callout-gold">
+          <b>الجواب البديهي الحاسم:</b><br>
+          آلة DFA التقليدية هي آلة <b>«صامتة»</b>! تقرأ السلسلة كاملة حرفاً وراء حرف دون أن تنطق ببنت شفة، وفقط عند آخر حرف تقف في مكانها وتقول: <b>(مقبول) أو (مرفوض)</b>.
+          <br>
+          لكن في الحياة الواقعية، هل هذا ما تريده من المعالج، أو من موجه الإنترنت، أو من كيبورد الكمبيوتر؟ قطعاً لا! عندما تضغط زراً في الكيبورد تريد الحرف أن يُطبع فوراً، والراوتر عندما تصله حزمة بيانات يريد توجيهها فوراً دون انتظار إغلاق الإنترنت!
+          <br>
+          <b>إذن:</b> الآلة التتابعية هي ببساطة DFA تمت إضافة لسان ناطق لها يسمى <b>دالة الخرج (Output Function)</b>!
+        </div>
+
+        <div class="grid-2" style="margin-top:20px;">
+          <div class="step-box">
+            <div class="step-badge">A</div>
+            <h3 style="color:var(--navy); font-size:17px; margin-bottom:8px;">الآلات المحددة التقليدية (DFA / NFA)</h3>
+            <ul style="padding-right:20px; font-size:14.5px; line-height:1.8;">
+              <li>تتعامل مع المشكلة كـ <b>مسألة قرار (Decision Problem)</b>.</li>
+              <li>لا يوجد أي خرج أثناء القراءة.</li>
+              <li>النتيجة ثنائية حصراً: نعم (Accept) أو لا (Reject).</li>
+              <li>تُستخدم للتحقق من صحة القواعد (Validation).</li>
+            </ul>
+          </div>
+
+          <div class="step-box">
+            <div class="step-badge">B</div>
+            <h3 style="color:var(--gold); font-size:17px; margin-bottom:8px;">الآلات التتابعية (Mealy & Moore)</h3>
+            <ul style="padding-right:20px; font-size:14.5px; line-height:1.8;">
+              <li>تتعامل مع المشكلة كـ <b>محول بيانات مستمر (Transducer)</b>.</li>
+              <li>تُنتج رمز خرج مع كل رمز دخل تتم قراءته.</li>
+              <li>النتيجة سلسلة خروج متدفقة (Continuous Output Stream).</li>
+              <li>تُستخدم لبناء دوائر المعالجات، التشفير، والتحكم.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:28px;">
+          <span>الخماسية الرياضية الموحدة (The 5-Tuple) بأسلوب مبسط</span>
+        </div>
+
+        <p style="font-size:15px; margin-bottom:12px;">
+          تُعرّف أي آلة تتابعية رياضياً بالصيغة: <code style="font-size:16px; color:var(--navy); font-weight:bold;">M = (Q, Σ, Δ, δ, λ)</code>
+        </p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:15%;">الرمز الرياضي</th>
+              <th style="width:25%;">المسمى الأكاديمي</th>
+              <th style="width:60%;">معناه باللغة البسيطة والبديهية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b style="color:var(--navy); font-size:16px;">Q</b></td>
+              <td>مجموعة الحالات (States)</td>
+              <td style="text-align:right;">الغرف الداخلية للآلة؛ تمثل «الذاكرة» التي تسجل ما حدث في الماضي.</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--navy); font-size:16px;">Σ</b></td>
+              <td>أبجدية الدخل (Input Alphabet)</td>
+              <td style="text-align:right;">الأحرف أو الإشارات التي تفهمها الآلة وتدخل إليها (مثل 0 و 1، أو a و b).</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--gold); font-size:16px;">Δ</b></td>
+              <td>أبجدية الخرج (Output Alphabet)</td>
+              <td style="text-align:right;">الأحرف أو الإشارات التي تستطيع الآلة إخراجها والتحدث بها (غالباً 0 و 1).</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--navy); font-size:16px;">δ</b></td>
+              <td>دالة الانتقال (Transition)</td>
+              <td style="text-align:right;">خريطة الطريق: إذا كنت في الغرفة الحالية وجاء الرمز الفلاني، إلى أي غرفة تذهب؟</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--ok); font-size:16px;">λ</b></td>
+              <td>دالة توليد الخرج (Output Function)</td>
+              <td style="text-align:right;"><b>جوهر الدرس!</b> هي المعادلة المسؤولة عن نطق الخرج، وهنا يفترق Mealy عن Moore.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: MEALY VS MOORE ==================== -->
+    <section class="tab-panel" id="tab-1">
+      <div class="card">
+        <div class="card-title">
+          <span>2. المقارنة المعيارية: Mealy مقابل Moore</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Mealy vs. Moore Breakdown</span>
+        </div>
+
+        <div class="grid-2">
+          <!-- Mealy Card -->
+          <div class="step-box" style="border-top:4px solid var(--p-laith);">
+            <h3 style="color:var(--p-laith); font-size:18px; margin-bottom:8px;">نموذج Mealy (الخرج على السهم)</h3>
+            <div class="callout callout-info" style="margin:8px 0; padding:10px 14px;">
+              <b>المعادلة الرياضية:</b><br>
+              <span class="en" style="font-weight:bold; font-size:16px;">λ : Q × Σ → Δ</span><br>
+              الخرج دالة تعتمد على <b>الحالة الحالية والدخل الحالي معاً</b>.
+            </div>
+            <ul style="padding-right:20px; font-size:14px; line-height:1.8;">
+              <li><b>مكان الكتابة:</b> على سهم الانتقال بجانب الدخل: <span class="en">input / output</span> (مثل <code>a/1</code>).</li>
+              <li><b>الاستجابة:</b> فورية ولحظية؛ بمجرد وصول إشارة الدخل يظهر الخرج دون انتظار نبضة الساعة.</li>
+              <li><b>طول سلسلة الخرج:</b> مساوٍ تماماً لطول سلسلة الدخل: <span class="en">|Output| = |Input|</span>.</li>
+              <li><b>عدد الحالات:</b> أقل عموماً، لأن الحالة الواحدة قد ترتبط بأكثر من خرج بحسب الدخل.</li>
+            </ul>
+          </div>
+
+          <!-- Moore Card -->
+          <div class="step-box" style="border-top:4px solid var(--p-aym);">
+            <h3 style="color:var(--p-aym); font-size:18px; margin-bottom:8px;">نموذج Moore (الخرج في بطن الحالة)</h3>
+            <div class="callout callout-gold" style="margin:8px 0; padding:10px 14px;">
+              <b>المعادلة الرياضية:</b><br>
+              <span class="en" style="font-weight:bold; font-size:16px;">λ : Q → Δ</span><br>
+              الخرج دالة تعتمد على <b>الحالة الحالية فقط</b>، ولا دخل للمدخلات به.
+            </div>
+            <ul style="padding-right:20px; font-size:14px; line-height:1.8;">
+              <li><b>مكان الكتابة:</b> داخل دائرة الحالة أسفل اسمها: <span class="en">State / Output</span> (مثل <code>q₀ / 0</code>).</li>
+              <li><b>الاستجابة:</b> متزامنة ومستقرة؛ لا يتغير الخرج إلا عند حدوث نبضة الساعة وانتقال الحالة فعلياً.</li>
+              <li><b>طول سلسلة الخرج:</b> أطول ببت واحد: <span class="en">|Output| = |Input| + 1</span>.</li>
+              <li><b>الأمان العتادي:</b> معزولة تماماً عن الضوضاء والتقلبات اللحظية (Glitch-Free).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-warn" style="margin-top:24px;">
+          <h4 style="margin-bottom:6px;">السؤال الفخ في الامتحان: لماذا خرج Moore أطول ببت واحد دائماً؟</h4>
+          <p style="font-size:15px; line-height:1.75;">
+            لأن آلة Moore بمجرد تشغيلها تستقر في الحالة الابتدائية <span class="en">q₀</span>، وهذه الحالة لها خرج محدد سلفاً داخل دائرتها، فيظهر هذا الخرج على الشاشة <b>قبل أن يدخل أي رمز</b>!
+            <br>
+            فلو أدخلت السلسلة <code class="en">10110</code> (طولها 5 رموز):
+            <br>
+            - في Mealy: يُنتج 5 بتات خرج.
+            <br>
+            - في Moore: يُنتج 6 بتات خرج (البت الأول هو خرج الحالة الابتدائية، تليه 5 بتات للانتقالات الخمسة).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: 4-STEP ANALYSIS ==================== -->
+    <section class="tab-panel" id="tab-2">
+      <div class="card">
+        <div class="card-title">
+          <span>3. الخطوات الأربع المنهجية لتحليل أي آلة تتابعية</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Systematic Analysis Method</span>
+        </div>
+
+        <p style="font-size:15.5px; margin-bottom:18px;">
+          إذا أعطتك الدكتورة دائرة منطقية أو مسألة وطلبت تحليلها، اتبع هذه الخطوات الأربع بالترتيب، وستحصل على الدرجة الكاملة بلا شك:
+        </p>
+
+        <div class="grid-2">
+          <div class="step-box">
+            <div class="step-badge">1</div>
+            <h3 style="color:var(--navy); font-size:17px; margin-bottom:6px;">استخراج معادلات الدخل والخرج</h3>
+            <p style="font-size:14px; color:var(--ink); line-height:1.7;">
+              كتابة المعادلات البولينية لمداخل عناصر الذاكرة (Flip-Flops) مثل <span class="en">D, JK, T</span> ومعادلة الخرج <span class="en">Z</span> كتابع للحالة الراهنة والدخل.
+              <br>
+              <b>مثال:</b> <code class="en">D_A = A·x + B·x'</code> و <code class="en">Z = A·B</code>.
+            </p>
+          </div>
+
+          <div class="step-box">
+            <div class="step-badge">2</div>
+            <h3 style="color:var(--navy); font-size:17px; margin-bottom:6px;">بناء جدول الانتقال والخرج</h3>
+            <p style="font-size:14px; color:var(--ink); line-height:1.7;">
+              إنشاء جدول يضم: الحالة الراهنة (Present State)، قيم الدخل الممكنة (Input x)، الحالة التالية المحسوبة (Next State)، والخرج الناتج (Output).
+              تفريغ كل الاحتمالات الرياضية بدقة.
+            </p>
+          </div>
+
+          <div class="step-box">
+            <div class="step-badge">3</div>
+            <h3 style="color:var(--navy); font-size:17px; margin-bottom:6px;">رسم مخطط الحالات الانتقالي (State Diagram)</h3>
+            <p style="font-size:14px; color:var(--ink); line-height:1.7;">
+              تحويل الجدول إلى رسم بياني: الدوائر تمثل الحالات، والأسهم الموجهة تمثل الانتقالات.
+              تحديد تموضع الخرج: على السهم إن كانت Mealy، أو داخل الدائرة إن كانت Moore.
+            </p>
+          </div>
+
+          <div class="step-box">
+            <div class="step-badge">4</div>
+            <h3 style="color:var(--navy); font-size:17px; margin-bottom:6px;">تتبع وتفسير سلوك الآلة (Trace & Verify)</h3>
+            <p style="font-size:14px; color:var(--ink); line-height:1.7;">
+              اختيار سلسلة دخل تجريبية نموذجية، وتتبع حركة الحالات نبضة بنبضة، وتدوين سلسلة الخرج الناتجة لفهم الوظيفة الهندسية التي تؤديها الدائرة.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-success" style="margin-top:20px;">
+          <b>نصيحة ذهبية:</b> إذا أعطتك الدكتورة جدول حالات، فالتحليل يبدأ من الخطوة 3 مباشرة (رسم المخطط ثم التتبع). وإذا أعطتك المخطط، فتحوله لجدول حالات ثم تتتبعه. المخطط والجدول وجهان لعملة واحدة!
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: INTERACTIVE LAB ==================== -->
+    <section class="tab-panel" id="tab-3">
+      
+      <!-- Experiment 1: Moore Parity Detector -->
+      <div class="card">
+        <div class="card-title">
+          <span>المختبر 1: محاكي كاشف التكافؤ الفردي (آلة Moore — الشريحة 8)</span>
+          <span class="en" style="color:var(--navy); font-size:14px;">Odd Parity Detector Simulator</span>
+        </div>
+
+        <p style="font-size:15px; margin-bottom:14px;">
+          <b>فكرة الآلة:</b> تكتشف هل عدد أحرف <code>a</code> المقروءة حتى الآن فردي أم زوجي؟
+          إذا كان فردياً تخرج <b>1</b>، وإذا كان زوجياً تخرج <b>0</b>. الحرف <code>b</code> لا يغير الحالة.
+        </p>
+
+        <div class="sim-container">
+          <div class="sim-controls">
+            <label style="font-weight:bold; font-size:14.5px;">سلسلة الدخل التجريبية:</label>
+            <input type="text" id="labParityInput" class="sim-input" value="aabab" placeholder="مثال: aabab">
+            <button class="btn btn-gold" onclick="loadCustomParity()">تطبيق السلسلة</button>
+            <button class="btn" onclick="stepLabParity()">خطوة بخطوة ▶</button>
+            <button class="btn btn-outline" onclick="resetLabParity()">إعادة ضبط ↺</button>
+          </div>
+
+          <!-- Simulation Ribbon -->
+          <div class="sim-ribbon" id="labParityRibbon"></div>
+
+          <!-- Status Box -->
+          <div class="sim-status">
+            <span>الحالة الحالية: <b id="labParityState" style="color:var(--navy); font-size:16px;">E (زوجي)</b></span>
+            <span style="color:var(--line);">|</span>
+            <span>الرمز المقروء: <b id="labParityChar" style="color:var(--gold); font-size:16px;">—</b></span>
+            <span style="color:var(--line);">|</span>
+            <span>سلسلة الخرج التراكمية: <b id="labParityOut" style="color:var(--ok); font-family:monospace; font-size:16px;">0</b></span>
+            <span style="color:var(--line);">|</span>
+            <span id="labParityDesc" style="color:var(--muted);">الحالة الابتدائية E تعطي خرج 0 قبل بدء القراءة</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiment 2: Mealy ab Detector -->
+      <div class="card" style="margin-top:24px;">
+        <div class="card-title">
+          <span>المختبر 2: محاكي كاشف النمط ab اللحظي (آلة Mealy — الشريحة 9)</span>
+          <span class="en" style="color:var(--p-laith); font-size:14px;">Sequence Detector ab Simulator</span>
+        </div>
+
+        <p style="font-size:15px; margin-bottom:14px;">
+          <b>فكرة الآلة:</b> مراقبة التدفق واكتشاف النمط <code>ab</code> فور اكتماله. بمجرد أن نكون في الحالة $S_1$ (التي تعني رأينا $a$) ويصل الحرف $b$، تُطلق الآلة الخرج <b>1</b> فوراً وتعود إلى $S_0$.
+        </p>
+
+        <div class="sim-container">
+          <div class="sim-controls">
+            <label style="font-weight:bold; font-size:14.5px;">سلسلة الدخل التجريبية:</label>
+            <input type="text" id="labMealyInput" class="sim-input" value="aabbab" placeholder="مثال: aabbab">
+            <button class="btn btn-gold" onclick="loadCustomMealy()">تطبيق السلسلة</button>
+            <button class="btn" onclick="stepLabMealy()">خطوة بخطوة ▶</button>
+            <button class="btn btn-outline" onclick="resetLabMealy()">إعادة ضبط ↺</button>
+          </div>
+
+          <!-- Simulation Ribbon -->
+          <div class="sim-ribbon" id="labMealyRibbon"></div>
+
+          <!-- Status Box -->
+          <div class="sim-status">
+            <span>الحالة الحالية: <b id="labMealyState" style="color:var(--p-laith); font-size:16px;">S₀</b></span>
+            <span style="color:var(--line);">|</span>
+            <span>الرمز المقروء: <b id="labMealyChar" style="color:var(--gold); font-size:16px;">—</b></span>
+            <span style="color:var(--line);">|</span>
+            <span>سلسلة الخرج التراكمية: <b id="labMealyOut" style="color:var(--ok); font-family:monospace; font-size:16px;">—</b></span>
+            <span style="color:var(--line);">|</span>
+            <span id="labMealyDesc" style="color:var(--muted);">جاهزة لبدء التتبع؛ انقر على خطوة بخطوة</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 5: STATE SPLITTING ==================== -->
+    <section class="tab-panel" id="tab-4">
+      <div class="card">
+        <div class="card-title">
+          <span>5. سر انشطار الحالات عند التحويل من Mealy إلى Moore</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">State Splitting Secret</span>
+        </div>
+
+        <div class="callout callout-gold">
+          <b>اللغز الذي يحير الطلاب دائماً:</b><br>
+          عندما نحول آلة Mealy إلى آلة Moore، نلاحظ دائماً أن عدد الحالات يزداد! لماذا تتضاعف الحالات؟ ما السر الرياضي؟
+        </div>
+
+        <p style="font-size:15.5px; line-height:1.8; margin:14px 0;">
+          تخيل حالة في آلة Mealy اسمها <span class="en" style="font-weight:bold;">S₀</span>.
+          <br>
+          - قد يدخلها سهم انتقال من الحالة $S_1$ ومعه خرج <b>0</b>.
+          <br>
+          - وقد يدخلها سهم انتقال آخر من الحالة $S_2$ ومعه خرج <b>1</b>.
+          <br>
+          في آلة Mealy هذا مسموح وطبيعي جداً، لأن الخرج مكتوب على السهم القادم وليس داخل الحالة.
+          <br><br>
+          <b>لكن ماذا يحدث عندما نقرر تحويل هذه الآلة إلى Moore؟</b><br>
+          في آلة Moore، القاعدة الصارمة تقول: <b>«الخرج يجب أن يوضع داخل بطن الحالة حصراً»</b>.
+          حسناً، ماذا سنكتب في بطن الحالة $S_0$؟ هل نكتب 0 أم 1؟
+          لو كتبنا 0 سنظلم الانتقال القادم بخرج 1! ولو كتبنا 1 سنظلم الانتقال القادم بخرج 0!
+          <br>
+          <b>الحل الرياضي العبقري:</b><br>
+          نقوم بـ <b>شطر الحالة (State Splitting)</b> إلى نسختين توأم:
+        </p>
+
+        <div class="grid-2" style="margin:20px 0;">
+          <div class="step-box" style="border-right:4px solid var(--ok);">
+            <h4 style="color:var(--ok); font-size:17px; margin-bottom:6px;">النسخة الأولى: S₀A (خرجها الداخلي: 0)</h4>
+            <p style="font-size:14px; color:var(--ink);">
+              نوجه إليها كل أسهم الانتقال التي كانت تدخل $S_0$ بخرج <b>0</b>.
+            </p>
+          </div>
+
+          <div class="step-box" style="border-right:4px solid var(--bad);">
+            <h4 style="color:var(--bad); font-size:17px; margin-bottom:6px;">النسخة الثانية: S₀B (خرجها الداخلي: 1)</h4>
+            <p style="font-size:14px; color:var(--ink);">
+              نوجه إليها كل أسهم الانتقال التي كانت تدخل $S_0$ بخرج <b>1</b>.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <b>وماذا عن الأسهم الخارجة من S₀A و S₀B؟</b><br>
+          كلا النسختين ترثان نفس مسارات الخروج تماماً كالحالة الأصلية $S_0$! إذا كان $S_0$ يذهب إلى $S_1$ عند الدخل $a$، فإن كلاً من $S_{0A}$ و $S_{0B}$ سيذهبان إلى $S_1$ عند الدخل $a$.
+          بهذا نكون قد حافظنا على <b>التكافؤ السلوكي التام (Equivalence)</b> دون أي خلل منطقي!
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: SPEAKER BATTLE PLAN ==================== -->
+    <section class="tab-panel" id="tab-5">
+      <div class="card">
+        <div class="card-title">
+          <span>6. خطة الإلقاء وتوزيع الأدوار وسيناريو الدفاع الأكاديمي</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Speaker Battle Plan & Q-Bank</span>
+        </div>
+
+        <!-- Speaker 1: Laith -->
+        <div class="speaker-section spk-laith">
+          <div class="spk-header">
+            <div>
+              <h3 style="color:var(--p-laith); font-size:20px; font-weight:800;">1. ليث توفيق الجعفري</h3>
+              <span style="font-size:13.5px; color:var(--muted);">المحاور: الافتتاح، مفهوم الآلات التتابعية، آلة Mealy، وتطبيقات هندسة البرمجيات</span>
+            </div>
+            <span class="spk-badge" style="background:var(--p-laith)">الشرائح: 1، 2، 3، 4، 11</span>
+          </div>
+
+          <div style="font-size:14.5px; line-height:1.75; margin-bottom:14px;">
+            <b>ماذا تقول بالضبط أثناء الوقوف:</b><br>
+            «بسم الله الرحمن الرحيم، دكتورتنا الفاضلة، زملائي الكرام... يسعدنا اليوم تقديم موضوع جوهري في نظرية الحوسبة: تحليل الآلات التتابعية.
+            في الفصول السابقة اقتصر تفكيرنا على الـ DFA التي تقبل أو ترفض، لكن اليوم سننتقل إلى الآلات التي تُنتج مخرجات مستمرة وتُبنى عليها معالجات الحواسيب. سأبدأ بآلة Mealy التي تتميز بالاستجابة اللحظية المباشرة...»
+          </div>
+
+          <div class="callout callout-info" style="margin:0;">
+            <b>سؤال الدكتورة المتوقع وكيف تدافع:</b><br>
+            <b>سؤال:</b> «يا ليث، لو أردنا تصميم دائرة معالج فائق السرعة، هل تفضل Mealy أم Moore؟ ولماذا؟»<br>
+            <b>جوابك القاتل:</b> «أفضل آلة Mealy يا دكتورة، لسببين: أولاً لأن خرجها لحظي يتغير فور وصول الدخل دون انتظار نبضة الساعة التالية، وثانياً لأنها تستهلك عدداً أقل من الحالات وعناصر الذاكرة (Flip-Flops)، مما يوفر مساحة سيليكون واستهلاك طاقة أقل في الشريحة.»
+          </div>
+        </div>
+
+        <!-- Speaker 2: Aymen -->
+        <div class="speaker-section spk-aym">
+          <div class="spk-header">
+            <div>
+              <h3 style="color:var(--p-aym); font-size:20px; font-weight:800;">2. أيمن النزيلي</h3>
+              <span style="font-size:13.5px; color:var(--muted);">المحاور: آلة Moore، المقارنة المعيارية، منهجية التحليل الأربع، وإدارة التمارين التفاعلية</span>
+            </div>
+            <span class="spk-badge" style="background:var(--p-aym)">الشرائح: 5، 6، 7، 12</span>
+          </div>
+
+          <div style="font-size:14.5px; line-height:1.75; margin-bottom:14px;">
+            <b>ماذا تقول بالضبط أثناء الوقوف:</b><br>
+            «شكراً للزميل ليث... بعد أن استعرضنا سرعة Mealy، نأتي إلى نموذج Moore الذي يركز على الاستقرار ومناعة التشويش. في Moore الخرج يسكن داخل الحالة ولا يتأثر بأي ضوضاء على خطوط الدخل. كما سنستعرض الخطوات الأربع المنهجية التي تضمن للطالب حل أي مسألة دون الوقوع في أخطاء تداخل الحالات...»
+          </div>
+
+          <div class="callout callout-gold" style="margin:0;">
+            <b>سؤال الدكتورة المتوقع وكيف تدافع:</b><br>
+            <b>سؤال:</b> «يا أيمن، لماذا سلسلة خرج Moore أطول من دخلها ببت واحد دائماً؟»<br>
+            <b>جوابك القاتل:</b> «لأن آلة Moore تبدأ في حالة ابتدائية q₀ لها خرج محدد سلفاً يظهر فور تشغيل الدائرة وقبل أن يدخل أول رمز في السلسلة، فتكون النتيجة: خرج الحالة الابتدائية + خرج كل انتقال، أي |Input| + 1.»
+          </div>
+        </div>
+
+        <!-- Speaker 3: Abdulrahman -->
+        <div class="speaker-section spk-abd">
+          <div class="spk-header">
+            <div>
+              <h3 style="color:var(--p-abd); font-size:20px; font-weight:800;">3. عبدالرحمن إسماعيل سيف</h3>
+              <span style="font-size:13.5px; color:var(--muted);">المحاور: التطبيقات العملية المحلولة (كاشف التكافؤ وكاشف التسلسل)، التحويل المكافئ، والوصايا الذهبية</span>
+            </div>
+            <span class="spk-badge" style="background:var(--p-abd)">الشرائح: 8، 9، 10، 13</span>
+          </div>
+
+          <div style="font-size:14.5px; line-height:1.75; margin-bottom:14px;">
+            <b>ماذا تقول بالضبط أثناء الوقوف:</b><br>
+            «شكراً للزميل أيمن... والآن ننتقل إلى الميدان العملي: لن نكتفي بالمعادلات، بل سنرى الآلات وهي تعمل أمامكم حياً. صممنا محاكيين تفاعليين: الأول كاشف التكافؤ عبر Moore، والثاني كاشف النمط ab عبر Mealy. وسنكشف معاً السر الرياضي الدقيق وراء انشطار الحالات عند التحويل من Mealy إلى Moore...»
+          </div>
+
+          <div class="callout callout-success" style="margin:0;">
+            <b>سؤال الدكتورة المتوقع وكيف تدافع:</b><br>
+            <b>سؤال:</b> «يا عبدالرحمن، متى تضطر لشطر الحالة عند التحويل من Mealy إلى Moore؟ ومتى لا تحتاج لشطرها؟»<br>
+            <b>جوابك القاتل:</b> «نضطر لشطرها فقط إذا كانت الحالة في Mealy تستقبل انتقالات بمخرجات مختلفة (مثلاً سهم بخرج 0 وسهم بخرج 1). أما إذا كانت كل الأسهم الداخلة إليها تحمل نفس الخرج دائماً، فلا تنشطر وتبقى حالة واحدة في Moore.»
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 7: INTERACTIVE SELF-QUIZ ==================== -->
+    <section class="tab-panel" id="tab-6">
+      <div class="card">
+        <div class="card-title">
+          <span>7. بنك الاختبار الذاتي (8 أسئلة امتحانية مع تصحيح فوري)</span>
+          <span style="font-size:14.5px; color:var(--navy);" id="quizScore">الدرجة: 0 / 8</span>
+        </div>
+
+        <p style="font-size:15px; margin-bottom:18px;">
+          اختبر استيعابك للمادة الآن مع فحص فوري وشرح سبب كل إجابة:
+        </p>
+
+        <div id="quizContainer"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Tab switching logic
+    function switchTab(idx) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('.tab-panel');
+      tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
+      panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // INTERACTIVE LAB 1: PARITY SIMULATOR
+    // ==========================================
+    let labParitySeq = ['a', 'a', 'b', 'a', 'b'];
+    let labParityIdx = 0;
+    let labParityCurState = 'E';
+    let labParityHistory = ['0'];
+
+    function renderLabParityRibbon() {
+      const rib = document.getElementById('labParityRibbon');
+      if (!rib) return;
+      rib.innerHTML = '';
+      labParitySeq.forEach((ch, i) => {
+        const d = document.createElement('div');
+        d.className = 'rib-item';
+        d.id = 'lp_item_' + i;
+        d.textContent = ch;
+        if (i < labParityIdx) d.classList.add('done');
+        else if (i === labParityIdx) d.classList.add('active');
+        rib.appendChild(d);
+      });
+    }
+
+    function loadCustomParity() {
+      const val = document.getElementById('labParityInput').value.trim().toLowerCase();
+      if (!val) return;
+      labParitySeq = val.split('');
+      resetLabParity();
+    }
+
+    function resetLabParity() {
+      labParityIdx = 0;
+      labParityCurState = 'E';
+      labParityHistory = ['0'];
+      document.getElementById('labParityState').textContent = 'E (زوجي)';
+      document.getElementById('labParityChar').textContent = '—';
+      document.getElementById('labParityOut').textContent = '0';
+      document.getElementById('labParityDesc').textContent = 'تمت إعادة الضبط للحالة الابتدائية E مع الخرج المبدئي 0';
+      renderLabParityRibbon();
+    }
+
+    function stepLabParity() {
+      if (labParityIdx >= labParitySeq.length) {
+        document.getElementById('labParityDesc').textContent = 'اكتملت قراءة السلسلة بالكامل!';
+        return;
+      }
+      const ch = labParitySeq[labParityIdx];
+      const prev = labParityCurState;
+      if (ch === 'a') {
+        labParityCurState = (labParityCurState === 'E') ? 'O' : 'E';
+      }
+      const out = (labParityCurState === 'E') ? '0' : '1';
+      labParityHistory.push(out);
+      labParityIdx++;
+
+      document.getElementById('labParityState').textContent = (labParityCurState === 'E') ? 'E (زوجي)' : 'O (فردي)';
+      document.getElementById('labParityChar').textContent = ch;
+      document.getElementById('labParityOut').textContent = labParityHistory.join('');
+      document.getElementById('labParityDesc').textContent = 'قراءة ' + ch + ': انتقال من ' + prev + ' إلى ' + labParityCurState + ' مع إطلاق البت ' + out;
+      renderLabParityRibbon();
+    }
+
+    // ==========================================
+    // INTERACTIVE LAB 2: MEALY SIMULATOR
+    // ==========================================
+    let labMealySeq = ['a', 'a', 'b', 'b', 'a', 'b'];
+    let labMealyIdx = 0;
+    let labMealyCurState = 'S₀';
+    let labMealyHistory = [];
+
+    function renderLabMealyRibbon() {
+      const rib = document.getElementById('labMealyRibbon');
+      if (!rib) return;
+      rib.innerHTML = '';
+      labMealySeq.forEach((ch, i) => {
+        const d = document.createElement('div');
+        d.className = 'rib-item';
+        d.id = 'lm_item_' + i;
+        d.textContent = ch;
+        if (i < labMealyIdx) d.classList.add('done');
+        else if (i === labMealyIdx) d.classList.add('active');
+        rib.appendChild(d);
+      });
+    }
+
+    function loadCustomMealy() {
+      const val = document.getElementById('labMealyInput').value.trim().toLowerCase();
+      if (!val) return;
+      labMealySeq = val.split('');
+      resetLabMealy();
+    }
+
+    function resetLabMealy() {
+      labMealyIdx = 0;
+      labMealyCurState = 'S₀';
+      labMealyHistory = [];
+      document.getElementById('labMealyState').textContent = 'S₀';
+      document.getElementById('labMealyChar').textContent = '—';
+      document.getElementById('labMealyOut').textContent = '—';
+      document.getElementById('labMealyDesc').textContent = 'تمت إعادة الضبط للحالة الابتدائية S₀';
+      renderLabMealyRibbon();
+    }
+
+    function stepLabMealy() {
+      if (labMealyIdx >= labMealySeq.length) {
+        document.getElementById('labMealyDesc').textContent = 'اكتملت قراءة السلسلة بالكامل!';
+        return;
+      }
+      const ch = labMealySeq[labMealyIdx];
+      const prev = labMealyCurState;
+      let out = '0';
+      if (labMealyCurState === 'S₀') {
+        if (ch === 'a') labMealyCurState = 'S₁';
+      } else if (labMealyCurState === 'S₁') {
+        if (ch === 'a') {
+          labMealyCurState = 'S₁';
+        } else {
+          labMealyCurState = 'S₀';
+          out = '1'; // Detected!
+        }
+      }
+      labMealyHistory.push(out);
+      labMealyIdx++;
+
+      document.getElementById('labMealyState').textContent = labMealyCurState;
+      document.getElementById('labMealyChar').textContent = ch;
+      document.getElementById('labMealyOut').textContent = labMealyHistory.join('');
+      if (out === '1') {
+        document.getElementById('labMealyDesc').innerHTML = '<b style="color:var(--ok)">تم رصد النمط ab بنجاح!</b> الخرج اللحظي: 1 والعودة إلى S₀.';
+      } else {
+        document.getElementById('labMealyDesc').textContent = 'قراءة ' + ch + ': انتقال من ' + prev + ' إلى ' + labMealyCurState + ' مع خرج ' + out;
+      }
+      renderLabMealyRibbon();
+    }
+
+    // ==========================================
+    // QUIZ DATA AND ENGINE
+    // ==========================================
+    const QUIZ_DATA = [
+      {
+        q: "1. ما هو الفرق الجوهري بين آلة DFA التقليدية والآلة التتابعية (Sequential Machine)؟",
+        options: [
+          "الآلة التتابعية تقبل أو ترفض فقط دون أي خرج.",
+          "الآلة التتابعية تُصدر رمز خرج مع كل رمز دخل تتم قراءته عبر دالة الخرج.",
+          "الآلة التتابعية لا تحتوي على ذاكرة أو حالات داخلية.",
+          "الآلة التتابعية تعمل فقط على الأعداد الصحيحة الموجبة."
+        ],
+        answer: 1,
+        exp: "الآلة التتابعية مزودة بدالة خرج تجعلها محولاً مستمراً للبيانات (Transducer) تُصدر مخرجات تدفقية مع كل نبضة دخل."
+      },
+      {
+        q: "2. في آلة Mealy، تعتمد دالة الخرج λ رياضياً على:",
+        options: [
+          "الحالة الراهنة فقط.",
+          "رمز الدخل الحالي فقط دون النظر للحالة.",
+          "الحالة الراهنة ورمز الدخل الحالي معاً.",
+          "الحالة السابقة وتاريخ المدخلات كاملاً."
+        ],
+        answer: 2,
+        exp: "دالة Mealy هي λ : Q × Σ → Δ، أي ترتبط بالحالة الراهنة ورمز الدخل في نفس اللحظة."
+      },
+      {
+        q: "3. إذا أُدخلت سلسلة طولها n رموز إلى آلة Moore، فكم يكون طول سلسلة الخرج الناتجة؟",
+        options: [
+          "n",
+          "n - 1",
+          "n + 1",
+          "2n"
+        ],
+        answer: 2,
+        exp: "طول خرج Moore دائماً n + 1، لأن الحالة الابتدائية تطلق خرجها المسبق قبل بدء قراءة أي رمز دخل."
+      },
+      {
+        q: "4. ما هي الميزة الرئيسية لآلة Moore مقارنة بآلة Mealy عند التنفيذ العتادي على السيليكون؟",
+        options: [
+          "تتطلب عدداً أقل من الحالات دائماً.",
+          "خرجها مستقر تماماً ومعزول عن أي تشويش أو ضوضاء عابرة (Glitch-Free) على خطوط الدخل.",
+          "أسرع في الاستجابة اللحظية من Mealy.",
+          "لا تحتاج إلى ساعة توقيت (Clock)."
+        ],
+        answer: 1,
+        exp: "في Moore الخرج ساكن داخل الحالة ولا يتغير إلا عند نبضة الساعة، مما يحميه من أي تقلبات لحظية على أسلاك الدخل."
+      },
+      {
+        q: "5. ما هو الترتيب الصحيح للخطوات الأربع المنهجية لتحليل الآلات التتابعية؟",
+        options: [
+          "رسم المخطط ← كتابة المعادلات ← التتبع ← بناء الجدول",
+          "استخراج المعادلات ← بناء جدول الانتقال والخرج ← رسم مخطط الحالات ← تتبع وتفسير السلوك",
+          "تتبع السلوك ← بناء الجدول ← رسم المخطط ← استخراج المعادلات",
+          "بناء الجدول ← استخراج المعادلات ← تتبع السلوك ← رسم المخطط"
+        ],
+        answer: 1,
+        exp: "الترتيب المعياري: استخراج المعادلات ثم الجدول ثم المخطط ثم تتبع السلوك بالسلاسل النموذجية."
+      },
+      {
+        q: "6. لماذا تنشطر الحالة (State Splitting) عند تحويل آلة Mealy إلى آلة Moore؟",
+        options: [
+          "لأن آلة Moore تفقد الذاكرة إذا لم تنشطر الحالات.",
+          "لأن الحالة في Mealy قد تستقبل عدة انتقالات بمخرجات مختلفة، بينما في Moore يجب أن ترتبط الحالة بخرج أحادي ثابت.",
+          "لأن دالة الانتقال δ تتغير قيمتها الرياضية.",
+          "لأن عدد أحرف الدخل يتضاعف عند التحويل."
+        ],
+        answer: 1,
+        exp: "في Moore يستحيل أن يكون للحالة الواحدة أكثر من خرج، لذلك إذا استقبلت خروجاً مختلفة في Mealy وجب شطرها لنسخ منفصلة لكل خرج."
+      },
+      {
+        q: "7. في كاشف التكافؤ الفردي (Moore Parity Detector) في الشريحة 8، ما هو خرج الحالة الابتدائية E؟",
+        options: [
+          "1",
+          "0",
+          "غير معرف",
+          "يعتمد على أول رمز دخل"
+        ],
+        answer: 1,
+        exp: "الحالة الابتدائية E تمثل عدد فردي = 0 (زوجي)، وبالتالي خرجها الثابت هو 0."
+      },
+      {
+        q: "8. في كاشف النمط ab (Mealy Machine) في الشريحة 9، متى يُطلق الخرج 1؟",
+        options: [
+          "عندما نكون في الحالة S₀ ويصلنا الحرف a.",
+          "عندما نكون في الحالة S₁ ويصلنا الحرف a.",
+          "عندما نكون في الحالة S₁ ويصلنا الحرف b.",
+          "عندما نكون في الحالة S₀ ويصلنا الحرف b."
+        ],
+        answer: 2,
+        exp: "النمط يتحقق باكتمال الحرفين: كنا في S₁ (رأينا a) ثم استقبلنا الحرف b، فيكتمل النمط ويُطلق الخرج 1 لحظياً."
+      }
+    ];
+
+    let userScore = 0;
+    const answered = {};
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      QUIZ_DATA.forEach((item, qIdx) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+
+        const qTitle = document.createElement('div');
+        qTitle.className = 'quiz-q';
+        qTitle.textContent = item.q;
+        card.appendChild(qTitle);
+
+        const expBox = document.createElement('div');
+        expBox.className = 'quiz-explanation';
+        expBox.id = 'exp_' + qIdx;
+        expBox.innerHTML = '<b>التفسير الأكاديمي:</b> ' + item.exp;
+
+        item.options.forEach((opt, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-opt';
+          btn.textContent = opt;
+          btn.onclick = () => {
+            if (answered[qIdx] !== undefined) return;
+            answered[qIdx] = oIdx;
+
+            const allBtns = card.querySelectorAll('.quiz-opt');
+            if (oIdx === item.answer) {
+              btn.classList.add('correct');
+              userScore++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.answer].classList.add('correct');
+            }
+            expBox.style.display = 'block';
+            document.getElementById('quizScore').textContent = 'الدرجة: ' + userScore + ' / ' + QUIZ_DATA.length;
+          };
+          card.appendChild(btn);
+        });
+
+        card.appendChild(expBox);
+        container.appendChild(card);
+      });
+    }
+
+    // Init simulators and quiz
+    window.addEventListener('DOMContentLoaded', () => {
+      renderLabParityRibbon();
+      renderLabMealyRibbon();
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

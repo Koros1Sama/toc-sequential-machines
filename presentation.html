@@ -1,0 +1,2130 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحليل الآلات التتابعية — Analysis of Sequential Machines</title>
+  <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #faf8f4;
+  --ink: #1c2733;
+  --muted: #5b6774;
+  --navy: #14304f;
+  --navy2: #1d4468;
+  --navy3: #0e2440;
+  --gold: #b7791f;
+  --gold2: #d9a441;
+  --cream: #f4efe6;
+  --line: #e4ddcf;
+  --ok: #2f7d5b;
+  --bad: #a13d2d;
+  --p-abd: #14304f;
+  --p-laith: #0d6e6e;
+  --p-aym: #7c3a2d;
+  --p-all: #8a6d1f;
+  --shadow: 0 10px 30px rgba(20, 48, 79, 0.08), 0 2px 6px rgba(20, 48, 79, 0.06);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Cairo', sans-serif;
+  direction: rtl;
+}
+
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 999;
+}
+
+#pbar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(to left, var(--gold), var(--navy));
+  width: 0%;
+  transition: width 0.3s;
+}
+
+/* 3D Spatial Deck */
+#deck {
+  position: fixed;
+  inset: 0;
+  padding: 0;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 50px 75px;
+  gap: 12px;
+  text-align: center;
+  overflow-y: auto;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(60px, 0, -80px) rotateY(-4deg);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.45s;
+}
+
+.slide.active {
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+}
+
+.slide.past {
+  transform: translate3d(60px, 0, -80px) rotateY(-5deg);
+}
+
+.slide.future {
+  transform: translate3d(-60px, 0, -80px) rotateY(5deg);
+}
+
+/* Cascading Animations */
+@keyframes cascadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide.active .kicker { animation: cascadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.05s; }
+.slide.active .speaker-pill { animation: cascadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.08s; }
+.slide.active h1, .slide.active h2 { animation: cascadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.1s; }
+.slide.active .sub, .slide.active .lead { animation: cascadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.14s; }
+
+/* Staggered reveals for grid items: 1, 2, 3, 4, 5, 6 */
+.slide.active .grid > *:nth-child(1) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.18s; }
+.slide.active .grid > *:nth-child(2) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.26s; }
+.slide.active .grid > *:nth-child(3) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.34s; }
+.slide.active .grid > *:nth-child(4) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.42s; }
+.slide.active .grid > *:nth-child(5) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.50s; }
+.slide.active .grid > *:nth-child(6) { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.58s; }
+
+.slide.active .card-banner { animation: cascadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.38s; }
+
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: 16px;
+  width: min(1180px, 96vw);
+}
+
+.grid.g2 { grid-template-columns: 1fr 1fr; }
+.grid.g3 { grid-template-columns: repeat(3, 1fr); }
+.grid.g4 { grid-template-columns: repeat(4, 1fr); }
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px 22px;
+  text-align: right;
+}
+
+.numcard {
+  position: relative;
+  overflow: hidden;
+}
+
+.numcard .idx {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--navy);
+  font-weight: 800;
+  text-align: center;
+  line-height: 32px;
+  margin-bottom: 8px;
+}
+
+.kicker {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.speaker-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 4px;
+}
+
+.speaker-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.p-laith .dot { background: var(--p-laith); }
+.p-laith { color: var(--p-laith); border-color: rgba(13,110,110,0.3); }
+.p-aym .dot { background: var(--p-aym); }
+.p-aym { color: var(--p-aym); border-color: rgba(124,58,45,0.3); }
+.p-abd .dot { background: var(--p-abd); }
+.p-abd { color: var(--p-abd); border-color: rgba(20,48,79,0.3); }
+.p-all .dot { background: var(--p-all); }
+.p-all { color: var(--p-all); border-color: rgba(138,109,31,0.3); }
+
+h1, h2 {
+  margin: 4px 0 6px;
+  color: var(--navy);
+  font-weight: 800;
+}
+
+h1 { font-size: 40px; }
+h2 { font-size: 27px; }
+.sub { color: var(--muted); font-size: 15.5px; margin-bottom: 6px; }
+.lead { font-size: 17.5px; color: var(--ink); line-height: 1.7; }
+.hl { color: var(--gold); }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+.chip { padding: 6px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 700; border: 1.5px solid; }
+.c-laith { color: var(--p-laith); border-color: var(--p-laith); background: rgba(13,110,110,0.06); }
+.c-aym { color: var(--p-aym); border-color: var(--p-aym); background: rgba(124,58,45,0.06); }
+.c-abd { color: var(--p-abd); border-color: var(--p-abd); background: rgba(20,48,79,0.06); }
+
+/* Simulation Ribbon */
+.rib-cell {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  border-radius: 6px;
+  border: 1.5px solid var(--line);
+  text-align: center;
+  background: #fff;
+  color: var(--navy);
+  transition: all 0.25s ease;
+}
+
+.rib-cell.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold2);
+  transform: scale(1.15);
+  box-shadow: 0 4px 10px rgba(183,121,31,0.3);
+}
+
+.rib-cell.done {
+  background: rgba(47,125,91,0.15);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+/* HUD Navigation & Floating Action Buttons */
+.hud {
+  position: fixed;
+  bottom: 18px;
+  right: 24px;
+  z-index: 50;
+  display: flex;
+  direction: ltr;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  box-shadow: var(--shadow);
+}
+
+.hud button {
+  background: none;
+  border: none;
+  color: var(--navy);
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.hud button:hover {
+  background: var(--cream);
+}
+
+#counter {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy2);
+  min-width: 55px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#hudTimer {
+  font-size: 12.5px;
+  font-family: Consolas, monospace;
+  color: var(--muted);
+  background: var(--cream);
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.floating-tools {
+  position: fixed;
+  bottom: 18px;
+  left: 20px;
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+}
+
+.float-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  color: var(--navy);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-shadow: var(--shadow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.float-btn:hover {
+  transform: scale(1.08);
+  background: #fff;
+}
+
+.float-btn.on {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold2);
+}
+
+/* High-Luminance Projector Mode */
+body.projector-mode {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.projector-mode .slide {
+  background: #ffffff !important;
+}
+
+body.projector-mode .card {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
+  box-shadow: none !important;
+  color: #000000 !important;
+}
+
+body.projector-mode h1, body.projector-mode h2, body.projector-mode h3, body.projector-mode h4 {
+  color: #000000 !important;
+}
+
+body.projector-mode p, body.projector-mode span, body.projector-mode li, body.projector-mode div {
+  color: #000000 !important;
+}
+
+body.projector-mode .idx {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.projector-mode table, body.projector-mode th, body.projector-mode td {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+body.projector-mode th {
+  background: #f0f0f0 !important;
+  color: #000000 !important;
+}
+
+body.projector-mode svg text {
+  fill: #000000 !important;
+}
+
+body.projector-mode svg circle, body.projector-mode svg path, body.projector-mode svg line {
+  stroke: #000000 !important;
+}
+
+body.projector-mode #projectorBadge {
+  display: inline-block !important;
+}
+
+#projectorBadge {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 24px;
+  background: #000000;
+  color: #ffffff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  z-index: 9999;
+}
+
+/* Slide Matrix Grid Modal */
+#gridModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 36, 64, 0.95);
+  backdrop-filter: blur(16px);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  padding: 40px 60px;
+  direction: rtl;
+  overflow-y: auto;
+}
+
+#gridModal.open {
+  display: flex;
+}
+
+.grid-matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding-bottom: 12px;
+}
+
+.grid-matrix-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.grid-card-item {
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: right;
+}
+
+.grid-card-item:hover, .grid-card-item.current {
+  background: rgba(183,121,31,0.25);
+  border-color: var(--gold2);
+  transform: translateY(-3px);
+}
+
+.grid-card-item .num {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 800;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.grid-card-item .t {
+  font-weight: 700;
+  font-size: 13.5px;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.grid-card-item .spk {
+  font-size: 11.5px;
+  color: #cbd5e1;
+}
+
+/* Drawing Canvas & Spotlight */
+#telestratorCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+}
+
+#telestratorCanvas.active {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+#spotlightOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 0%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+  z-index: 150;
+  display: none;
+}
+
+#spotlightOverlay.active {
+  display: block;
+}
+
+#drawingBadge {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  background: var(--bad);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: none;
+  z-index: 250;
+}
+
+/* Q-Panel Presenter Notes Drawer */
+#qpanel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -480px;
+  width: 480px;
+  background: rgba(20, 48, 79, 0.98);
+  backdrop-filter: blur(16px);
+  color: #fff;
+  z-index: 500;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.3);
+  transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+}
+
+#qpanel.open {
+  left: 0;
+}
+
+.qhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.qbody {
+  flex: 1;
+  padding: 18px 20px;
+  overflow-y: auto;
+}
+
+.qcard {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.qcard h4 {
+  margin: 0 0 8px;
+  color: var(--gold2);
+  font-size: 15px;
+}
+
+.qcard p, .qcard li {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.qcard ul {
+  padding-right: 18px;
+  margin: 6px 0;
+}
+
+.qtool-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.qtool-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+  </style>
+</head>
+<body>
+  <div id="progress"><i id="pbar"></i></div>
+
+  <!-- Ambient Badges -->
+  <div id="projectorBadge">وضع البروجكتر عالي التباين مفعل</div>
+  <div id="drawingBadge">وضع القلم مفعل (انقر واسحب للرسم • C للمسح • D للإنهاء)</div>
+
+  <!-- Canvas & Overlays -->
+  <canvas id="telestratorCanvas"></canvas>
+  <div id="spotlightOverlay"></div>
+
+  <!-- Slide Matrix Grid Modal -->
+  <div id="gridModal">
+    <div class="grid-matrix-header">
+      <div>
+        <div class="grid-matrix-title">مصفوفة الشرائح البانورامية (Slide Matrix)</div>
+        <div style="color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 2px;">انقر على أي شريحة للقفز المباشر أثناء الإلقاء أو المناقشة</div>
+      </div>
+      <button id="gridClose" class="qtool-btn">إغلاق ✕</button>
+    </div>
+    <div id="gridCards" class="grid-matrix-cards"></div>
+  </div>
+
+  <!-- Main Slide Deck -->
+  <main id="deck">
+
+      <section class="slide active" id="slide-1" data-slide-idx="0" data-speaker="laith">
+        
+<div class="kicker">مشروع مادة نظرية الحوسبة (Theory of Computation — نظري) • الدكتورة رويدا العامري</div>
+<div class="speaker-pill p-laith">
+  <span class="dot"></span>
+  <span>ليث توفيق الجعفري (مع تقديم الفريق)</span>
+</div>
+
+<div class="orn"></div>
+<h1 style="font-size: 46px; margin-bottom: 6px;">تحليل الآلات التتابعية <span class="hl">— آلات Mealy و Moore</span></h1>
+<div class="entitle en">Analysis of Sequential Machines: Mealy, Moore & State Transformations</div>
+
+<p class="lead" style="max-width: 900px; margin: 16px auto 22px;">
+  دليل منهجي وتفاعلي شامل: المكونات الخماسية الرياضية، خطوات التحليل الأربع، المحاكاة الحية لكواشف الأنماط والتكافؤ، وخوارزمية التحويل المكافئ
+</p>
+
+<div class="names" style="margin-top: 10px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+  <span class="chip c-laith">ليث توفيق الجعفري</span>
+  <span class="chip c-aym">أيمن النزيلي</span>
+  <span class="chip c-abd">عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<div style="margin-top: 20px; display: inline-flex; align-items: center; gap: 16px; background: var(--cream); padding: 8px 22px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; color: var(--navy2); font-weight: 700;">
+  <span>جامعة صنعاء • كلية الحاسوب • علوم الحاسوب (CS3)</span>
+  <span style="color: var(--gold);">•</span>
+  <span>الفصل الدراسي الثاني — 2026م</span>
+  <span style="color: var(--gold);">•</span>
+  <span>14 شريحة تفاعلية ومحاكاة حية</span>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-2" data-slide-idx="1" data-speaker="laith">
+        
+<div class="kicker">ميثاق العرض وتوزيع الأدوار • 1. تنظيم المهام</div>
+<div class="speaker-pill p-laith">
+  <span class="dot"></span>
+  <span>ليث توفيق الجعفري</span>
+</div>
+
+<h2>أدوارنا في العرض وميثاق الفريق</h2>
+<div class="sub">توزيع متوازن ومحكم للمحاور الأكاديمية وإدارة أسئلة د. رويدا والجمهور</div>
+
+<div class="card" style="width: min(1180px, 96vw); margin-top: 14px; padding: 18px 24px; background: #fff;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 15px; text-align: right;">
+    <thead>
+      <tr style="background: var(--cream);">
+        <th style="padding: 12px 16px; border-bottom: 2px solid var(--line); width: 24%; color: var(--navy);">المتحدث</th>
+        <th style="padding: 12px 16px; border-bottom: 2px solid var(--line); width: 56%; color: var(--navy);">المحاور الأكاديمية والمهام</th>
+        <th style="padding: 12px 16px; border-bottom: 2px solid var(--line); width: 20%; color: var(--navy);">الشرائح</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><b style="color: var(--p-laith); font-size: 16px;">ليث توفيق الجعفري</b></td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);">الافتتاح، مفهوم الآلات التتابعية، آلة Mealy، والتطبيقات الواقعية في هندسة البرمجيات</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><span class="badge" style="background: var(--p-laith); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">1، 2، 3، 4، 11</span></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><b style="color: var(--p-aym); font-size: 16px;">أيمن النزيلي</b></td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);">آلة Moore، المقارنة المعيارية الشاملة، منهجية التحليل الأربع، وإدارة التمارين التفاعلية</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><span class="badge" style="background: var(--p-aym); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">5، 6، 7، 12</span></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><b style="color: var(--p-abd); font-size: 16px;">عبدالرحمن إسماعيل سيف</b></td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);">التطبيقات المحلولة (كاشف التكافؤ وكاشف التسلسل)، خوارزمية التحويل، والوصايا الذهبية</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid var(--line);"><span class="badge" style="background: var(--p-abd); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">8، 9، 10، 13</span></td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px;"><b style="color: var(--gold); font-size: 16px;">الفريق معاً</b></td>
+        <td style="padding: 12px 16px;">الخاتمة وتوثيق المراجع واستقبال أسئلة ومداخلات الحضور</td>
+        <td style="padding: 12px 16px;"><span class="badge" style="background: var(--gold); color: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">14</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-3" data-slide-idx="2" data-speaker="laith">
+        
+<div class="kicker">المدخل النظري • 2. مفهوم الآلة التتابعية</div>
+<div class="speaker-pill p-laith">
+  <span class="dot"></span>
+  <span>ليث توفيق الجعفري</span>
+</div>
+
+<h2>ما الآلة التتابعية؟ (ذاكرة داخلية + توليد خرج مستمر)</h2>
+<div class="sub">الانتقال من اتخاذ قرارات القبول الثنائية إلى معالجة الإشارات المتدفقة وتوليد المخرجات</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 18px;">
+  <div class="card" style="border-right: 4px solid var(--p-laith); background: #fff; padding: 20px 22px; text-align: right;">
+    <h3 style="color: var(--navy); font-size: 18px; margin-bottom: 10px; font-weight: 700;">الفرق الجوهري عن الآلات المحددة (DFA)</h3>
+    <p style="font-size: 15px; line-height: 1.8; margin: 0; color: var(--ink);">
+      في الفصول السابقة، اقتصرت دراستنا على آلات <span class="term">DFA</span> التي تنتظر قراءة السلسلة كاملة لتعطي قراراً ثنائياً نهائياً: <b>قبول أو رفض</b>.
+      <br><br>
+      في المقابل، فإن <b>الآلات التتابعية (Sequential Machines)</b> تمتلك <b>ذاكرة داخلية</b> تمثل تاريخ المدخلات السابقة، وتُصدر <b>رمز خرج مع كل رمز دخل</b> يُقرأ دون توقف، مما يجعلها النموذج الرياضي الفعلي للحواسيب والمعالجات الرقمية.
+    </p>
+  </div>
+
+  <div class="card" style="border-right: 4px solid var(--gold); background: #fff; padding: 20px 22px; text-align: right;">
+    <h3 style="color: var(--navy); font-size: 18px; margin-bottom: 10px; font-weight: 700;">المكونات الخماسية الرياضية (5-Tuple)</h3>
+    <p style="font-size: 15px; line-height: 1.8; margin: 0; color: var(--ink);">
+      تُعرَّف الآلة التتابعية رسمياً بالخماسية الرياضية <span class="term">M = (Q, Σ, Δ, δ, λ)</span>:
+    </p>
+    <ul style="font-size: 14.5px; line-height: 1.85; margin: 10px 0 0; padding-right: 20px; color: var(--ink);">
+      <li><b>Q:</b> مجموعة الحالات الداخلية المنتهية (Finite Set of States).</li>
+      <li><b>Σ:</b> أبجدية رموز الدخل المتاحة (Input Alphabet).</li>
+      <li><b>Δ:</b> أبجدية رموز الخرج الناتجة (Output Alphabet).</li>
+      <li><b>δ:</b> دالة الانتقال بين الحالات <span class="en">(Q × Σ → Q)</span>.</li>
+      <li><b>λ:</b> دالة توليد الخرج (Output Mapping Function) — وهي جوهر الاختلاف بين Mealy و Moore.</li>
+    </ul>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-4" data-slide-idx="3" data-speaker="laith">
+        
+<div class="kicker">النوع الأول من الآلات التتابعية • 3. نموذج Mealy</div>
+<div class="speaker-pill p-laith">
+  <span class="dot"></span>
+  <span>ليث توفيق الجعفري</span>
+</div>
+
+<h2>آلة Mealy — الخرج محمول على الانتقال</h2>
+<div class="sub">الاستجابة اللحظية الفورية: دالة الخرج ترتبط بالحالة الراهنة ورمز الدخل معاً</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <!-- Right: Formula Card -->
+  <div class="card" style="border-right: 4px solid var(--p-laith); background: #fff; padding: 18px 20px; text-align: right;">
+    <div style="font-size: 16.5px; color: var(--navy); font-weight: 700;">معادلة دالة الخرج الرياضية في Mealy:</div>
+    <div style="font-size: 24px; font-weight: 800; color: var(--p-laith); margin: 10px 0; text-align: center; font-family: Georgia, serif; direction: ltr;">
+      λ : Q × Σ → Δ
+    </div>
+    <p style="font-size: 15px; margin: 0; line-height: 1.75; color: var(--ink);">
+      الخرج <span class="term">λ(q, a)</span> دالة ثنائية المتغيرات تعتمد في آنٍ واحد على <b>الحالة الحالية q</b> و <b>رمز الدخل الجديد a</b>، مما يحقق استجابة فورية لأي إشارة دخل واردة.
+    </p>
+  </div>
+
+  <!-- Left: SVG State Transition -->
+  <div class="card center" style="background: #fcfbf9; padding: 16px;">
+    <div style="color: var(--navy); margin-bottom: 8px; font-weight: 700; font-size: 15px;">الشكل العام لانتقال آلة Mealy (SVG)</div>
+    <svg viewBox="0 0 340 145" style="width: 100%; max-width: 320px; height: auto;">
+      <circle cx="70" cy="72" r="30" fill="#fff" stroke="var(--p-laith)" stroke-width="3"/>
+      <text x="70" y="78" font-size="16" font-weight="bold" fill="var(--navy)" text-anchor="middle">q₁</text>
+      
+      <circle cx="270" cy="72" r="30" fill="#fff" stroke="var(--p-laith)" stroke-width="3"/>
+      <text x="270" y="78" font-size="16" font-weight="bold" fill="var(--navy)" text-anchor="middle">q₂</text>
+      
+      <path d="M 100 62 Q 170 28 240 62" fill="none" stroke="var(--navy)" stroke-width="2.5" marker-end="url(#arrowMealy)"/>
+      <defs>
+        <marker id="arrowMealy" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--navy)"/>
+        </marker>
+      </defs>
+      <rect x="135" y="16" width="70" height="26" rx="6" fill="#fff" stroke="var(--p-laith)" stroke-width="1.5"/>
+      <text x="170" y="34" font-size="14" font-weight="bold" fill="var(--p-laith)" text-anchor="middle">a / 1</text>
+      <text x="170" y="122" font-size="12.5" fill="var(--muted)" text-anchor="middle">الدخل: a  ←  الخرج اللحظي: 1</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Bottom 3 Numbered Cards -->
+<div class="grid g3" style="width: min(1180px, 96vw); margin-top: 14px; gap: 14px;">
+  <div class="card numcard">
+    <span class="idx">1</span>
+    <h3 style="color: var(--p-laith); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">موضع الخرج على المخطط</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      يُكتب الخرج على سهم الانتقال بجانب الدخل بصيغة <span class="en" style="font-weight: bold; color: var(--p-laith);">input / output</span> (مثل <code>a/0</code> أو <code>b/1</code>).
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">2</span>
+    <h3 style="color: var(--p-laith); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">السرعة والاستجابة الفورية</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      يتغير الخرج فوراً مع وصول نبضة الدخل دون انتظار حدوث الاستقرار الكامل في الحالة التالية.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">3</span>
+    <h3 style="color: var(--p-laith); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">تطابق طول السلسلة</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      طول سلسلة الخرج يساوي تماماً طول سلسلة الدخل: <span class="en" style="font-weight: bold;">|Output| = |Input|</span> دون أي بت إضافي.
+    </p>
+  </div>
+</div>
+
+<div class="card card-banner" style="width: min(1180px, 96vw); margin-top: 12px; background: rgba(13,110,110,0.06); border: 1px solid var(--p-laith); border-radius: 10px; padding: 10px 18px; text-align: right;">
+  <span style="font-weight: 800; color: var(--p-laith); margin-left: 8px;">ميزة تصميمية:</span>
+  <span style="font-size: 14px; color: var(--ink);">تتطلب آلة Mealy عدداً أقل من الحالات عادةً مقارنة بآلة Moore لنفس المهمة المنطقية المحددة.</span>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-5" data-slide-idx="4" data-speaker="aym">
+        
+<div class="kicker">النوع الثاني من الآلات التتابعية • 4. نموذج Moore</div>
+<div class="speaker-pill p-aym">
+  <span class="dot"></span>
+  <span>أيمن النزيلي</span>
+</div>
+
+<h2>آلة Moore — الخرج ساكن داخل الحالة</h2>
+<div class="sub">الاستقرار والتحصين ضد الإشارات العابرة: دالة الخرج مقترنة بالحالة فقط ومعزولة عن تقلبات الدخل</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <!-- Right: Formula Card -->
+  <div class="card" style="border-right: 4px solid var(--p-aym); background: #fff; padding: 18px 20px; text-align: right;">
+    <div style="font-size: 16.5px; color: var(--navy); font-weight: 700;">معادلة دالة الخرج الرياضية في Moore:</div>
+    <div style="font-size: 24px; font-weight: 800; color: var(--p-aym); margin: 10px 0; text-align: center; font-family: Georgia, serif; direction: ltr;">
+      λ : Q → Δ
+    </div>
+    <p style="font-size: 15px; margin: 0; line-height: 1.75; color: var(--ink);">
+      الخرج <span class="term">λ(q)</span> دالة أحادية المتغير ترتبط حصراً بـ <b>الحالة الحالية q</b>، ولا تملك إشارات الدخل قدرة مباشرة على تغيير الخرج إلا عبر إحداث نقلة حالة مع نبضة الساعة.
+    </p>
+  </div>
+
+  <!-- Left: SVG State Transition -->
+  <div class="card center" style="background: #fcfbf9; padding: 16px;">
+    <div style="color: var(--navy); margin-bottom: 8px; font-weight: 700; font-size: 15px;">الشكل العام لانتقال آلة Moore (SVG)</div>
+    <svg viewBox="0 0 340 145" style="width: 100%; max-width: 320px; height: auto;">
+      <circle cx="70" cy="72" r="32" fill="#fff" stroke="var(--p-aym)" stroke-width="3"/>
+      <text x="70" y="67" font-size="15" font-weight="bold" fill="var(--navy)" text-anchor="middle">q₁</text>
+      <line x1="45" y1="75" x2="95" y2="75" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="70" y="90" font-size="13" font-weight="bold" fill="var(--p-aym)" text-anchor="middle">خرج: 0</text>
+
+      <circle cx="270" cy="72" r="32" fill="#fff" stroke="var(--p-aym)" stroke-width="3"/>
+      <text x="270" y="67" font-size="15" font-weight="bold" fill="var(--navy)" text-anchor="middle">q₂</text>
+      <line x1="245" y1="75" x2="295" y2="75" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="270" y="90" font-size="13" font-weight="bold" fill="var(--p-aym)" text-anchor="middle">خرج: 1</text>
+
+      <path d="M 102 62 Q 170 28 238 62" fill="none" stroke="var(--navy)" stroke-width="2.5" marker-end="url(#arrowMoore)"/>
+      <defs>
+        <marker id="arrowMoore" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--navy)"/>
+        </marker>
+      </defs>
+      <rect x="150" y="16" width="40" height="24" rx="6" fill="#fff" stroke="var(--p-aym)" stroke-width="1.5"/>
+      <text x="170" y="33" font-size="14" font-weight="bold" fill="var(--p-aym)" text-anchor="middle">a</text>
+      <text x="170" y="122" font-size="12.5" fill="var(--muted)" text-anchor="middle">الدخل: a فقط  ←  الخرج محدد سلفاً داخل q₂</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Bottom 3 Numbered Cards -->
+<div class="grid g3" style="width: min(1180px, 96vw); margin-top: 14px; gap: 14px;">
+  <div class="card numcard">
+    <span class="idx">1</span>
+    <h3 style="color: var(--p-aym); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">موضع الخرج في العقدة</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      الخرج ساكن ومكتوب في بطن الدائرة بصيغة <span class="en" style="font-weight: bold; color: var(--p-aym);">State / Output</span> (مثل <code>q₀ / 0</code>).
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">2</span>
+    <h3 style="color: var(--p-aym); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">الاستقرار ومناعة الإشارات العابرة</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      الخرج معزول تماماً عن تقلبات الدخل اللحظية، ولا يتغير إلا عند حدوث نبضة الساعة وانتقال الحالة.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">3</span>
+    <h3 style="color: var(--p-aym); font-size: 16.5px; margin-bottom: 6px; font-weight: 700;">طول سلسلة الخرج</h3>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      سلسلة الخرج أطول من سلسلة الدخل ببت واحد <span class="en" style="font-weight: bold;">|Output| = |Input| + 1</span> نظراً لخرج الحالة الابتدائية.
+    </p>
+  </div>
+</div>
+
+<div class="card card-banner" style="width: min(1180px, 96vw); margin-top: 12px; background: rgba(124,58,45,0.06); border: 1px solid var(--p-aym); border-radius: 10px; padding: 10px 18px; text-align: right;">
+  <span style="font-weight: 800; color: var(--p-aym); margin-left: 8px;">ميزة تصميمية:</span>
+  <span style="font-size: 14px; color: var(--ink);">تعتبر آمنة جداً في الدوائر الرقمية المتزامنة لأن الخرج لا يتأثر بأي ضوضاء لحظية (Glitches) على خط الدخل.</span>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-6" data-slide-idx="5" data-speaker="aym">
+        
+<div class="kicker">المقارنة المعيارية الشاملة • 5. تحليل الفروق الجوهرية</div>
+<div class="speaker-pill p-aym">
+  <span class="dot"></span>
+  <span>أيمن النزيلي</span>
+</div>
+
+<h2>المقارنة الجوهرية: Mealy مقابل Moore</h2>
+<div class="sub">مصفوفة الفروق الأكاديمية والعملية: من المعادلات الرياضية وحتى اعتبارات عتاد السيليكون</div>
+
+<div class="card" style="width: min(1180px, 96vw); margin-top: 14px; padding: 16px 22px; background: #fff;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 14.5px; text-align: right;">
+    <thead>
+      <tr style="background: var(--cream);">
+        <th style="padding: 10px 14px; border-bottom: 2px solid var(--line); width: 22%; color: var(--navy);">معيار المقارنة</th>
+        <th style="padding: 10px 14px; border-bottom: 2px solid var(--p-laith); width: 39%; color: var(--p-laith); font-size: 16px;">آلة Mealy (محمول على الانتقال)</th>
+        <th style="padding: 10px 14px; border-bottom: 2px solid var(--p-aym); width: 39%; color: var(--p-aym); font-size: 16px;">آلة Moore (ساكن داخل الحالة)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 700;">دالة الخرج الرياضية</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); direction: ltr; text-align: right;"><code style="color: var(--p-laith); font-weight: bold;">λ : Q × Σ → Δ</code> (تعتمد على الحالة والدخل)</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); direction: ltr; text-align: right;"><code style="color: var(--p-aym); font-weight: bold;">λ : Q → Δ</code> (تعتمد على الحالة فقط)</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 700;">موضع كتابة الخرج</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">على سهم الانتقال بجانب الدخل <span class="en">(Input / Output)</span></td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">داخل دائرة الحالة أسفل اسمها <span class="en">(State / Output)</span></td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 700;">زمن استجابة الخرج</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">لحظي وفوري مع تغير إشارة الدخل (غير متزامن جزئياً)</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">متزامن تماماً؛ لا يتغير إلا مع نبضة الساعة التالية</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 700;">طول سلسلة الخرج</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">مساوٍ لطول سلسلة الدخل: <span class="en">|Output| = |Input|</span></td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line);">أطول ببت واحد: <span class="en">|Output| = |Input| + 1</span></td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); font-weight: 700;">عدد الحالات المطلوبة</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: bold;">أقل عموماً (تصميم أكثر إيجازاً للعتاد)</td>
+        <td style="padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--navy); font-weight: bold;">أكبر أو مساوٍ لـ Mealy (تتطلب شطر بعض الحالات)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 14px;">
+  <div class="card" style="border-right: 4px solid var(--p-laith); padding: 12px 18px; text-align: right;">
+    <b style="color: var(--p-laith); font-size: 15px;">متى نفضل آلة Mealy؟</b>
+    <p style="font-size: 13.5px; margin: 4px 0 0; line-height: 1.6; color: var(--ink);">
+      عند الحاجة لسرعة استجابة فائقة ولحظية وتقليل استهلاك Flip-Flops ومساحة شريحة السيليكون.
+    </p>
+  </div>
+  <div class="card" style="border-right: 4px solid var(--p-aym); padding: 12px 18px; text-align: right;">
+    <b style="color: var(--p-aym); font-size: 15px;">متى نفضل آلة Moore؟</b>
+    <p style="font-size: 13.5px; margin: 4px 0 0; line-height: 1.6; color: var(--ink);">
+      في الأنظمة الحرجة التي تتطلب أماناً فائقاً وعزلاً تاماً للمخرجات عن الضوضاء والتشويش اللحظي.
+    </p>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-7" data-slide-idx="6" data-speaker="aym">
+        
+<div class="kicker">المنهجية الأكاديمية الصارمة • 6. خوارزمية التحليل</div>
+<div class="speaker-pill p-aym">
+  <span class="dot"></span>
+  <span>أيمن النزيلي</span>
+</div>
+
+<h2>خطوات تحليل الآلات التتابعية (الخطوات الأربع)</h2>
+<div class="sub">المسار المعياري لتحويل أي دائرة أو مواصفة منطقية إلى مخطط تفاعلي وسلوك مبرهن</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <div class="card numcard">
+    <span class="idx">1</span>
+    <h3 style="color: var(--p-aym); font-size: 17px; margin-bottom: 6px; font-weight: 700;">تحديد دوال الحالة التالية ومعادلات الخرج</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      استخراج معادلات الدخل لكل عنصر ذاكرة (Flip-Flop Inputs) مثل <span class="en" style="font-weight:bold;">D, J-K, T</span> ومعادلة الخرج <span class="en" style="font-weight:bold;">Z</span> كتابع للحالة الراهنة والدخل.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">2</span>
+    <h3 style="color: var(--p-aym); font-size: 17px; margin-bottom: 6px; font-weight: 700;">بناء جدول الانتقال وجدول الخرج</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      جدولة جميع الحالات الراهنة الممكنة مع كل قيم الدخل المتوقعة، وحساب الحالة التالية والخرج المقابل لكل توليفة بدقة متناهية.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">3</span>
+    <h3 style="color: var(--p-aym); font-size: 17px; margin-bottom: 6px; font-weight: 700;">رسم مخطط الحالة الانتقالي (State Diagram)</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      تحويل الجدول إلى رسم بياني هندسي واضح: الدوائر تمثل الحالات، والأسهم الموجهة تمثل الانتقالات مع وضع الخرج بحسب نوع الآلة (Mealy أو Moore).
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">4</span>
+    <h3 style="color: var(--p-aym); font-size: 17px; margin-bottom: 6px; font-weight: 700;">تتبع وتفسير سلوك الآلة (Trace & Verify)</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      اختبار الآلة بسلسلة دخل تجريبية نموذجية للتحقق من مطابقة السلوك المنطقي للمواصفات المطلوبة واستكشاف أي حالات شاذة أو غير قابلة للوصول.
+    </p>
+  </div>
+</div>
+
+<div class="card card-banner" style="width: min(1180px, 96vw); margin-top: 14px; background: rgba(20,48,79,0.06); border: 1px solid var(--navy); border-radius: 10px; padding: 12px 20px; text-align: right;">
+  <span style="font-weight: 800; color: var(--navy); margin-left: 8px;">القاعدة الذهبية:</span>
+  <span style="font-size: 14px; color: var(--ink);">اتباع هذه الخطوات الأربع بالتسلسل يمنع تماماً الوقوع في أي أخطاء حسابية أو منطقية عند حل مسائل التحليل في الامتحانات.</span>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-8" data-slide-idx="7" data-speaker="abd">
+        
+<div class="kicker">تطبيق عملي محلول 1 • 7. آلة Moore التفاعلية</div>
+<div class="speaker-pill p-abd">
+  <span class="dot"></span>
+  <span>عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<h2>كاشف التكافؤ (Parity Detector) — محاكاة وتتبع aabab</h2>
+<div class="sub">تحليل متكامل لكاشف عدد أحرف a الفردية مع محاكي تفاعلي خطوة بخطوة وإضاءة الحالات</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 12px; gap: 16px;">
+  <!-- Right: Academic Table -->
+  <div class="card" style="background: #fff; padding: 14px 18px; text-align: right;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+      <b style="font-size: 15.5px; color: var(--navy);">جدول حالات آلة Moore لكاشف التكافؤ:</b>
+      <span class="badge" style="background: rgba(20,48,79,0.1); color: var(--navy); padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: bold;">الحالة الابتدائية: E / 0</span>
+    </div>
+    
+    <table id="parityTable" style="width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 14px; text-align: center;">
+      <thead>
+        <tr style="background: var(--cream);">
+          <th style="padding: 6px 10px; border: 1px solid var(--line);">الحالة الراهنة (q)</th>
+          <th style="padding: 6px 10px; border: 1px solid var(--line);">الدخل a</th>
+          <th style="padding: 6px 10px; border: 1px solid var(--line);">الدخل b</th>
+          <th style="padding: 6px 10px; border: 1px solid var(--line); background: rgba(183,121,31,0.15);">الخرج الدائم (λ)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="rowE" style="transition: background 0.3s;">
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold;">E (زوجي)</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--navy);">O</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--navy);">E</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold; color: var(--bad);">0</td>
+        </tr>
+        <tr id="rowO" style="transition: background 0.3s;">
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold;">O (فردي)</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--navy);">E</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); color: var(--navy);">O</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold; color: var(--ok);">1</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 6px;">
+      المبدأ: الرمز <code>a</code> يعكس التكافؤ (من E إلى O أو العكس)، بينما الرمز <code>b</code> يحافظ على الحالة كما هي دون تغيير.
+    </div>
+  </div>
+
+  <!-- Left: Interactive State Diagram -->
+  <div class="card center" style="background: #fcfbf9; padding: 12px 16px;">
+    <div style="font-weight: 700; color: var(--navy); font-size: 14.5px; margin-bottom: 4px;">مخطط الحالات الحي لكاشف التكافؤ</div>
+    <svg viewBox="0 0 340 135" style="width: 100%; max-width: 320px; height: auto;">
+      <!-- State E -->
+      <circle id="nodeE" cx="80" cy="65" r="32" fill="#fff" stroke="var(--navy)" stroke-width="3" style="transition: all 0.3s;"/>
+      <text x="80" y="60" font-size="15" font-weight="bold" fill="var(--navy)" text-anchor="middle">E</text>
+      <line x1="55" y1="67" x2="105" y2="67" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="80" y="82" font-size="13" font-weight="bold" fill="var(--bad)" text-anchor="middle">/ 0</text>
+
+      <!-- State O -->
+      <circle id="nodeO" cx="260" cy="65" r="32" fill="#fff" stroke="var(--navy)" stroke-width="2.5" style="transition: all 0.3s;"/>
+      <text x="260" y="60" font-size="15" font-weight="bold" fill="var(--navy)" text-anchor="middle">O</text>
+      <line x1="235" y1="67" x2="285" y2="67" stroke="var(--line)" stroke-width="1.5"/>
+      <text x="260" y="82" font-size="13" font-weight="bold" fill="var(--ok)" text-anchor="middle">/ 1</text>
+
+      <!-- Transition E -> O on 'a' -->
+      <path id="edgeE_O" d="M 112 55 Q 170 25 228 55" fill="none" stroke="var(--navy)" stroke-width="2" marker-end="url(#arrE)" style="transition: stroke 0.3s;"/>
+      <text x="170" y="32" font-size="13" font-weight="bold" fill="var(--navy)" text-anchor="middle">a</text>
+
+      <!-- Transition O -> E on 'a' -->
+      <path id="edgeO_E" d="M 228 75 Q 170 105 112 75" fill="none" stroke="var(--navy)" stroke-width="2" marker-end="url(#arrE)" style="transition: stroke 0.3s;"/>
+      <text x="170" y="102" font-size="13" font-weight="bold" fill="var(--navy)" text-anchor="middle">a</text>
+
+      <!-- Self loop E on 'b' -->
+      <path d="M 55 45 C 30 15 30 115 55 85" fill="none" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arrE)"/>
+      <text x="24" y="68" font-size="12" font-weight="bold" fill="var(--muted)" text-anchor="middle">b</text>
+
+      <!-- Self loop O on 'b' -->
+      <path d="M 285 45 C 310 15 310 115 285 85" fill="none" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arrE)"/>
+      <text x="316" y="68" font-size="12" font-weight="bold" fill="var(--muted)" text-anchor="middle">b</text>
+
+      <defs>
+        <marker id="arrE" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="var(--navy)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<!-- Bottom Simulation Ribbon -->
+<div class="card" style="width: min(1180px, 96vw); margin-top: 12px; padding: 12px 18px; background: #fff; border: 1.5px solid var(--navy);">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-weight: 700; color: var(--navy); font-size: 14.5px;">تتبع السلسلة النموذجية:</span>
+      <div id="simRibbonParity" style="display: flex; gap: 6px; font-family: monospace; font-size: 16px; font-weight: bold; direction: ltr;">
+        <span class="rib-cell active" id="pcell_0">a</span>
+        <span class="rib-cell" id="pcell_1">a</span>
+        <span class="rib-cell" id="pcell_2">b</span>
+        <span class="rib-cell" id="pcell_3">a</span>
+        <span class="rib-cell" id="pcell_4">b</span>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 8px;">
+      <button class="interactive-btn" id="btnParityStep" onclick="stepParitySim()" style="background: var(--navy); color: #fff; border: none; border-radius: 6px; padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 13px;">
+        خطوة بخطوة ▶
+      </button>
+      <button class="interactive-btn" onclick="resetParitySim()" style="background: var(--cream); color: var(--navy); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 13px;">
+        إعادة ضبط ↺
+      </button>
+    </div>
+  </div>
+  
+  <div style="margin-top: 8px; display: flex; gap: 16px; font-size: 13.5px; color: var(--ink); background: var(--cream); padding: 8px 14px; border-radius: 8px;">
+    <span>الحالة الحالية: <b id="parityCurState" style="color: var(--navy); font-size: 15px;">E</b></span>
+    <span style="color: var(--line);">|</span>
+    <span>الحرف المقروء: <b id="parityCurChar" style="color: var(--gold); font-size: 15px;">—</b></span>
+    <span style="color: var(--line);">|</span>
+    <span>سلسلة الخرج التراكمية: <b id="parityOutStr" style="color: var(--ok); font-family: monospace; font-size: 15px;">0</b></span>
+    <span style="color: var(--line);">|</span>
+    <span id="parityMsg" style="color: var(--muted);">انقر على «خطوة بخطوة» لبدء تتبع السلسلة aabab</span>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-9" data-slide-idx="8" data-speaker="abd">
+        
+<div class="kicker">تطبيق عملي محلول 2 • 8. آلة Mealy التفاعلية</div>
+<div class="speaker-pill p-abd">
+  <span class="dot"></span>
+  <span>عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<h2>كاشف التسلسل (ab Detector) — محاكاة وتتبع aabbab</h2>
+<div class="sub">اكتشاف النمط لحظياً بإطلاق بت 1 فور اكتمال التسلسل مع محاكاة بصرية تفاعلية</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 12px; gap: 16px;">
+  <!-- Right: Academic Table -->
+  <div class="card" style="background: #fff; padding: 14px 18px; text-align: right;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+      <b style="font-size: 15.5px; color: var(--navy);">جدول حالات آلة Mealy لكاشف النمط ab:</b>
+      <span class="badge" style="background: rgba(20,48,79,0.1); color: var(--navy); padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: bold;">الحالة الابتدائية: S₀</span>
+    </div>
+    
+    <table id="mealyTable" style="width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 14px; text-align: center;">
+      <thead>
+        <tr style="background: var(--cream);">
+          <th style="padding: 6px 10px; border: 1px solid var(--line);" rowspan="2">الحالة الراهنة</th>
+          <th style="padding: 6px 10px; border: 1px solid var(--line);" colspan="2">الحالة التالية والخرج (Next State / Output)</th>
+        </tr>
+        <tr style="background: var(--cream);">
+          <th style="padding: 6px 10px; border: 1px solid var(--line);">الدخل a</th>
+          <th style="padding: 6px 10px; border: 1px solid var(--line);">الدخل b</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="rowS0" style="transition: background 0.3s;">
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold;">S₀ (البداية)</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line);">S₁ / 0</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line);">S₀ / 0</td>
+        </tr>
+        <tr id="rowS1" style="transition: background 0.3s;">
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold;">S₁ (رأينا a)</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line);">S₁ / 0</td>
+          <td style="padding: 6px 10px; border: 1px solid var(--line); font-weight: bold; color: var(--ok); background: rgba(47,125,91,0.1);">S₀ / 1 (اكتشاف!)</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 6px;">
+      الخرج <code>1</code> يُطلق لحظياً فقط عندما نكون في الحالة <code>S₁</code> ويصلنا الدخل <code>b</code> مباشرة.
+    </div>
+  </div>
+
+  <!-- Left: Interactive State Diagram -->
+  <div class="card center" style="background: #fcfbf9; padding: 12px 16px;">
+    <div style="font-weight: 700; color: var(--navy); font-size: 14.5px; margin-bottom: 4px;">مخطط الحالات الحي لكاشف التسلسل ab</div>
+    <svg viewBox="0 0 340 135" style="width: 100%; max-width: 320px; height: auto;">
+      <!-- State S0 -->
+      <circle id="nodeS0" cx="80" cy="65" r="30" fill="#fff" stroke="var(--p-laith)" stroke-width="3" style="transition: all 0.3s;"/>
+      <text x="80" y="71" font-size="16" font-weight="bold" fill="var(--navy)" text-anchor="middle">S₀</text>
+
+      <!-- State S1 -->
+      <circle id="nodeS1" cx="260" cy="65" r="30" fill="#fff" stroke="var(--p-laith)" stroke-width="2.5" style="transition: all 0.3s;"/>
+      <text x="260" y="71" font-size="16" font-weight="bold" fill="var(--navy)" text-anchor="middle">S₁</text>
+
+      <!-- Transition S0 -> S1 on a/0 -->
+      <path id="edgeS0_S1" d="M 110 55 Q 170 25 230 55" fill="none" stroke="var(--navy)" stroke-width="2" marker-end="url(#arrM)" style="transition: stroke 0.3s;"/>
+      <rect x="150" y="16" width="40" height="22" rx="4" fill="#fff" stroke="var(--line)"/>
+      <text x="170" y="32" font-size="12" font-weight="bold" fill="var(--navy)" text-anchor="middle">a / 0</text>
+
+      <!-- Transition S1 -> S0 on b/1 (The detection edge!) -->
+      <path id="edgeS1_S0" d="M 230 75 Q 170 105 110 75" fill="none" stroke="var(--ok)" stroke-width="2.5" marker-end="url(#arrM)" style="transition: stroke 0.3s;"/>
+      <rect x="150" y="86" width="40" height="22" rx="4" fill="#fff" stroke="var(--ok)"/>
+      <text x="170" y="102" font-size="12" font-weight="bold" fill="var(--ok)" text-anchor="middle">b / 1</text>
+
+      <!-- Self loop S0 on b/0 -->
+      <path d="M 55 45 C 30 15 30 115 55 85" fill="none" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arrM)"/>
+      <text x="24" y="68" font-size="11.5" font-weight="bold" fill="var(--muted)" text-anchor="middle">b/0</text>
+
+      <!-- Self loop S1 on a/0 -->
+      <path d="M 285 45 C 310 15 310 115 285 85" fill="none" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#arrM)"/>
+      <text x="316" y="68" font-size="11.5" font-weight="bold" fill="var(--muted)" text-anchor="middle">a/0</text>
+
+      <defs>
+        <marker id="arrM" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M 0 0 L 7 3.5 L 0 7 Z" fill="var(--navy)"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<!-- Bottom Simulation Ribbon -->
+<div class="card" style="width: min(1180px, 96vw); margin-top: 12px; padding: 12px 18px; background: #fff; border: 1.5px solid var(--p-laith);">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-weight: 700; color: var(--navy); font-size: 14.5px;">تتبع السلسلة النموذجية:</span>
+      <div id="simRibbonMealy" style="display: flex; gap: 6px; font-family: monospace; font-size: 16px; font-weight: bold; direction: ltr;">
+        <span class="rib-cell active" id="mcell_0">a</span>
+        <span class="rib-cell" id="mcell_1">a</span>
+        <span class="rib-cell" id="mcell_2">b</span>
+        <span class="rib-cell" id="mcell_3">b</span>
+        <span class="rib-cell" id="mcell_4">a</span>
+        <span class="rib-cell" id="mcell_5">b</span>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 8px;">
+      <button class="interactive-btn" id="btnMealyStep" onclick="stepMealySim()" style="background: var(--p-laith); color: #fff; border: none; border-radius: 6px; padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 13px;">
+        خطوة بخطوة ▶
+      </button>
+      <button class="interactive-btn" onclick="resetMealySim()" style="background: var(--cream); color: var(--navy); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 13px;">
+        إعادة ضبط ↺
+      </button>
+    </div>
+  </div>
+  
+  <div style="margin-top: 8px; display: flex; gap: 16px; font-size: 13.5px; color: var(--ink); background: var(--cream); padding: 8px 14px; border-radius: 8px;">
+    <span>الحالة الحالية: <b id="mealyCurState" style="color: var(--p-laith); font-size: 15px;">S₀</b></span>
+    <span style="color: var(--line);">|</span>
+    <span>الحرف المقروء: <b id="mealyCurChar" style="color: var(--gold); font-size: 15px;">—</b></span>
+    <span style="color: var(--line);">|</span>
+    <span>سلسلة الخرج التراكمية: <b id="mealyOutStr" style="color: var(--ok); font-family: monospace; font-size: 15px;">—</b></span>
+    <span style="color: var(--line);">|</span>
+    <span id="mealyMsg" style="color: var(--muted);">انقر على «خطوة بخطوة» لبدء تتبع السلسلة aabbab</span>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-10" data-slide-idx="9" data-speaker="abd">
+        
+<div class="kicker">الخوارزمية الرياضية للتحويل المكافئ • 9. انشطار الحالات</div>
+<div class="speaker-pill p-abd">
+  <span class="dot"></span>
+  <span>عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<h2>التحويل من Mealy إلى Moore — تفكيك سر انشطار الحالات</h2>
+<div class="sub">لماذا تتضاعف الحالات عند التحويل؟ وإثبات التطابق السلوكي التام مع الحفاظ على التكافؤ</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <div class="card" style="border-right: 4px solid var(--gold); background: #fff; padding: 18px 22px; text-align: right;">
+    <h3 style="color: var(--navy); font-size: 17.5px; margin-bottom: 8px; font-weight: 700;">السبب الرياضي لانشطار الحالات (State Splitting)</h3>
+    <p style="font-size: 14.5px; line-height: 1.75; margin: 0; color: var(--ink);">
+      في آلة Mealy، قد تدخل عدة انتقالات إلى نفس الحالة <b>S₀</b> بمخرجات مختلفة (مثلاً: انتقال بخرج <b>0</b> وانتقال آخر بخرج <b>1</b>).
+      <br><br>
+      في آلة Moore، <b>يستحيل رياضياً</b> أن يكون للحالة الواحدة أكثر من خرج، لأن الخرج مقترن بالحالة ذاتها!
+      لذلك، تنشطر الحالة <b>S₀</b> إلى حالتين فرعيتين:
+      <span class="badge" style="background: rgba(47,125,91,0.12); color: var(--ok); font-weight: bold; padding: 2px 8px; border-radius: 4px;">S₀A (خرج 0)</span>
+      و
+      <span class="badge" style="background: rgba(161,61,45,0.12); color: var(--bad); font-weight: bold; padding: 2px 8px; border-radius: 4px;">S₀B (خرج 1)</span>.
+    </p>
+  </div>
+
+  <div class="card" style="border-right: 4px solid var(--navy); background: #fff; padding: 18px 22px; text-align: right;">
+    <h3 style="color: var(--navy); font-size: 17.5px; margin-bottom: 8px; font-weight: 700;">جدول انشطار الحالات النموذجي</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; margin-top: 6px;">
+      <thead>
+        <tr style="background: var(--cream);">
+          <th style="padding: 8px; border-bottom: 2px solid var(--line);">الحالة في Mealy</th>
+          <th style="padding: 8px; border-bottom: 2px solid var(--line);">الخرجات المرتبطة</th>
+          <th style="padding: 8px; border-bottom: 2px solid var(--line);">الحالات المشتقة في Moore</th>
+          <th style="padding: 8px; border-bottom: 2px solid var(--line);">الخرج المعتمد</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line); font-weight: bold;">S₀</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line);">0 و 1</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line); color: var(--ok); font-weight: bold;">S₀A / S₀B</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line);">0 / 1</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line); font-weight: bold;">S₁</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line);">0 فقط</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line); color: var(--navy); font-weight: bold;">S₁</td>
+          <td style="padding: 8px; border-bottom: 1px solid var(--line);">0</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; font-weight: bold;">S₂</td>
+          <td style="padding: 8px;">1 فقط</td>
+          <td style="padding: 8px; color: var(--navy); font-weight: bold;">S₂</td>
+          <td style="padding: 8px;">1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid g3" style="width: min(1180px, 96vw); margin-top: 14px; gap: 14px;">
+  <div class="card numcard">
+    <span class="idx">1</span>
+    <h3 style="color: var(--navy); font-size: 16px; margin-bottom: 6px; font-weight: 700;">فحص خروج كل حالة</h3>
+    <p style="font-size: 13.5px; line-height: 1.6; margin: 0; color: var(--ink);">
+      حصر جميع الأسهم الداخلة لكل حالة في Mealy وتحديد قيم الخرج المصاحبة لها بدقة.
+    </p>
+  </div>
+  <div class="card numcard">
+    <span class="idx">2</span>
+    <h3 style="color: var(--navy); font-size: 16px; margin-bottom: 6px; font-weight: 700;">إنشاء النسخ المنشطرة</h3>
+    <p style="font-size: 13.5px; line-height: 1.6; margin: 0; color: var(--ink);">
+      كل حالة يدخلها خرجان مختلفان تُشطر إلى نسختين، وتثبت قيمة الخرج داخل بطن كل نسخة.
+    </p>
+  </div>
+  <div class="card numcard">
+    <span class="idx">3</span>
+    <h3 style="color: var(--navy); font-size: 16px; margin-bottom: 6px; font-weight: 700;">إعادة توجيه الانتقالات</h3>
+    <p style="font-size: 13.5px; line-height: 1.6; margin: 0; color: var(--ink);">
+      تكرار نفس انتقالات الحالة الأصلية لجميع نسخها المنشطرة مع توجيه الأسهم للنسخة المناسبة.
+    </p>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-11" data-slide-idx="10" data-speaker="laith">
+        
+<div class="kicker">الربط العملي وهندسة البرمجيات • 10. التطبيقات الواقعية</div>
+<div class="speaker-pill p-laith">
+  <span class="dot"></span>
+  <span>ليث توفيق الجعفري</span>
+</div>
+
+<h2>آلات الحالة في حياتك كمبرمج (State Machines in SE)</h2>
+<div class="sub">من النظرية الأكاديمية المجردة إلى كود الإنتاج الفعلي في كبرى الأنظمة العالمية</div>
+
+<div class="grid g3" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <div class="card numcard">
+    <span class="idx">1</span>
+    <h3 style="color: var(--p-laith); font-size: 17px; margin-bottom: 8px; font-weight: 700;">المحللات المعجمية والمترجمات</h3>
+    <div style="font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 6px;">Lexical Analyzers & Compilers</div>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      كل مترجم برمجي (Compiler) يبدأ بآلة تتابعية لقراءة رموز الكود وتصنيفها إلى رموز برمجية. محركات التعابير النمطية (RegEx) تُبنى بالكامل على هذا الأساس.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">2</span>
+    <h3 style="color: var(--p-laith); font-size: 17px; margin-bottom: 8px; font-weight: 700;">إدارة حالات واجهات المستخدم</h3>
+    <div style="font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 6px;">UI State Machines (Redux / XState)</div>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      في تطبيقات الويب الحديثة، تُستخدم آلات الحالة لمنع الحالات المستحيلة (مثل ظهور شاشة النجاح أثناء جلب البيانات)، مما يضمن استقرار وثبات التجربة.
+    </p>
+  </div>
+
+  <div class="card numcard">
+    <span class="idx">3</span>
+    <h3 style="color: var(--p-laith); font-size: 17px; margin-bottom: 8px; font-weight: 700;">بروتوكولات الشبكات والتحكم بالعتاد</h3>
+    <div style="font-size: 12.5px; font-weight: 700; color: var(--muted); margin-bottom: 6px;">TCP Handshake & Embedded Systems</div>
+    <p style="font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink);">
+      مصافحة الإنترنت الثلاثية (SYN -> SYN-ACK -> ACK) وبروتوكولات إنترنت الأشياء والأنظمة المدمجة تعتمد على آلات تتابعية موثوقة بنسبة 100%.
+    </p>
+  </div>
+</div>
+
+<div class="card card-banner" style="width: min(1180px, 96vw); margin-top: 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 20px; text-align: right;">
+  <div style="font-weight: 800; color: var(--navy); margin-bottom: 6px;">نموذج تطبيقي في الكود (Enum State Machine Pattern):</div>
+  <code style="font-family: Consolas, monospace; font-size: 13px; color: var(--navy2); display: block; direction: ltr; text-align: left; background: #f8fafc; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
+    enum State { IDLE, CONNECTING, CONNECTED, ERROR }<br>
+    State transition(State current, Event event) { ... }
+  </code>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-12" data-slide-idx="11" data-speaker="aym">
+        
+<div class="kicker">التفاعل المباشر مع القاعة • 11. تحديات فورية</div>
+<div class="speaker-pill p-aym">
+  <span class="dot"></span>
+  <span>أيمن النزيلي</span>
+</div>
+
+<h2>تمارين الحضور التفاعلية — اختبر فهمك الآن!</h2>
+<div class="sub">تحديان فوريان للطلاب مع كشف خطوات الحل والتتبع خطوة بخطوة</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <!-- Exercise 1: Moore -->
+  <div class="card" style="border: 1.5px solid var(--p-aym); background: #fff; padding: 18px 20px; box-shadow: var(--shadow); text-align: right;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <span class="badge" style="background: var(--p-aym); color: #fff; font-size: 13px; padding: 4px 12px; border-radius: 6px; font-weight: 700;">تمرين 1: آلة Moore</span>
+      <span style="font-size: 13px; color: var(--muted); font-weight: 700;">المستوى: متوسط</span>
+    </div>
+    <p style="font-size: 14.5px; line-height: 1.7; margin: 0 0 12px; color: var(--ink);">
+      آلة Moore بحالتين <span class="en" style="font-weight: bold;">H/0</span> و <span class="en" style="font-weight: bold;">T/1</span>. الحالة الابتدائية هي <span class="en" style="font-weight: bold;">H</span>.<br>
+      إذا كان الدخل <span class="en" style="font-weight: bold; color: var(--navy);">0</span> تبقى الآلة في حالتها، وإذا كان الدخل <span class="en" style="font-weight: bold; color: var(--navy);">1</span> تنتقل للحالة الأخرى.<br>
+      <b>السؤال:</b> ما هي سلسلة الخرج الناتجة عند إدخال السلسلة <code style="font-size: 15px; color: var(--bad); font-weight: bold;">10110</code>؟
+    </p>
+    <button class="interactive-btn" style="background: var(--p-aym); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; cursor: pointer; font-size: 13.5px;" onclick="var a = document.getElementById('ex1ans'); a.style.display = a.style.display === 'none' ? 'block' : 'none'; this.textContent = a.style.display === 'none' ? 'كشف خطوات الحل النموذجية' : 'إخفاء الحل';">
+      كشف خطوات الحل النموذجية
+    </button>
+    <div id="ex1ans" style="display: none; margin-top: 12px; background: rgba(124,58,45,0.06); padding: 12px; border-radius: 8px; border: 1px solid var(--p-aym); font-size: 13.5px; line-height: 1.7;">
+      <b>خطوات التتبع:</b><br>
+      1. البداية في H (الخرج المبدئي: <b>0</b>)<br>
+      2. قراءة 1: انتقال إلى T (خرج: <b>1</b>)<br>
+      3. قراءة 0: بقاء في T (خرج: <b>1</b>)<br>
+      4. قراءة 1: انتقال إلى H (خرج: <b>0</b>)<br>
+      5. قراءة 1: انتقال إلى T (خرج: <b>1</b>)<br>
+      6. قراءة 0: بقاء في T (خرج: <b>1</b>)<br>
+      <span style="color: var(--p-aym); font-weight: bold;">سلسلة الخرج النهائية: 011011 (طولها 6 بت لأن |Input| = 5).</span>
+    </div>
+  </div>
+
+  <!-- Exercise 2: Mealy -->
+  <div class="card" style="border: 1.5px solid var(--p-laith); background: #fff; padding: 18px 20px; box-shadow: var(--shadow); text-align: right;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <span class="badge" style="background: var(--p-laith); color: #fff; font-size: 13px; padding: 4px 12px; border-radius: 6px; font-weight: 700;">تمرين 2: آلة Mealy</span>
+      <span style="font-size: 13px; color: var(--muted); font-weight: 700;">المستوى: متقدم</span>
+    </div>
+    <p style="font-size: 14.5px; line-height: 1.7; margin: 0 0 12px; color: var(--ink);">
+      آلة Mealy لكاشف النمط <code>ab</code> (كما في الشريحة 9) بدأت من الحالة الابتدائية <b>S₀</b>.<br>
+      إذا أُدخلت السلسلة <code style="font-size: 15px; color: var(--ok); font-weight: bold;">ababab</code>:<br>
+      <b>السؤال:</b> كم مرة سيظهر الرقم 1 في سلسلة الخرج، وما هو الطول الإجمالي للخرج؟
+    </p>
+    <button class="interactive-btn" style="background: var(--p-laith); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; cursor: pointer; font-size: 13.5px;" onclick="var a = document.getElementById('ex2ans'); a.style.display = a.style.display === 'none' ? 'block' : 'none'; this.textContent = a.style.display === 'none' ? 'كشف خطوات الحل النموذجية' : 'إخفاء الحل';">
+      كشف خطوات الحل النموذجية
+    </button>
+    <div id="ex2ans" style="display: none; margin-top: 12px; background: rgba(13,110,110,0.06); padding: 12px; border-radius: 8px; border: 1px solid var(--p-laith); font-size: 13.5px; line-height: 1.7;">
+      <b>خطوات التتبع:</b><br>
+      - قراءة a: إلى S₁ (خرج: <b>0</b>)<br>
+      - قراءة b: إلى S₀ (خرج: <b>1</b>) تحقق النمط الأول<br>
+      - قراءة a: إلى S₁ (خرج: <b>0</b>)<br>
+      - قراءة b: إلى S₀ (خرج: <b>1</b>) تحقق النمط الثاني<br>
+      - قراءة a: إلى S₁ (خرج: <b>0</b>)<br>
+      - قراءة b: إلى S₀ (خرج: <b>1</b>) تحقق النمط الثالث<br>
+      <span style="color: var(--p-laith); font-weight: bold;">سلسلة الخرج: 010101 (يظهر 1 ثلاث مرات، وطول الخرج 6 بت مطابق تماماً لطول الدخل).</span>
+    </div>
+  </div>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-13" data-slide-idx="12" data-speaker="abd">
+        
+<div class="kicker">خلاصة الدرس والوصايا الذهبية • 12. القواعد الأربع</div>
+<div class="speaker-pill p-abd">
+  <span class="dot"></span>
+  <span>عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<h2>الوصايا الذهبية الأربع في تحليل الآلات التتابعية</h2>
+<div class="sub">4 ركائز تضمن لك التميز وحل أي مسألة في اختبارات د. رويدا العامري دون تردد</div>
+
+<div class="grid g2" style="width: min(1180px, 96vw); margin-top: 14px; gap: 16px;">
+  <div class="card numcard" style="border-right: 4px solid var(--p-laith);">
+    <span class="idx" style="background: var(--p-laith); color: #fff;">1</span>
+    <h3 style="color: var(--p-laith); font-size: 17px; margin-bottom: 6px; font-weight: 700;">قاعدة تموضع الخرج</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      <b>Mealy:</b> الخرج محمول على حافة السهم <code>(Edge)</code> مع رمز الدخل.<br>
+      <b>Moore:</b> الخرج مستقر في بطن الحالة <code>(State)</code> ولا يغادرها أبداً.
+    </p>
+  </div>
+
+  <div class="card numcard" style="border-right: 4px solid var(--p-aym);">
+    <span class="idx" style="background: var(--p-aym); color: #fff;">2</span>
+    <h3 style="color: var(--p-aym); font-size: 17px; margin-bottom: 6px; font-weight: 700;">قاعدة استجابة الخرج والنبضات</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      <b>Mealy:</b> استجابة فورية لحظية مع تغير الدخل قبل قدوم نبضة الساعة التالية.<br>
+      <b>Moore:</b> استجابة متزامنة ومستقرة تماماً ولا تتغير إلا عند حافة نبضة الساعة.
+    </p>
+  </div>
+
+  <div class="card numcard" style="border-right: 4px solid var(--navy);">
+    <span class="idx" style="background: var(--navy); color: #fff;">3</span>
+    <h3 style="color: var(--navy); font-size: 17px; margin-bottom: 6px; font-weight: 700;">قاعدة طول سلسلة الخرج الناتجة</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      <b>Mealy:</b> طول الخرج يساوي طول الدخل تماماً <code>|Output| = |Input|</code>.<br>
+      <b>Moore:</b> طول الخرج يزيد ببت واحد <code>|Output| = |Input| + 1</code> لحساب الحالة الابتدائية.
+    </p>
+  </div>
+
+  <div class="card numcard" style="border-right: 4px solid var(--gold);">
+    <span class="idx" style="background: var(--gold); color: #fff;">4</span>
+    <h3 style="color: var(--gold); font-size: 17px; margin-bottom: 6px; font-weight: 700;">قاعدة التحويل المكافئ وانشطار الحالات</h3>
+    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: var(--ink);">
+      عند التحويل من Mealy إلى Moore، إذا كانت الحالة تستقبل انتقالات بمخرجات مختلفة، يجب شطرها إلى حالات فرعية بعدد المخرجات المختلفة لضمان استقلال كل خرج.
+    </p>
+  </div>
+</div>
+
+<div class="card card-banner" style="width: min(1180px, 96vw); margin-top: 14px; background: rgba(183,121,31,0.08); border: 1px solid var(--gold); border-radius: 10px; padding: 12px 20px; text-align: right;">
+  <span style="font-weight: 800; color: var(--gold); margin-left: 8px;">تنبيه اختباري:</span>
+  <span style="font-size: 14px; color: var(--ink);">تذكر دائماً أن التحويل بين الآلتين يحافظ على التكافؤ السلوكي التام (Equivalence)، لكن عدد حالات آلة Moore يكون دائماً أكبر أو مساوياً لعدد حالات Mealy.</span>
+</div>
+
+      </section>
+
+      <section class="slide" id="slide-14" data-slide-idx="13" data-speaker="all">
+        
+<div class="kicker">الخاتمة الأكاديمية والمناقشة • 13. مسك الختام</div>
+<div class="speaker-pill p-all">
+  <span class="dot"></span>
+  <span>الفريق معاً (ليث، أيمن، عبدالرحمن)</span>
+</div>
+
+<div class="orn"></div>
+<h1 style="font-size: 42px; margin-bottom: 8px;">شكراً لحسن استماعكم <span class="hl">— الباب مفتوح لأسئلتكم</span></h1>
+<div class="entitle en">Thank You for Your Attention — Open for Discussions & Questions</div>
+
+<p class="lead" style="max-width: 860px; margin: 16px auto 20px;">
+  يسعدنا ويشرفنا الإجابة عن جميع استفسارات وتوجيهات أستاذة المادة <b>الدكتورة رويدا العامري</b> ومناقشة الزملاء الكرام حول الآلات التتابعية ونماذج تصميمها.
+</p>
+
+<div class="names" style="margin-top: 10px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+  <span class="chip c-laith">ليث توفيق الجعفري</span>
+  <span class="chip c-aym">أيمن النزيلي</span>
+  <span class="chip c-abd">عبدالرحمن إسماعيل سيف</span>
+</div>
+
+<div class="card" style="width: min(900px, 96vw); margin-top: 20px; padding: 14px 22px; background: #fff; border: 1px solid var(--line); border-radius: 12px; font-size: 14px; color: var(--muted); line-height: 1.7;">
+  <b>المراجع الأكاديمية المعتمدة:</b><br>
+  1. Introduction to Automata Theory, Languages, and Computation — Hopcroft, Motwani & Ullman.<br>
+  2. Digital Design (Sequential Circuit Analysis & State Machines) — M. Morris Mano.<br>
+  3. محاضرات ومقرر نظرية الحوسبة — د. رويدا العامري، كلية الحاسوب، جامعة صنعاء (2026م).
+</div>
+
+      </section>
+  </main>
+
+  <!-- Navigation HUD (Bottom Right) -->
+  <div class="hud">
+    <button id="btnNext" title="التالي (سهم يسار ← / مسافة)">◀</button>
+    <div id="counter" title="عرض شبكة الشرائح (G / Tab)">1 / 14</div>
+    <div id="hudTimer" title="الوقت المنقضي (T للإخفاء/الإظهار • انقر للبدء من الصفر)">00:00</div>
+    <button id="btnPrev" title="السابق (سهم يمين →)">▶</button>
+    <button id="qBtn" class="hud-qbtn" style="display: none;" aria-hidden="true" title="دليل الملاحظات السريعة (Q)">❓</button>
+  </div>
+
+  <!-- Floating Action Tools (Bottom Left) -->
+  <div class="floating-tools">
+    <button id="castBtn" class="float-btn" title="بث العرض للبروجكتر بدون أدوات (Cast)">📺</button>
+    <button id="projectorBtn" class="float-btn" title="وضع البروجكتر عالي التباين (P)">📽️</button>
+    <button id="fullscreenBtn" class="float-btn" title="ملء الشاشة (F)">⛶</button>
+  </div>
+
+  <!-- Q-Panel Presenter Notes Drawer -->
+  <aside id="qpanel">
+    <div class="qhead">
+      <div style="font-weight: 800; font-size: 16px; color: var(--gold2);">ملاحظات الإلقاء للشريحة</div>
+      <button id="qclose" class="qtool-btn">إغلاق ✕</button>
+    </div>
+    <div id="qbody" class="qbody"></div>
+    <div style="padding: 12px 18px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12px; color: rgba(255,255,255,0.6); background: rgba(0,0,0,0.2);">
+      اختصارات سريعة: <span style="color:#fff; font-weight:bold;">Q</span> ملاحظات • <span style="color:#fff; font-weight:bold;">P</span> بروجكتر • <span style="color:#fff; font-weight:bold;">F</span> ملء الشاشة • <span style="color:#fff; font-weight:bold;">D</span> قلم • <span style="color:#fff; font-weight:bold;">L</span> تركيز • <span style="color:#fff; font-weight:bold;">G</span> شبكة
+    </div>
+  </aside>
+
+  <script>
+    window.NOTES_DB = [{"slide_num": 1, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 1\nالغلاف — افتتاح العرض وتقديم الموضوع", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: افتتاح واثق ومباشر يربط الموضوع بنطاق المنهج الفعلي لدكتورة رويدا العامري (المحاضرة 6 — خارطة Sequential Machines).\n\nما يُقال للجمهور (السيناريو المقترح):\n«بسم الله الرحمن الرحيم، السلام عليكم ورحمة الله وبركاته دكتورة رويدا وزملائي الكرام.\nيسعدنا أن نقدم لكم اليوم موضوعاً أساسياً وتطبيقياً في مقرر نظرية الحوسبة بعنوان: «تحليل الآلات التتابعية — Analysis of Sequential Machines».\nفريق العمل: ليث توفيق الجعفري، وعبدالرحمن إسماعيل سيف، وأيمن النزيلي.\nفي المحاضرات السابقة درسنا آلات الحالات المحدودة DFA و NFA وكنا نسأل سؤالاً واحداً فقط: «هل السلسلة مقبولة أم مرفوضة؟». اليوم ننتقل لخطوة أكثر واقعية وقوة: ماذا لو كانت الآلة تنتج مخرجات مستمرة أثناء قراءة الدخل؟ هذا هو جوهر الآلات التتابعية بنوعيها Mealy و Moore.»\n\nالتشبيه الذهني: الانتقال من «حارس بوابة» يفحص تذكرتك في النهاية فقط (DFA)، إلى «ماكينة ذكية» تقدم لك خدمة مستمرة رمزاً برمز (Sequential Machine).", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["الموقع في المنهج: صفحة 78 من شرائح د. رويدا تعرض خارطة المواضيع، والآلات التتابعية تأتي تتويجاً لـ Mealy/Moore والدوال التتابعية.", "🎯 سؤال تفاعلي للحضور: «لو عندك آلة DFA فقط — كيف تشرح للطلاب لماذا نحتاج آلة بخرج مستمر؟»", "❓ س: ما الفرق الجوهري عن DFA؟ ← DFA يعطي قبول/رفض في نهاية السلسلة فقط؛ الآلة التتابعية تنتج خرجاً متتابعاً مع كل خطوة دخل.", "❓ س: لماذا سُميت Sequential؟ ← لأن المخرجات تتوالى وتتتابع مع الزمن، معتمدة على تسلسل المدخلات السابقة المحفوظة في الذاكرة."]}]}, {"slide_num": 2, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 2\nخارطة العرض وتوزيع الأدوار", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: إظهار التكامل والتنظيم الهندسي للفريق أمام الدكتورة والحضور، وتوضيح اتفاق إدارة الأسئلة.\n\nما يُقال للجمهور (السيناريو المقترح):\n«لتغطية هذا الموضوع بأعلى درجات الوضوح، قسّمنا محاور العرض بيننا بتكامل تام:\n- أنا (ليث) سأغطي التمهيد النظري، وآلة Mealy ومفهومها، وتطبيقات آلات الحالة في الكود الحقيقي لمهندسي البرمجيات.\n- زميلي (أيمن) سيشرح آلة Moore، والمقارنة الجوهرية بين Mealy و Moore، والخطوات الأربع المعيارية لتحليل أي آلة، وسيقود فقرة التمارين التفاعلية.\n- زميلي (ليث) سيشرح المثالين المحلولين خطوة بخطوة (كاشف التكافؤ وكاشف النمط ab)، ثم يشرح خوارزمية التحويل من Mealy إلى Moore بإثباتها الرياضي، ويختم بأهم النقاط الذهبية.\n- اتفاقنا للأسئلة: كل عضو يجيب بتفصيل في نطاق محوره، ويحيل الأسئلة لزميله في محوره الآخر، لضمان أعلى درجات الدقة والسرعة.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["تنظيم داخلي: التوزيع يمنع التداخل والتشتت ويُبرز إتقان كل باحث لمحوره.", "🎯 سؤال تفاعلي: «اسأل الحضور: حسب جدول الأدوار، من تتوقعون يشرح التحويل من Mealy إلى Moore؟ (عبدالرحمن).»", "❓ س: هل تقسيم الأدوار يعكس ترتيب الفهم؟ ← نعم؛ مفاهيم تأسيسية (ليث) ← مقارنة ومنهجية (أيمن) ← أمثلة تطبيقية وتحويل رياضي (عبدالرحمن)."]}]}, {"slide_num": 3, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 3\nما الآلة التتابعية؟ = آلة بذاكرة + خرج", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: تعريف الآلة التتابعية كسداسية رياضية (6-Tuple) وتوضيح أن الحالة تعني الذاكرة والخرج هو الفرق الجوهري.\n\nما يُقال للجمهور (السيناريو المقترح):\n«ما هي الآلة التتابعية ببساطة شديدة؟\nنحن نعرف أن DFA يقرأ السلسلة ويقول في النهاية نعم أو لا. الآلة التتابعية تسأل سؤالاً مختلفاً: «ما الخرج عند كل خطوة؟».\nالآلة تُعرّف رياضياً بسداسية: M = (Q, Σ, Δ, δ, λ, q₀)\n- Q: مجموعة الحالات، وهي تمثل الذاكرة الداخلية للآلة.\n- Σ: أبجدية الدخل، و Δ: أبجدية الخرج.\n- δ: دالة الانتقال من حالة إلى حالة أخرى.\n- λ: دالة الخرج — وهنا يكمن الفرق الجوهري بين مدرستي Mealy و Moore!\n- q₀: الحالة الابتدائية.\nمثال ملموس من حياتنا: آلة البيع الذاتية (Vending Machine) — كل عملة تدخلها تُغير حالة الذاكرة (كم دفعت)، وعند اكتمال المبلغ يخرج المنتج المطلوب.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["المرساة العلمية: في الدوائر المنطقية، الدائرة التركيبية Combinational لا تملك ذاكرة، بينما الدائرة التتابعية Sequential تملك ذاكرة (Flip-Flops).", "🎯 سؤال تفاعلي: «ما الشيء المشترك بين آلة البيع الذاتية وجهاز الحاسوب؟ (كلاهما يحتاج أن يتذكر — الحالة هي الذاكرة).»", "❓ س: ماذا تعني «الحالة» عملياً؟ ← ملخص كل ما حدث في الماضي من مدخلات سابقة (أي الحالة الحالية للذاكرة).", "❓ س: هل يمكن لآلة بلا حالة أن تنتج خرجاً يتغير لنفس الدخل؟ ← مستحيل؛ الآلة بلا حالة تعطي نفس الخرج لنفس الدخل دائماً."]}]}, {"slide_num": 4, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 4\nآلة Mealy — الخرج على الانتقال", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: نموذج Mealy يعتمد فيه الخرج على (الحالة + الدخل معاً)، ويكتب على حافة الانتقال (السهم)، مما يجعله فورياً ومتطابق الطول.\n\nما يُقال للجمهور (السيناريو المقترح):\n«النوع الأول من الآلات التتابعية سُمي باسم العالم George Mealy عام 1955:\nفي آلة Mealy، دالة الخرج تعتمد على شيئين معاً: الحالة الحالية ورمز الدخل الحالي: λ(q, a) = o.\nماذا يعني هذا في المخطط والجدول؟\nالخرج يُكتب مباشرة على سهم الانتقال بصيغة: (دخل / خرج)، مثل: a/0 أو b/1.\nالنتائج الهندسية المترتبة على ذلك:\n1. الاستجابة الفورية: الخرج يصدر لحظياً فور وصول رمز الدخل دون انتظار الانتقال للحالة التالية.\n2. تطابق الطول: عدد رموز الخرج يساوي عدد رموز الدخل تماماً (|Output| = |Input|).\nانظروا إلى الرسم: الانتقال من S₁ إلى S₀ عند قراءة b يحمل التسمية b/1، أي: انتقل واطبع 1 فوراً في نفس اللحظة!»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["قاعدة ذهبية: Mealy = الخرج على السهم (الحافة) = استجابة فورية = طول n.", "🎯 سؤال تفاعلي: «في Mealy، متى يتغير الخرج؟ (فور وصول رمز الدخل لأن الخرج محمول على السهم).»", "❓ س: لماذا يُعتبر خرج Mealy أسرع؟ ← لأنه يتولد مباشرة عبر الدائرة المنطقية بمجرد توفر الدخل والحالة الحالية.", "❓ س: هل عدد رموز الخرج دائماً يساوي الدخل في Mealy؟ ← نعم دائماً، لكل رمز دخل رمز خرج يقابله تماماً."]}]}, {"slide_num": 5, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 5\nآلة Moore — الخرج داخل الحالة", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: نموذج Moore يعتمد فيه الخرج على الحالة الحالية فقط، ويكتب داخل دائرة الحالة، مما يجعله مستقراً ويبدأ برمز إضافي.\n\nما يُقال للجمهور (السيناريو المقترح):\n«النوع الثاني من الآلات سُمي باسم العالم Edward Moore عام 1956:\nفي آلة Moore، دالة الخرج تعتمد على الحالة الحالية فقط: λ(q) = o.\nالدخل هنا لا يحدد الخرج، بل يحدد فقط الحالة التالية، والحالة المستقرة هي التي تصدر الخرج.\nماذا يعني هذا في المخطط والجدول؟\nالخرج يُكتب داخل دائرة الحالة بجوار اسمها (مثل E تخرج 0، و O تخرج 1)، بينما الأسهم تحمل رموز الدخل فقط (a, b).\nالنتائج الهندسية المترتبة على ذلك:\n1. الاستقرار العالي: الخرج ثابت ولا يتأثر بأي تشويش لحظي في إشارة الدخل طوال بقاء الآلة في تلك الحالة.\n2. الرمز الإضافي: بما أن الحالة الابتدائية لها خرج، فالآلة تصدر خرجاً ابتدائياً قبل إدخال أي رمز، لذا طول الخرج = طول الدخل + 1 (n + 1).»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["قاعدة ذهبية: Moore = الخرج داخل الدائرة = خرج مستقر = طول n + 1.", "🎯 سؤال تفاعلي: «في Moore، هل يمكن أن يتغير الخرج دون أن تتغير الحالة؟ (مستحيل، لأن الخرج دالة في الحالة فقط).»", "❓ س: لماذا خرج Moore أطول بواحد؟ ← لأن الحالة الابتدائية q₀ تصدر خرجها تلقائياً عند التشغيل وقبل قراءة أي رمز دخل.", "❓ س: ما ميزة ربط الخرج بالحالة فقط؟ ← استقرار الإشارة في الدوائر المتزامنة وتقليل أخطاء التوقيت (Clock Glitches)."]}]}, {"slide_num": 6, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 6\nMealy مقابل Moore — المقارنة في سطر واحد", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: ترسيخ الفروق الجوهرية الستة في جدول هندسي واحد، مع حفظ القاعدة الذهبية للتمييز بينهما.\n\nما يُقال للجمهور (السيناريو المقترح):\n«هذا الجدول يلخص الفارق الجوهري بين النموذجين في سطر واحد:\n«Mealy: الخرج على الحافة · Moore: الخرج داخل الحالة».\nنلخص الفروق في 6 معايير هندسية:\n1. دالة الخرج: Mealy (حالة + دخل)، Moore (حالة فقط).\n2. لحظة الصدور: Mealy فورية مع الدخل، Moore بعد الوصول للحالة التالية.\n3. طول الخرج: Mealy طوله n، Moore طوله n + 1.\n4. عدد الحالات لنفس المهمة: Mealy تحتاج حالات أقل غالباً، Moore تحتاج حالات أكثر.\n5. الاستقرار: Moore أكثر استقراراً ضد تشويش الإشارات.\n6. سهولة التصميم: Moore أبسط وأوضح في التطبيق المنطقي.\nالقاعدة الذهبية: انظر أين كُتب الخرج — إن رأيته على السهم فهي Mealy، وإن رأيته داخل الدائرة فهي Moore.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["التكافؤ الرياضي: النموذجان متكافئان تماماً في القدرة الحوسبية (كل Mealy لها Moore مكافئة والعكس).", "🎯 سؤال تفاعلي: «اسأل الحضور: لنفس المطلوب، أيهما يستهلك حالات أقل في العادة؟ (Mealy لأن الخرج محمول على الحواف).»", "❓ س: أيهما أفضل دائماً؟ ← لا يوجد أفضل بإطلاق؛ Mealy أسرع وتوفر حالات، و Moore أكثر أماناً واستقراراً.", "❓ س: هل يمكن تحويل أي آلة للأخرى؟ ← نعم بالتأكيد، وهذا ما سيشرحه زميلي ليث بالتفصيل في الشريحة 10."]}]}, {"slide_num": 7, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 7\nما معنى «تحليل» الآلة؟ — الخطوات الأربع", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: تعريف عملية التحليل كمنهجية علمية من 4 خطوات لاستنتاج وظيفة أي آلة معطاة وإثبات سلوكها.\n\nما يُقال للجمهور (السيناريو المقترح):\n«نصل الآن إلى صلب موضوعنا: ماذا يعني «تحليل الآلة — Machine Analysis»؟\nالتحليل هو الهندسة العكسية: تُعطى لك آلة مجهولة (كرسم أو جدول)، والمطلوب منك أن تفهم وتثبت: «ماذا تفعل هذه الآلة وما وظيفتها بدقة؟».\nلتحليل أي آلة، نتبع دائماً 4 خطوات علمية معيارية:\nالخطوة 1 — التوحيد: تحويل التمثيل المعطى (مخطط حالات أو دائرة) إلى جدول حالة موحد ودقيق.\nالخطوة 2 — فهم الحالات: قراءة كل حالة وسؤال النفس: «ماذا تتذكر هذه الحالة من الماضي؟» وإعطاؤها اسماً وصفياً.\nالخطوة 3 — التتبع (Trace): تمرير سلسلة دخل حقيقية ومتابعة مسار (الدخل ← الحالة ← الخرج) خطوة بخطوة في جدول تتبع.\nالخطوة 4 — الاستنتاج والتحقق: صياغة وظيفة الآلة بجملة رياضية دقيقة، وتأكيدها بسلسلة دخل ثانية.\nوالآن سيطبق زميلي عبدالرحمن هذه الخطوات الأربع على مثالين كاملين.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["المنهجية المعيارية: هذه الخطوات الأربع هي النموذج المعتمد في أسئلة الامتحانات والتقييم الأكاديمي.", "🎯 سؤال تفاعلي: «اطلب من أحد الطلاب في القاعة إعادة ذكر الخطوات الأربع بكلماته السريعة قبل الانتقال للأمثلة.»", "❓ س: ما أول خطوة إذا استلمت مخطط حالات في الامتحان؟ ← تفريغه في جدول حالة موحد لتجنب أخطاء تتبع الأسهم البصرية.", "❓ س: ما الغاية من جدول التتبع؟ ← تقديم إثبات رياضي قاطع على سلوك الآلة وتأكيد استنتاجك لوظيفتها."]}]}, {"slide_num": 8, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 8\nمثال محلول 1 · Moore — كاشف التكافؤ (Parity)", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: تطبيق عملي للخطوات الأربع على آلة Moore لحساب تكافؤ عدد أحرف a مع تتبع السلسلة aabab وإثبات الخرج 010011.\n\nما يُقال للجمهور (السيناريو المقترح):\n«نبدأ بتطبيق الخطوات الأربع على المثال الأول لآلة Moore:\nالآلة المعطاة تحتوي حالتين: E تخرج 0، و O تخرج 1.\n- الخطوة 1 و 2 (فهم الحالات): الحالة E تعني «عدد حروف a زوجي حتى الآن»، والحالة O تعني «عدد حروف a فردي». حرف b لا يغير الحالة لأننا نعد a فقط.\n- الخطوة 3 (التتبع لسلسلة aabab):\n  1. البدء: في الحالة E ← الخرج 0 (قبل أي دخل!).\n  2. دخل a: ننتقل إلى O ← الخرج 1.\n  3. دخل a: ننتقل إلى E ← الخرج 0.\n  4. دخل b: نبقى في E ← الخرج 0.\n  5. دخل a: ننتقل إلى O ← الخرج 1.\n  6. دخل b: نبقى في O ← الخرج 1.\n- الخطوة 4 (الاستنتاج): الخرج هو 010011. كلما كان عدد حروف a فردياً طبعت الآلة 1، وكلما كان زوجياً طبعت 0. إذن الآلة هي «كاشف التكافؤ الفردي — Parity Checker» والخرج بدأ بـ 0 فطوله 6 لسلسلة من 5 رموز.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["صحة الحساب: تم التحقق برمجياً من السلسلة aabab → 010011 ✓.", "🎯 سؤال تفاعلي: «قبل كشف الحل: اطلب من الحضور توقع الخرج للسلسلة aabab وقارن إجاباتهم.»", "❓ س: لماذا بدأ الخرج بـ 0 قبل أي دخل؟ ← لأنه خرج الحالة الابتدائية E في آلة Moore.", "❓ س: ماذا يمثل الرقم 1 في الخرج؟ ← لحظة يكون فيها عدد حروف a المقروءة حتى الآن فردياً."]}]}, {"slide_num": 9, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 9\nمثال محلول 2 · Mealy — كاشف النمط «ab»", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: تطبيق عملي للخطوات الأربع على آلة Mealy لكشف التسلسل ab وتتبع aabbab وإثبات الخرج 001001.\n\nما يُقال للجمهور (السيناريو المقترح):\n«المثال الثاني لآلة Mealy: كاشف النمط المتسلسل (Sequence Detector):\nالآلة بحالتين S₀ و S₁:\n- S₀: تعني «آخر حرف مقروء لم يكن a».\n- S₁: تعني «آخر حرف مقروء كان a».\nنبحث عن تسلسل ab: إذا كنا في S₁ وجاء الحرف b، يكتمل النمط ab فننتقل إلى S₀ ونطبع 1 فوراً على الحافة (b/1).\nالتتبع لسلسلة الدخل aabbab:\n1. a ← من S₀ إلى S₁ بخرج 0.\n2. a ← نبقى في S₁ بخرج 0.\n3. b ← من S₁ إلى S₀ بخرج 1 (اكتشاف ab الأول!).\n4. b ← نبقى في S₀ بخرج 0.\n5. a ← من S₀ إلى S₁ بخرج 0.\n6. b ← من S₁ إلى S₀ بخرج 1 (اكتشاف ab الثاني!).\nالخرج النهائي: 001001. مواضع الـ 1 عند الحرفين الثالث والسادس تمثل نهايات ظهور ab بالضبط، وطول الخرج 6 مساوٍ لطول الدخل 6 تماماً.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["صحة الحساب: تم التحقق برمجياً من السلسلة aabbab → 001001 ✓.", "🎯 سؤال تفاعلي: «تحدَّ الحضور: من يستطيع توقع الخرج للسلسلة aabbab قبل عرضه؟ (001001).»", "❓ س: لماذا خرج 1 بالضبط عند b الثالثة والسادسة؟ ← لأن كلاً منهما سبقه حرف a مباشرة، وهذا هو تعريف اكتمال النمط ab.", "❓ س: أين وضعنا الخرج 1 في الجدول؟ ← على الانتقال S₁ → S₀ عند قراءة b (على الحافة لا داخل الحالة)."]}]}, {"slide_num": 10, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 10\nالتحويل من Mealy إلى Moore — الفكرة وقاعدة النسخ", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: خوارزمية التحويل الدقيقة (قاعدة النسخ State Splitting) حيث تنشطر حالات Mealy بعدد قيم الخرج الداخلة إليها، مع إثبات التكافؤ الرياضي لسلسلة aabbab.\n\nما يُقال للجمهور (السيناريو المقترح):\n«نأتي الآن لأهم جزء رياضي في العرض: كيف نحول آلة Mealy إلى آلة Moore مكافئة؟\nالمشكلة: في Moore الخرج يسكن داخل الحالة، بينما في Mealy قد تدخل على الحالة الواحدة انتقالات بخرجات مختلفة.\nالحل — «قاعدة النسخ (State Splitting)»:\nكل حالة Mealy تنشطر لنسخ بعدد قيم الخرج المختلفة الداخلة إليها!\nتطبيق القاعدة على كاشف ab السابق:\n- الحالة S₁: كل الأسهم الداخلة إليها تحمل خرج 0 ← تبقى نسخة واحدة نسميها B بخرج 0.\n- الحالة S₀: يدخلها سهم بخرج 0 وسهم آخر بخرج 1 ← تنشطر لنسختين: A (بخرج 0، وهي البداية) و C (بخرج 1).\nأصبحت الآلة بثلاث حالات (A, B, C) بدلاً من اثنتين.\nالتحقق الرياضي بتتبع السلسلة aabbab على الآلة الجديدة:\nالمسار: A → B → B → C → A → B → C\nالخرج الناتج: 0·001001 ← وبإسقاط الخرج الابتدائي (0) نحصل على 001001 وهو مطابق تماماً لخرج Mealy! الآلتان متكافئتان رياضياً 100%.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["الإثبات الرياضي: التكافؤ تام وتأكدنا برمجياً من تطابق سلاسل الخرج حتى أطوال عليا.", "🎯 سؤال تفاعلي: «لماذا زادت الآلة من حالتين إلى 3 حالات عند التحويل؟ (لأن الخرج أصبح دالة في الحالة فانشقت S₀ لنسختين).»", "❓ س: هل التحويل يغير سلوك الآلة؟ ← لا يغير السلوك إطلاقاً؛ الخرج متطابق تماماً بعد إسقاط البت الابتدائي.", "❓ س: ما أقصى عدد حالات قد تحتاجه Moore الناتجة؟ ← كحد أقصى: |Q_Mealy| × |Δ|."]}]}, {"slide_num": 11, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 11\nآلات الحالة في حياتك كمبرمج", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: ربط النظرية بالواقع العملي والبرمجي لطلاب علوم الحاسوب (TCP, HTTP, UI, Regex, Game Dev) مع كود جافاسكريبت واقعي.\n\nما يُقال للجمهور (السيناريو المقترح):\n«قد يظن البعض أن هذا الموضوع نظري بحت، لكن الحقيقة أنك كمبرمج تبني آلات حالة يومياً في كودك:\n1. بروتوكول TCP الذي ينقل اتصالك بالإنترنت يعمل بآلة حالة شهيرة (LISTEN → SYN_SENT → ESTABLISHED...).\n2. دورة حياة طلبات HTTP والـ APIs (Pending → Fulfilled / Rejected).\n3. أزرار وواجهات المستخدم (Normal → Hover → Active → Disabled).\n4. محركات التعبيرات القياسية Regex (مثل re.match) تبني داخلياً آلة حالات لتنفيذ البحث السريع!\n5. انظروا لكود الجافاسكريبت المرفق بالشريحة: دالة step(ch) بحالتين S₀ و S₁ هي ترجمة برمجية مباشرة لآلة Mealy التي حللناها للتو!\nالنظرية تمنحك المخطط الهندسي السليم، والبرمجة هي تطبيقه في الواقع.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["كود الجافاسكريبت المرفق في الشريحة يمثل آلة حالة حقيقية قابلة للتنفيذ المباشر.", "🎯 سؤال تفاعلي: «من استخدم متغيراً flag أو status في كوده دون أن يدري أنه يصمم آلة حالة؟ (كل المبرمجين تقريباً!).»", "❓ س: ما فائدة نمط آلة الحالة State Machine Pattern في هندسة البرمجيات؟ ← يمنع الحالات غير الصالحة (Invalid States) ويجعل الكود قابلاً للاختبار والصيانة والتوسع."]}]}, {"slide_num": 12, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 12\nتفاعل مع الحضور — تمرينان تطبيقيان", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: قيادة التفاعل مع الطلاب في القاعة عبر تمرينين سريعين لتثبيت الفهم واختبار استيعاب الحضور.\n\nما يُقال للجمهور (السيناريو المقترح):\n«والآن ننتقل لفقرة التحدي التفاعلي مع زملائنا في القاعة — تمرينان تطبيقيان سريعان:\n- التمرين 1 (آلة Moore):\n  آلة بحالتين H (تخرج 0) و T (تخرج 1).\n  الانتقالات: H مع a تذهب إلى T، ومع b تبقى H. و T مع a تعود إلى H، ومع b تبقى T.\n  ما الخرج لسلسلة الدخل aab؟ وما وظيفة الآلة؟\n  (الحل: نبدأ بـ 0 من H ← مع a نصل T ونطبع 1 ← مع a نعود H ونطبع 0 ← مع b نبقى H ونطبع 0 ← الخرج: 0100، والآلة كاشف تكافؤ).\n- التمرين 2 (Mealy):\n  صمم آلة Mealy تكشف النمط ab ثم أوجد خرج السلسلة abab.\n  (الحل: تحتاج حالتين فقط، والخرج هو 0101 حيث طبعت 1 مرتين عند اكتمال كل ab).\nنترك لكم دقيقة للمحاولة ونرحب بمشاركاتكم!»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["إدارة القاعة: إعطاء دقيقة للطلاب للمحاولة على الورق، وتشجيع الإجابات الجزئية قبل كشف الحل الكامل.", "🎯 سؤال تفاعلي: «اطرح التمرينين على الطلاب وامنحهم وقتاً للتفكير والمشاركة.»", "❓ س: لو طُلب كاشف لنمط أطول مثل aabb في Mealy؟ ← نحتاج 3 حالات: S₀ (بداية)، S₁ (قرأنا a)، S₂ (قرأنا aa)، والانتقال عند b من S₂ يعطي 1."]}]}, {"slide_num": 13, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 13\nالخلاصة — أربع نقاط ذهبية تحفظها معك", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: ترسيخ الزبدة والملخص النهائي للموضوع في 4 نقاط ذهبية مركزة وسهلة التذكر.\n\nما يُقال للجمهور (السيناريو المقترح):\n«نلخص موضوعنا اليوم في أربع نقاط ذهبية تظل معك دائماً:\n1. الآلة التتابعية = DFA + دالة خرج λ (تنتج مخرجات مستمرة رمزاً برمز بدلاً من الاكتفاء بنعم أو لا).\n2. Mealy تعتمد على (الحالة + الدخل) فخرجها فوري على الحافة وطوله n؛ بينما Moore تعتمد على (الحالة فقط) فخرجها مستقر داخل الحالة وطوله n + 1.\n3. خطوات التحليل الأربع: توحيد الجدول ← فهم معنى الحالات ← التتبع خطوة بخطوة ← الاستنتاج والتحقق.\n4. التحويل من Mealy إلى Moore يتم بقاعدة النسخ وانشطار الحالات بعدد قيم الخرج الداخلة، مع بقاء السلوك متطابقاً تماماً.\nوهذه الآلات ليست مجرد نظريات في الكتب، بل هي البنية التحتية لبروتوكولات الإنترنت ومحركات اللغات والأنظمة المدمجة.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["تلخيص شامل: النقطة 2 هي الأكثر تكراراً في الامتحانات والمناقشات.", "🎯 سؤال تفاعلي: «اطلب من ثلاثة طلاب — كل واحد يذكر نقطة ذهبية واحدة لترسيخ الختام.»", "❓ س: أي قاعدة أسهل للحفظ السريع؟ ← «على السهم Mealy، في الدائرة Moore»."]}]}, {"slide_num": 14, "notes_title": "دليل الشرح وملاحظات الإلقاء للشريحة 14\nختام وأسئلة ومراجع", "speaker": "", "cards": [{"title": "سيناريو الشرح المقترح (ماذا تقول بالضبط):", "content": "الفكرة الجوهرية: ختام راقٍ وتوجيه الشكر للدكتورة رويدا والحضور، وتوثيق المراجع الأكاديمية وفتح باب المناقشة.\n\nما يُقال للجمهور (السيناريو المقترح):\n«في ختام عرضنا، نتوجه بخالص الشكر والتقدير للدكتورة الفاضلة رويدا العامري على إشرافها وتوجيهاتها القيمة، ونشكر زملاءنا الأعزاء على حسن استماعهم وتفاعلهم المميز.\nمراجعنا في هذا العرض:\n- شرائح المقرر — د. رويدا العامري (المحاضرة 6: Formal Grammar وخارطة Sequential Machines).\n- مخطوطة مقرر نظرية الحوسبة — كلية الحاسوب، جامعة صنعاء.\n- المرجع العالمي: Lewis & Papadimitriou, Elements of the Theory of Computation.\nنرحب الآن بجميع أسئلتكم واستفساراتكم، ومستعدون لمناقشة أي نقطة أو إعادة توضيحها.»", "items": []}, {"title": "🛡️ أسئلة الحضور وتفنيد الأسئلة المتوقعة:", "content": "", "items": ["توزيع الإجابات: أسئلة المفاهيم العامة والربط البرمجي (ليث)، أسئلة Moore وخطوات التحليل (أيمن)، أسئلة الأمثلة والتحويل الرياضي (عبدالرحمن).", "🎯 سؤال تفاعلي: «فتح المجال لأسئلة الطلاب ومناقشة الدكتورة رويدا.»", "❓ س: هل توجد آلات تتابعية غير حتمية Nondeterministic؟ ← نعم نظرياً، لكن عملياً في تصميم المعالجات والدوائر نستخدم الحتمية لضمان خرج فريد وثابت."]}]}];
+    window.QBANK = [{"aud": "لو عندك آلة DFA فقط — كيف تشرح للطلاب لماذا نحتاج آلة بخرج؟", "qs": ["ما الفرق الجوهري بين DFA والآلة التتابعية؟ (الذاكرة/الحالات موجودة في الاثنين — الفرق أن التتابعية تُنتج خرجًا مستمرًا مع كل رمز وليس مجرد قبول/رفض في النهاية)", "ليش الموضوع اسمه Sequential؟ (لأن الخرج يتتابع مع كل رمز دخل — سلوك الآلة يتشكل بمرور الزمن، لا إجابة واحدة نهائية)"]}, {"aud": "اسأل الحضور: حسب جدول الأدوار، من توقّعون يشرح التحويل Mealy→Moore؟ (عبدالرحمن)", "qs": ["هل الأدوار عشوائية؟ (لا — وزّعناها بدقة: مقدمة ونظرية وتطبيقات البرمجة ← ليث، مقارنة وخطوات التحليل وتمارين ← أيمن، أمثلة محلولة وتحويل وخلاصة ← عبدالرحمن)"]}, {"aud": "اسأل: ما الشيء المشترك بين آلة البيع والإلكترون؟ (كلاهما يحتاج أن «يتذكر» — الحالة = الذاكرة)", "qs": ["ماذا تعني «الحالة» عمليًا؟ (ملخص كل ما حدث من مدخلات سابقة — أي الذاكرة الداخلية للنظام)", "هل يمكن لآلة بلا حالة أن تنتج خرجًا يتغير بنفس الدخل؟ (لا — بلا حالة، نفس الدخل يعطي نفس الخرج دائمًا كالدوال النقية)"]}, {"aud": "اسأل: في Mealy، متى يتغير الخرج؟ (فور وصول الدخل — لأن الخرج مرسوم على الانتقال نفسه)", "qs": ["لماذا خرج Mealy «أسرع»؟ (لأنه لا ينتظر الاستقرار في حالة جديدة — يقرأ الدخل والحالة معًا ويعطي الخرج فورًا)", "هل عدد رموز الخرج يساوي عدد رموز الدخل في Mealy؟ (نعم — خرج واحد لكل رمز دخل، الطول متطابق تماماً)"]}, {"aud": "اسأل: في Moore، هل يمكن أن يتغير الخرج دون تغيّر الحالة؟ (لا — الخرج دالة في الحالة فقط)", "qs": ["ما ميزة ربط الخرج بالحالة فقط؟ (ثبات واستقرار الخرج وتزامنه مع نبضة الساعة، وأسهل في التحليل والتصميم الإلكتروني)", "لماذا خرج Moore أطول بواحد؟ (لأن الحالة الابتدائية نفسها تُخرج قيمة قبل قراءة أي رمز دخل)"]}, {"aud": "اسأل الحضور: لنفس المهمة — Mealy أم Moore تحتاج حالات أقل عادةً؟ (Mealy عادةً — لأن الخرج يركب على الانتقالات)", "qs": ["أيهما أفضل دائمًا؟ (لا إجابة مطلقة — Mealy: حالات أقل واستجابة أسرع؛ Moore: استقرار وتزامن أسهل في الدوائر المتزامنة)", "هل تتحول إحداهما للأخرى؟ (نعم — أي آلة Mealy تكافئ آلة Moore والعكس تماماً، مع اختلاف الخرج الابتدائي)"]}, {"aud": "اطلب من طالب أن يعيد ذكر الخطوات الأربع بكلماته قبل الانتقال للأمثلة", "qs": ["ما أول خطوة إذا أعطيت مخططًا بدل جدول؟ (نحوّل المخطط إلى جدول حالة — الصورتان متكافئتان رياضياً)", "ما غاية «التتبع»؟ (إثبات السلوك واختباره عملياً: نمرر سلسلة دخل حقيقية ونراقب تعاقب الحالات وتتابع الخرج)"]}, {"aud": "قبل تشغيل المحاكي: اطلب من الحضور توقع خرج السلسلة aabab في كاشف التكافؤ ثم شغّل المحاكاة", "qs": ["لماذا بدأ الخرج بـ 0 قبل أي دخل؟ (خرج الحالة الابتدائية E في Moore — لم يقرأ أي رمز a بعد، والصفر زوجي)", "ماذا يمثل 1 في الخرج؟ (لحظة يكون فيها إجمالي عدد حروف a المقروءة فردياً)"]}, {"aud": "قبل تشغيل المحاكي: اطلب توقع الخرج لسلسلة aabbab — من يصيب النمط 001001؟", "qs": ["لماذا خرج 1 بالضبط عند b الثالثة والسادسة؟ (لأن كل b سبقها a مباشرة — هذا هو تعريف اكتشاف النمط ab)", "أين وضعنا 1 في الجدول؟ (على الانتقال S1→S0 عند الدخل b — على الحافة لا داخل الحالة)"]}, {"aud": "اسأل: لماذا كبرت الآلة عند التحويل من حالتين إلى ثلاث حالات؟ (لأن الخرج في Moore يجب أن يسكن داخل الحالة، فانشطرت S0 إلى حالتين A و C)", "qs": ["هل التحويل يغيّر السلوك الرياضي؟ (لا — أثبتنا تطابق الخرج بعد إسقاط البت الابتدائي، فالآلتان متكافئتان سلوكياً)", "قاعدة عامة: كم حالة قد تحتاج آلة Moore المكافئة؟ (حتى عدد قيم الخرج المختلفة الداخلة لكل حالة في Mealy)"]}, {"aud": "اسأل: من استخدم آلة حالة في كوده دون أن يدري؟ (كل من كتب متغير flag مع شروط if/else أو switch-case)", "qs": ["أين نجد آلات الحالة في تخصصنا البرمجي؟ (بروتوكول TCP، دورة حياة طلبات HTTP، معالجة الواجهات والأزرار، محركات Regex، والألعاب)", "ما العلاقة بين مادة العملي والنظري؟ (DFA/NFA في العملي هي آلات حالة بلا خرج تقرر القبول/الرفض؛ اليوم أضفنا الخرج المستمر)"]}, {"aud": "أعطهم دقيقة لكل تمرين ثم افتح النقاش واكشف خطوات الحل خطوة بخطوة", "qs": ["إجابة تمرين 1 (Moore): الخرج يبدأ بـ 0 ثم 1 ثم 0 — تتبع دقيق للانتقالات بين H و T", "إجابة تمرين 2 (Mealy): الكاشف يحتاج حالتين ويعطي الخرج 0101 عند تكرار النمط المطلوب"]}, {"aud": "اطلب من ثلاثة طلاب — كل واحد يذكر وصية ذهبية واحدة من الوصايا الأربع", "qs": ["أي نقطة هي الأهم للامتحانات؟ (قاعدة تموضع الخرج: Mealy على الحافة، Moore داخل بطن الحالة — لا تنساها أبداً)"]}, {"aud": "افتح المجال لأي سؤال من د. رويدا أو الزملاء حول الآلات التتابعية أو التحويل", "qs": ["سؤال متوقع: هل يوجد في اللغات المنتظمة ما يشبه الخرج؟ (نعم — DFA يُعتبر حالة خاصة من آلة Moore بخرج ثنائي 0/1 عند حالات القبول)", "ما المرجع المعتمد؟ (سلايدات د. رويدا العامري، وكتاب Elements of the Theory of Computation لـ Lewis & Papadimitriou)"]}];
+
+// TOC Presentation Controller
+(function() {
+  let currentIdx = 0;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  
+  const pbar = document.getElementById('pbar');
+  const counter = document.getElementById('counter');
+  const hudTimer = document.getElementById('hudTimer');
+  const projectorBadge = document.getElementById('projectorBadge');
+  const drawingBadge = document.getElementById('drawingBadge');
+  const spotlightOverlay = document.getElementById('spotlightOverlay');
+  const telestratorCanvas = document.getElementById('telestratorCanvas');
+  const gridModal = document.getElementById('gridModal');
+  const gridCards = document.getElementById('gridCards');
+  const qpanel = document.getElementById('qpanel');
+  
+  const btnNext = document.getElementById('btnNext');
+  const btnPrev = document.getElementById('btnPrev');
+  const castBtn = document.getElementById('castBtn');
+  const projectorBtn = document.getElementById('projectorBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+  // Timer variables
+  let timerSeconds = 0;
+  let timerInterval = null;
+  let isTimerRunning = false;
+
+  // Telestrator variables
+  let isDrawing = false;
+  let isDrawingActive = false;
+  let ctx = null;
+
+  // Spotlight variables
+  let isSpotlightActive = false;
+
+  function updateSlides() {
+    slides.forEach((slide, idx) => {
+      slide.classList.remove('active', 'past', 'future');
+      if (idx === currentIdx) {
+        slide.classList.add('active');
+      } else if (idx < currentIdx) {
+        slide.classList.add('past');
+      } else {
+        slide.classList.add('future');
+      }
+    });
+
+    // Update Progress & Counter
+    if (counter) counter.textContent = (currentIdx + 1) + ' / ' + total;
+    if (pbar) pbar.style.width = ((currentIdx + 1) / total * 100) + '%';
+
+    // Update Q-Panel Notes if open
+    updateQPanel();
+  }
+
+  function next() {
+    if (currentIdx < total - 1) {
+      currentIdx++;
+      updateSlides();
+    }
+  }
+
+  function prev() {
+    if (currentIdx > 0) {
+      currentIdx--;
+      updateSlides();
+    }
+  }
+
+  function goTo(idx) {
+    if (idx >= 0 && idx < total) {
+      currentIdx = idx;
+      updateSlides();
+      if (gridModal && gridModal.classList.contains('open')) {
+        gridModal.classList.remove('open');
+      }
+    }
+  }
+
+  // High-Luminance Projector Mode
+  function toggleProjectorMode() {
+    document.body.classList.toggle('projector-mode');
+    if (projectorBtn) {
+      projectorBtn.classList.toggle('on', document.body.classList.contains('projector-mode'));
+    }
+  }
+
+  // Native Fullscreen Toggle
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.warn('Fullscreen request failed:', err);
+      });
+      if (fullscreenBtn) fullscreenBtn.classList.add('on');
+    } else {
+      document.exitFullscreen().catch(err => {
+        console.warn('Exit fullscreen failed:', err);
+      });
+      if (fullscreenBtn) fullscreenBtn.classList.remove('on');
+    }
+  }
+
+  // Cast Mode
+  function toggleCast() {
+    document.body.classList.toggle('cast-mode');
+    if (castBtn) castBtn.classList.toggle('on');
+  }
+
+  // Live Timer
+  function startTimer() {
+    if (!timerInterval) {
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+        const secs = String(timerSeconds % 60).padStart(2, '0');
+        if (hudTimer) hudTimer.textContent = mins + ':' + secs;
+      }, 1000);
+      isTimerRunning = true;
+    }
+  }
+
+  function resetTimer() {
+    timerSeconds = 0;
+    if (hudTimer) hudTimer.textContent = '00:00';
+  }
+
+  function toggleTimer() {
+    if (isTimerRunning) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      isTimerRunning = false;
+    } else {
+      startTimer();
+    }
+  }
+
+  // Spotlight
+  function toggleSpotlight() {
+    isSpotlightActive = !isSpotlightActive;
+    if (spotlightOverlay) {
+      spotlightOverlay.classList.toggle('active', isSpotlightActive);
+    }
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    if (isSpotlightActive && spotlightOverlay) {
+      const x = (e.clientX / window.innerWidth * 100).toFixed(1) + '%';
+      const y = (e.clientY / window.innerHeight * 100).toFixed(1) + '%';
+      spotlightOverlay.style.setProperty('--mouse-x', x);
+      spotlightOverlay.style.setProperty('--mouse-y', y);
+    }
+  });
+
+  // Telestrator Drawing
+  function initDrawing() {
+    if (!telestratorCanvas) return;
+    ctx = telestratorCanvas.getContext('2d');
+    function resizeCanvas() {
+      telestratorCanvas.width = window.innerWidth;
+      telestratorCanvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    telestratorCanvas.addEventListener('mousedown', (e) => {
+      if (!isDrawingActive) return;
+      isDrawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.clientX, e.clientY);
+      ctx.strokeStyle = '#e53e3e';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+    });
+
+    telestratorCanvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing || !isDrawingActive) return;
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+    });
+
+    window.addEventListener('mouseup', () => { isDrawing = false; });
+  }
+
+  function toggleDrawing() {
+    isDrawingActive = !isDrawingActive;
+    if (telestratorCanvas) telestratorCanvas.classList.toggle('active', isDrawingActive);
+    if (drawingBadge) drawingBadge.style.display = isDrawingActive ? 'block' : 'none';
+  }
+
+  function clearDrawing() {
+    if (ctx && telestratorCanvas) {
+      ctx.clearRect(0, 0, telestratorCanvas.width, telestratorCanvas.height);
+    }
+  }
+
+  // Grid Matrix Modal
+  function buildGridModal() {
+    if (!gridCards) return;
+    gridCards.innerHTML = '';
+    slides.forEach((s, idx) => {
+      const item = document.createElement('div');
+      item.className = 'grid-card-item' + (idx === currentIdx ? ' current' : '');
+      const hTitle = s.querySelector('h1, h2');
+      const titleText = hTitle ? hTitle.textContent : ('الشريحة ' + (idx + 1));
+      const spkPill = s.querySelector('.speaker-pill');
+      const spkText = spkPill ? spkPill.textContent.trim() : '';
+
+      item.innerHTML = '<span class="num">' + (idx + 1) + '</span>' +
+                       '<div class="t">' + titleText + '</div>' +
+                       '<div class="spk">' + spkText + '</div>';
+      item.addEventListener('click', () => goTo(idx));
+      gridCards.appendChild(item);
+    });
+  }
+
+  function toggleGridModal() {
+    if (!gridModal) return;
+    const isOpen = gridModal.classList.contains('open');
+    if (!isOpen) {
+      buildGridModal();
+      gridModal.classList.add('open');
+    } else {
+      gridModal.classList.remove('open');
+    }
+  }
+
+  // Q-Panel Notes Drawer
+  function toggleQ() {
+    if (!qpanel) return;
+    qpanel.classList.toggle('open');
+    if (qpanel.classList.contains('open')) {
+      updateQPanel();
+    }
+  }
+
+  function updateQPanel() {
+    if (!qpanel || !window.NOTES_DB) return;
+    const note = window.NOTES_DB[currentIdx];
+    if (!note) return;
+    const qbody = document.getElementById('qbody');
+    if (!qbody) return;
+
+    let html = '<div class="qcard"><h4>' + (note.notes_title || 'ملاحظات الإلقاء للشريحة ' + (currentIdx + 1)) + '</h4>';
+    if (note.speaker) html += '<p style="color:var(--gold2); font-weight:bold;">المتحدث: ' + note.speaker + '</p>';
+    if (note.cards) {
+      note.cards.forEach(c => {
+        html += '<div style="margin-top:10px;"><b style="color:#fff;">' + c.title + '</b><p style="margin:4px 0;">' + c.content + '</p></div>';
+      });
+    }
+    html += '</div>';
+    qbody.innerHTML = html;
+  }
+
+  // Keyboard Event Listeners
+  window.addEventListener('keydown', (e) => {
+    // Check key or code for English and Arabic layout
+    if (e.key === 'ArrowLeft' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      next();
+    } else if (e.key === 'ArrowRight' || e.key === 'Backspace' || e.key === 'PageUp') {
+      e.preventDefault();
+      prev();
+    } else if (e.key === 'Home') {
+      goTo(0);
+    } else if (e.key === 'End') {
+      goTo(total - 1);
+    } else if (e.code === 'KeyP' || e.key === 'p' || e.key === 'P' || e.key === 'ح' || e.key === '؛') {
+      toggleProjectorMode();
+    } else if (e.code === 'KeyF' || e.key === 'f' || e.key === 'F' || e.key === 'ب') {
+      toggleFullscreen();
+    } else if (e.code === 'KeyQ' || e.key === 'q' || e.key === 'Q' || e.key === 'ض') {
+      toggleQ();
+    } else if (e.code === 'KeyD' || e.key === 'd' || e.key === 'D' || e.key === 'ي') {
+      toggleDrawing();
+    } else if (e.code === 'KeyC' || e.key === 'c' || e.key === 'C' || e.key === 'ؤ') {
+      clearDrawing();
+    } else if (e.code === 'KeyL' || e.key === 'l' || e.key === 'L' || e.key === 'م') {
+      toggleSpotlight();
+    } else if (e.code === 'KeyG' || e.key === 'g' || e.key === 'G' || e.key === 'ل' || e.key === 'Tab') {
+      e.preventDefault();
+      toggleGridModal();
+    } else if (e.code === 'KeyT' || e.key === 't' || e.key === 'T' || e.key === 'ف') {
+      toggleTimer();
+    } else if (e.key === 'Escape') {
+      if (gridModal) gridModal.classList.remove('open');
+      if (qpanel) qpanel.classList.remove('open');
+      if (isSpotlightActive) toggleSpotlight();
+      if (isDrawingActive) toggleDrawing();
+    }
+  });
+
+  // UI Event Bindings
+  if (btnNext) btnNext.addEventListener('click', next);
+  if (btnPrev) btnPrev.addEventListener('click', prev);
+  if (castBtn) castBtn.addEventListener('click', toggleCast);
+  if (projectorBtn) projectorBtn.addEventListener('click', toggleProjectorMode);
+  if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+  if (counter) counter.addEventListener('click', toggleGridModal);
+  if (hudTimer) hudTimer.addEventListener('click', resetTimer);
+
+  const gridClose = document.getElementById('gridClose');
+  if (gridClose) gridClose.addEventListener('click', () => { if (gridModal) gridModal.classList.remove('open'); });
+
+  const qclose = document.getElementById('qclose');
+  if (qclose) qclose.addEventListener('click', () => { if (qpanel) qpanel.classList.remove('open'); });
+
+  // Init
+  initDrawing();
+  startTimer();
+  updateSlides();
+})();
+
+// ==========================================
+// INTERACTIVE SIMULATION ENGINES
+// ==========================================
+
+// Slide 8: Parity Detector Simulation
+let parityState = 'E';
+let parityStepIdx = 0;
+const parityInputSeq = ['a', 'a', 'b', 'a', 'b'];
+let parityOutputHistory = ['0'];
+
+function updateParityVisuals() {
+  const curStateEl = document.getElementById('parityCurState');
+  const curCharEl = document.getElementById('parityCurChar');
+  const outStrEl = document.getElementById('parityOutStr');
+  const msgEl = document.getElementById('parityMsg');
+  
+  if (curStateEl) curStateEl.textContent = parityState === 'E' ? 'E (زوجي)' : 'O (فردي)';
+  if (outStrEl) outStrEl.textContent = parityOutputHistory.join('');
+
+  // SVG Nodes
+  const nodeE = document.getElementById('nodeE');
+  const nodeO = document.getElementById('nodeO');
+  if (nodeE && nodeO) {
+    if (parityState === 'E') {
+      nodeE.setAttribute('stroke', 'var(--gold)');
+      nodeE.setAttribute('stroke-width', '4');
+      nodeE.setAttribute('fill', '#fffbf2');
+      nodeO.setAttribute('stroke', 'var(--navy)');
+      nodeO.setAttribute('stroke-width', '2.5');
+      nodeO.setAttribute('fill', '#fff');
+    } else {
+      nodeO.setAttribute('stroke', 'var(--gold)');
+      nodeO.setAttribute('stroke-width', '4');
+      nodeO.setAttribute('fill', '#fffbf2');
+      nodeE.setAttribute('stroke', 'var(--navy)');
+      nodeE.setAttribute('stroke-width', '2.5');
+      nodeE.setAttribute('fill', '#fff');
+    }
+  }
+
+  // Table rows
+  const rowE = document.getElementById('rowE');
+  const rowO = document.getElementById('rowO');
+  if (rowE && rowO) {
+    rowE.style.background = parityState === 'E' ? 'rgba(183,121,31,0.18)' : '';
+    rowO.style.background = parityState === 'O' ? 'rgba(183,121,31,0.18)' : '';
+  }
+
+  // Ribbon cells
+  parityInputSeq.forEach((_, i) => {
+    const cell = document.getElementById('pcell_' + i);
+    if (cell) {
+      cell.className = 'rib-cell';
+      if (i < parityStepIdx) cell.classList.add('done');
+      else if (i === parityStepIdx) cell.classList.add('active');
+    }
+  });
+}
+
+function stepParitySim() {
+  const msgEl = document.getElementById('parityMsg');
+  const curCharEl = document.getElementById('parityCurChar');
+  
+  if (parityStepIdx >= parityInputSeq.length) {
+    if (msgEl) msgEl.textContent = 'اكتمل تتبع السلسلة aabab بنجاح! انقر على إعادة ضبط للبدء مجدداً.';
+    return;
+  }
+
+  const char = parityInputSeq[parityStepIdx];
+  if (curCharEl) curCharEl.textContent = char;
+  
+  const prevState = parityState;
+  if (char === 'a') {
+    parityState = (parityState === 'E') ? 'O' : 'E';
+  }
+  
+  const outBit = (parityState === 'E') ? '0' : '1';
+  parityOutputHistory.push(outBit);
+  parityStepIdx++;
+
+  if (msgEl) {
+    msgEl.textContent = 'الخطوة ' + parityStepIdx + ': قراءة الرمز ' + char + ' انتقل من ' + prevState + ' إلى ' + parityState + ' وأخرج البت ' + outBit;
+  }
+
+  updateParityVisuals();
+}
+
+function resetParitySim() {
+  parityState = 'E';
+  parityStepIdx = 0;
+  parityOutputHistory = ['0'];
+  const curCharEl = document.getElementById('parityCurChar');
+  const msgEl = document.getElementById('parityMsg');
+  if (curCharEl) curCharEl.textContent = '—';
+  if (msgEl) msgEl.textContent = 'تمت إعادة الضبط للحالة الابتدائية E.';
+  updateParityVisuals();
+}
+
+// Slide 9: Mealy ab Pattern Detector Simulation
+let mealyState = 'S₀';
+let mealyStepIdx = 0;
+const mealyInputSeq = ['a', 'a', 'b', 'b', 'a', 'b'];
+let mealyOutputHistory = [];
+
+function updateMealyVisuals() {
+  const curStateEl = document.getElementById('mealyCurState');
+  const curCharEl = document.getElementById('mealyCurChar');
+  const outStrEl = document.getElementById('mealyOutStr');
+  
+  if (curStateEl) curStateEl.textContent = mealyState;
+  if (outStrEl) outStrEl.textContent = mealyOutputHistory.length ? mealyOutputHistory.join('') : '—';
+
+  // SVG Nodes
+  const nodeS0 = document.getElementById('nodeS0');
+  const nodeS1 = document.getElementById('nodeS1');
+  if (nodeS0 && nodeS1) {
+    if (mealyState === 'S₀') {
+      nodeS0.setAttribute('stroke', 'var(--gold)');
+      nodeS0.setAttribute('stroke-width', '4');
+      nodeS0.setAttribute('fill', '#fffbf2');
+      nodeS1.setAttribute('stroke', 'var(--p-laith)');
+      nodeS1.setAttribute('stroke-width', '2.5');
+      nodeS1.setAttribute('fill', '#fff');
+    } else {
+      nodeS1.setAttribute('stroke', 'var(--gold)');
+      nodeS1.setAttribute('stroke-width', '4');
+      nodeS1.setAttribute('fill', '#fffbf2');
+      nodeS0.setAttribute('stroke', 'var(--p-laith)');
+      nodeS0.setAttribute('stroke-width', '2.5');
+      nodeS0.setAttribute('fill', '#fff');
+    }
+  }
+
+  // Table rows
+  const rowS0 = document.getElementById('rowS0');
+  const rowS1 = document.getElementById('rowS1');
+  if (rowS0 && rowS1) {
+    rowS0.style.background = mealyState === 'S₀' ? 'rgba(183,121,31,0.18)' : '';
+    rowS1.style.background = mealyState === 'S₁' ? 'rgba(183,121,31,0.18)' : '';
+  }
+
+  // Ribbon cells
+  mealyInputSeq.forEach((_, i) => {
+    const cell = document.getElementById('mcell_' + i);
+    if (cell) {
+      cell.className = 'rib-cell';
+      if (i < mealyStepIdx) cell.classList.add('done');
+      else if (i === mealyStepIdx) cell.classList.add('active');
+    }
+  });
+}
+
+function stepMealySim() {
+  const msgEl = document.getElementById('mealyMsg');
+  const curCharEl = document.getElementById('mealyCurChar');
+  
+  if (mealyStepIdx >= mealyInputSeq.length) {
+    if (msgEl) msgEl.textContent = 'اكتمل تتبع السلسلة aabbab بنجاح! انقر على إعادة ضبط للبدء مجدداً.';
+    return;
+  }
+
+  const char = mealyInputSeq[mealyStepIdx];
+  if (curCharEl) curCharEl.textContent = char;
+  
+  const prevState = mealyState;
+  let outBit = '0';
+
+  if (mealyState === 'S₀') {
+    if (char === 'a') {
+      mealyState = 'S₁';
+      outBit = '0';
+    } else {
+      mealyState = 'S₀';
+      outBit = '0';
+    }
+  } else if (mealyState === 'S₁') {
+    if (char === 'a') {
+      mealyState = 'S₁';
+      outBit = '0';
+    } else {
+      mealyState = 'S₀';
+      outBit = '1'; // DETECTED!
+    }
+  }
+
+  mealyOutputHistory.push(outBit);
+  mealyStepIdx++;
+
+  if (msgEl) {
+    if (outBit === '1') {
+      msgEl.innerHTML = '<b style="color:var(--ok);">تم رصد النمط ab بنجاح!</b> الخرج اللحظي: 1، والعودة إلى الحالة S₀.';
+    } else {
+      msgEl.textContent = 'الخطوة ' + mealyStepIdx + ': قراءة الرمز ' + char + ' انتقال من ' + prevState + ' إلى ' + mealyState + ' بخرج ' + outBit;
+    }
+  }
+
+  updateMealyVisuals();
+}
+
+function resetMealySim() {
+  mealyState = 'S₀';
+  mealyStepIdx = 0;
+  mealyOutputHistory = [];
+  const curCharEl = document.getElementById('mealyCurChar');
+  const msgEl = document.getElementById('mealyMsg');
+  if (curCharEl) curCharEl.textContent = '—';
+  if (msgEl) msgEl.textContent = 'تمت إعادة الضبط للحالة الابتدائية S₀.';
+  updateMealyVisuals();
+}
+
+  </script>
+</body>
+</html>
