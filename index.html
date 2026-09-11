@@ -523,6 +523,323 @@
       font-weight: bold;
       font-size: 13.5px;
     }
+  
+    /* ======================================================== */
+    /* SPEAKER FILTER & FOCUS SYSTEM (ZERO EMOJIS)             */
+    /* ======================================================== */
+    .speaker-filter-container {
+      background: #ffffff;
+      border: 1.5px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-top: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 8px 24px rgba(20, 48, 79, 0.06);
+    }
+
+    .filter-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .filter-main-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-indicator-tag {
+      background: rgba(183, 121, 31, 0.15);
+      color: var(--gold);
+      border: 1px solid rgba(183, 121, 31, 0.35);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+
+    .filter-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mode-pill-group {
+      display: inline-flex;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      padding: 3px;
+      border-radius: 10px;
+    }
+
+    .mode-toggle-btn {
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-toggle-btn.active {
+      background: #ffffff;
+      color: var(--navy);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .speaker-filter-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .spk-pill {
+      background: #ffffff;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 16px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .spk-pill:hover {
+      background: var(--cream);
+      border-color: #cbd5e1;
+    }
+
+    .spk-pill.active#pillAll {
+      background: var(--navy);
+      color: #ffffff;
+      border-color: var(--navy);
+      box-shadow: 0 4px 12px rgba(20, 48, 79, 0.2);
+    }
+
+    .spk-pill.active#pillLaith {
+      background: var(--p-laith);
+      color: #ffffff;
+      border-color: var(--p-laith);
+      box-shadow: 0 4px 12px rgba(13, 110, 110, 0.25);
+    }
+
+    .spk-pill.active#pillAym {
+      background: var(--p-aym);
+      color: #ffffff;
+      border-color: var(--p-aym);
+      box-shadow: 0 4px 12px rgba(124, 58, 45, 0.25);
+    }
+
+    .spk-pill.active#pillAbd {
+      background: var(--p-abd);
+      color: #ffffff;
+      border-color: var(--p-abd);
+      box-shadow: 0 4px 12px rgba(20, 48, 79, 0.25);
+    }
+
+    .spk-pill .pill-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .spk-pill.active .pill-dot {
+      background: #ffffff !important;
+    }
+
+    .spk-pill .pill-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.06);
+      color: inherit;
+    }
+
+    .spk-pill.active .pill-badge {
+      background: rgba(255,255,255,0.22);
+      color: #ffffff;
+    }
+
+    /* Recommendation Alert Banner */
+    .filter-rec-alert {
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: rgba(183, 121, 31, 0.08);
+      border: 1.5px solid rgba(183, 121, 31, 0.35);
+      border-right: 5px solid var(--gold);
+      border-radius: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .rec-alert-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .rec-alert-text {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* Speaker Focus Badges */
+    .spk-focus-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    .spk-focus-laith {
+      background: rgba(13, 110, 110, 0.12);
+      color: #074747;
+      border: 1px solid rgba(13, 110, 110, 0.32);
+    }
+
+    .spk-focus-aym {
+      background: rgba(124, 58, 45, 0.12);
+      color: #59251c;
+      border: 1px solid rgba(124, 58, 45, 0.32);
+    }
+
+    .spk-focus-abd {
+      background: rgba(20, 48, 79, 0.12);
+      color: #0d2138;
+      border: 1px solid rgba(20, 48, 79, 0.32);
+    }
+
+    .spk-focus-all {
+      background: rgba(183, 121, 31, 0.14);
+      color: #70470d;
+      border: 1px solid rgba(183, 121, 31, 0.35);
+    }
+
+    .spk-focus-badge .spk-bdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    /* Card Highlighting / Dimming / Hiding Mechanics */
+    .card[data-speaker], .step-box[data-speaker], .speaker-section {
+      transition: all 0.3s ease;
+    }
+
+    /* Highlight Glow on Target Speaker */
+    body.filter-laith .card[data-speaker="laith"],
+    body.filter-laith .step-box[data-speaker="laith"],
+    body.filter-laith .speaker-section.spk-laith {
+      border-color: var(--p-laith) !important;
+      box-shadow: 0 0 0 2px rgba(13, 110, 110, 0.28), var(--shadow) !important;
+    }
+
+    body.filter-aym .card[data-speaker="aym"],
+    body.filter-aym .step-box[data-speaker="aym"],
+    body.filter-aym .speaker-section.spk-aym {
+      border-color: var(--p-aym) !important;
+      box-shadow: 0 0 0 2px rgba(124, 58, 45, 0.28), var(--shadow) !important;
+    }
+
+    body.filter-abd .card[data-speaker="abd"],
+    body.filter-abd .step-box[data-speaker="abd"],
+    body.filter-abd .speaker-section.spk-abd {
+      border-color: var(--p-abd) !important;
+      box-shadow: 0 0 0 2px rgba(20, 48, 79, 0.28), var(--shadow) !important;
+    }
+
+    /* Dimming in Highlight Mode */
+    body.mode-highlight.filter-laith .card[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-laith .step-box[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-laith .speaker-section:not(.spk-laith),
+    body.mode-highlight.filter-aym .card[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-aym .step-box[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-aym .speaker-section:not(.spk-aym),
+    body.mode-highlight.filter-abd .card[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-abd .step-box[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]),
+    body.mode-highlight.filter-abd .speaker-section:not(.spk-abd) {
+      opacity: 0.38;
+      filter: grayscale(35%);
+      transition: opacity 0.3s, filter 0.3s;
+    }
+
+    body.mode-highlight.filter-laith .card[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-laith .step-box[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-laith .speaker-section:not(.spk-laith):hover,
+    body.mode-highlight.filter-aym .card[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-aym .step-box[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-aym .speaker-section:not(.spk-aym):hover,
+    body.mode-highlight.filter-abd .card[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-abd .step-box[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]):hover,
+    body.mode-highlight.filter-abd .speaker-section:not(.spk-abd):hover {
+      opacity: 0.95;
+      filter: none;
+    }
+
+    /* Hiding in Hide Mode */
+    body.mode-hide.filter-laith .card[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
+    body.mode-hide.filter-laith .step-box[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
+    body.mode-hide.filter-laith .speaker-section:not(.spk-laith),
+    body.mode-hide.filter-aym .card[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]),
+    body.mode-hide.filter-aym .step-box[data-speaker]:not([data-speaker="aym"]):not([data-speaker="all"]),
+    body.mode-hide.filter-aym .speaker-section:not(.spk-aym),
+    body.mode-hide.filter-abd .card[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]),
+    body.mode-hide.filter-abd .step-box[data-speaker]:not([data-speaker="abd"]):not([data-speaker="all"]),
+    body.mode-hide.filter-abd .speaker-section:not(.spk-abd) {
+      display: none !important;
+    }
+
+    /* Tab Indicator Tags */
+    .tab-speaker-tag {
+      display: none;
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      margin-right: 6px;
+      font-weight: 800;
+    }
+
+    body.filter-laith .tab-btn[data-tabs-laith] .tab-speaker-tag {
+      display: inline-block;
+      background: var(--p-laith);
+      color: #ffffff;
+    }
+
+    body.filter-aym .tab-btn[data-tabs-aym] .tab-speaker-tag {
+      display: inline-block;
+      background: var(--p-aym);
+      color: #ffffff;
+    }
+
+    body.filter-abd .tab-btn[data-tabs-abd] .tab-speaker-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: #ffffff;
+    }
+
   </style>
 </head>
 <body>
@@ -556,19 +873,72 @@
       </a>
     </div>
 
+    
+    <!-- ==================== SPEAKER FOCUS FILTER BAR ==================== -->
+    <div class="speaker-filter-container" id="speakerFilterContainer">
+      <div class="filter-top-row">
+        <div class="filter-main-title">
+          <span class="filter-indicator-tag">أداة المذاكرة المخصصة</span>
+          <h3 style="font-size: 16.5px; font-weight: 900; color: var(--navy); margin: 0;">تصفية مسار المذاكرة والتركيز حسب المتحدث</h3>
+        </div>
+        <div class="filter-mode-toggle">
+          <span style="font-size: 13px; color: var(--muted); font-weight: 700;">طريقة العرض:</span>
+          <div class="mode-pill-group">
+            <button type="button" class="mode-toggle-btn active" id="modeHighlightBtn" onclick="setFilterMode('highlight')">التركيز البصري (موصى به)</button>
+            <button type="button" class="mode-toggle-btn" id="modeHideBtn" onclick="setFilterMode('hide')">إخفاء البقية (تصفية تامة)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="speaker-filter-pills">
+        <button type="button" class="spk-pill active" id="pillAll" onclick="setSpeakerFilter('all')">
+          <span class="pill-dot" style="background: var(--gold);"></span>
+          <span class="pill-title">المسار الأكاديمي الشامل (موصى به للجميع)</span>
+        </button>
+        <button type="button" class="spk-pill" id="pillLaith" onclick="setSpeakerFilter('laith')">
+          <span class="pill-dot" style="background: var(--p-laith);"></span>
+          <span class="pill-title">مسار ليث (الشرائح 1-4، 11)</span>
+          <span class="pill-badge">3 فصول</span>
+        </button>
+        <button type="button" class="spk-pill" id="pillAym" onclick="setSpeakerFilter('aym')">
+          <span class="pill-dot" style="background: var(--p-aym);"></span>
+          <span class="pill-title">مسار أيمن النزيلي (الشرائح 5-7، 12)</span>
+          <span class="pill-badge">3 فصول</span>
+        </button>
+        <button type="button" class="spk-pill" id="pillAbd" onclick="setSpeakerFilter('abd')">
+          <span class="pill-dot" style="background: var(--p-abd);"></span>
+          <span class="pill-title">مسار عبدالرحمن (الشرائح 8-10، 13)</span>
+          <span class="pill-badge">3 فصول</span>
+        </button>
+      </div>
+
+      <!-- Recommendation Alert Banner (appears when filtering for an individual) -->
+      <div id="filterRecommendationAlert" class="filter-rec-alert" style="display: none;">
+        <div class="rec-alert-badge" id="recAlertBadge">[توصية أكاديمية هامة للفريق]</div>
+        <div class="rec-alert-text" id="recAlertText">
+          على الرغم من أن هذا الفلتر مخصص لمساعدتك في مراجعة محاورك ومسؤولياتك المباشرة أثناء الإلقاء غداً، إلا أنه <b>يُوصى بشدة بقراءة واستيعاب الدليل كاملاً من قِبل جميع أعضاء الفريق</b>.
+          إن فهم الصورة الكلية والترابط بين أجزاء المشروع يضمن سلاسة الانتقال بين المتحدثين أثناء العرض، ويمنحنا القدرة على مساندة بعضنا البعض في حال طرحت الدكتورة رويدا أي سؤال مفاجئ أو طلبت توضيحاً مشتركاً.
+        </div>
+      </div>
+    </div>
+
     <nav class="tabs-nav">
-      <button class="tab-btn active" onclick="switchTab(0)"><span class="badge-num">1</span>المدخل البديهي</button>
-      <button class="tab-btn" onclick="switchTab(1)"><span class="badge-num">2</span>Mealy مقابل Moore</button>
-      <button class="tab-btn" onclick="switchTab(2)"><span class="badge-num">3</span>خطوات التحليل الأربع</button>
-      <button class="tab-btn" onclick="switchTab(3)"><span class="badge-num">4</span>المعمل التفاعلي الحي</button>
-      <button class="tab-btn" onclick="switchTab(4)"><span class="badge-num">5</span>سر انشطار الحالات</button>
-      <button class="tab-btn" onclick="switchTab(5)"><span class="badge-num">6</span>خطة الإلقاء والدفاع</button>
-      <button class="tab-btn" onclick="switchTab(6)"><span class="badge-num">7</span>الاختبار الذاتي</button>
+      <button class="tab-btn active" data-tabs-laith="true" onclick="switchTab(0)"><span class="badge-num">1</span>المدخل البديهي<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" onclick="switchTab(1)"><span class="badge-num">2</span>Mealy مقابل Moore<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-aym="true" onclick="switchTab(2)"><span class="badge-num">3</span>خطوات التحليل الأربع<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-abd="true" onclick="switchTab(3)"><span class="badge-num">4</span>المعمل التفاعلي الحي<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-abd="true" onclick="switchTab(4)"><span class="badge-num">5</span>سر انشطار الحالات<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" data-tabs-abd="true" onclick="switchTab(5)"><span class="badge-num">6</span>خطة الإلقاء والدفاع<span class="tab-speaker-tag">محورك</span></button>
+      <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" data-tabs-abd="true" onclick="switchTab(6)"><span class="badge-num">7</span>الاختبار الذاتي</button>
     </nav>
 
     <!-- ==================== TAB 1: THE INTUITIVE FOUNDATION ==================== -->
     <section class="tab-panel active" id="tab-0">
-      <div class="card">
+      <div class="card" data-speaker="laith">
+        <div class="spk-focus-badge spk-focus-laith">
+          <span class="spk-bdot" style="background:var(--p-laith)"></span>
+          <span>تركيز أساسي: ليث • الشرائح 1-4، 11 (الافتتاحية، المفهوم التأسيسي، والخماسية الرياضية)</span>
+        </div>
         <div class="card-title">
           <span>1. لماذا نحتاج الآلات التتابعية؟ (ما قبل الآلات)</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Sequential vs. Finite Automata</span>
@@ -660,7 +1030,15 @@
 
     <!-- ==================== TAB 2: MEALY VS MOORE ==================== -->
     <section class="tab-panel" id="tab-1">
-      <div class="card">
+      <div class="card" data-speaker="laith">
+        <div class="spk-focus-badge spk-focus-laith" style="margin-left: 10px;">
+          <span class="spk-bdot" style="background:var(--p-laith)"></span>
+          <span>محور ليث: نموذج Mealy (الشريحة 4)</span>
+        </div>
+        <div class="spk-focus-badge spk-focus-aym">
+          <span class="spk-bdot" style="background:var(--p-aym)"></span>
+          <span>محور أيمن: نموذج Moore والمقارنة المعيارية (الشرائح 5، 6)</span>
+        </div>
         <div class="card-title">
           <span>2. المقارنة المعيارية: Mealy مقابل Moore</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Mealy vs. Moore Breakdown</span>
@@ -668,7 +1046,11 @@
 
         <div class="grid-2">
           <!-- Mealy Card -->
-          <div class="step-box" style="border-top:4px solid var(--p-laith);">
+          <div class="step-box" data-speaker="laith" style="border-top:4px solid var(--p-laith);">
+            <div class="spk-focus-badge spk-focus-laith" style="margin-bottom:8px; font-size:11.5px; padding:2px 8px;">
+              <span class="spk-bdot" style="background:var(--p-laith)"></span>
+              <span>تركيز ليث • الشريحة 4</span>
+            </div>
             <h3 style="color:var(--p-laith); font-size:18px; margin-bottom:8px;">نموذج Mealy (الخرج على السهم)</h3>
             <div class="callout callout-info" style="margin:8px 0; padding:10px 14px;">
               <b>المعادلة الرياضية:</b><br>
@@ -684,7 +1066,11 @@
           </div>
 
           <!-- Moore Card -->
-          <div class="step-box" style="border-top:4px solid var(--p-aym);">
+          <div class="step-box" data-speaker="aym" style="border-top:4px solid var(--p-aym);">
+            <div class="spk-focus-badge spk-focus-aym" style="margin-bottom:8px; font-size:11.5px; padding:2px 8px;">
+              <span class="spk-bdot" style="background:var(--p-aym)"></span>
+              <span>تركيز أيمن • الشريحة 5، 6</span>
+            </div>
             <h3 style="color:var(--p-aym); font-size:18px; margin-bottom:8px;">نموذج Moore (الخرج في بطن الحالة)</h3>
             <div class="callout callout-gold" style="margin:8px 0; padding:10px 14px;">
               <b>المعادلة الرياضية:</b><br>
@@ -700,7 +1086,11 @@
           </div>
         </div>
 
-        <div class="callout callout-warn" style="margin-top:24px;">
+        <div class="callout callout-warn" data-speaker="aym" style="margin-top:24px;">
+          <div class="spk-focus-badge spk-focus-aym" style="margin-bottom:6px; font-size:11.5px; padding:2px 8px;">
+            <span class="spk-bdot" style="background:var(--p-aym)"></span>
+            <span>سؤال أيمن الجوهري في المناقشة • الشريحة 6</span>
+          </div>
           <h4 style="margin-bottom:6px;">السؤال الفخ في الامتحان: لماذا خرج Moore أطول ببت واحد دائماً؟</h4>
           <p style="font-size:15px; line-height:1.75;">
             لأن آلة Moore بمجرد تشغيلها تستقر في الحالة الابتدائية <span class="en">q₀</span>، وهذه الحالة لها خرج محدد سلفاً داخل دائرتها، فيظهر هذا الخرج على الشاشة <b>قبل أن يدخل أي رمز</b>!
@@ -717,7 +1107,11 @@
 
     <!-- ==================== TAB 3: 4-STEP ANALYSIS ==================== -->
     <section class="tab-panel" id="tab-2">
-      <div class="card">
+      <div class="card" data-speaker="aym">
+        <div class="spk-focus-badge spk-focus-aym">
+          <span class="spk-bdot" style="background:var(--p-aym)"></span>
+          <span>تركيز أساسي: أيمن • الشرائح 5-7، 12 (المنهجية التحليلية، جداول الحالة، ومخططات الانتقال)</span>
+        </div>
         <div class="card-title">
           <span>3. الخطوات الأربع المنهجية لتحليل أي آلة تتابعية</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Systematic Analysis Method</span>
@@ -851,7 +1245,11 @@
 
     <!-- ==================== TAB 5: STATE SPLITTING ==================== -->
     <section class="tab-panel" id="tab-4">
-      <div class="card">
+      <div class="card" data-speaker="abd">
+        <div class="spk-focus-badge spk-focus-abd">
+          <span class="spk-bdot" style="background:var(--p-abd)"></span>
+          <span>تركيز أساسي: عبدالرحمن • الشريحة 10 (سر انشطار الحالات عند التحويل من Mealy إلى Moore)</span>
+        </div>
         <div class="card-title">
           <span>5. سر انشطار الحالات عند التحويل من Mealy إلى Moore</span>
           <span class="en" style="color:var(--gold); font-size:15px;">State Splitting Secret</span>
@@ -906,14 +1304,18 @@
 
     <!-- ==================== TAB 6: SPEAKER BATTLE PLAN ==================== -->
     <section class="tab-panel" id="tab-5">
-      <div class="card">
+      <div class="card" data-speaker="all">
+        <div class="spk-focus-badge spk-focus-all">
+          <span class="spk-bdot" style="background:var(--gold)"></span>
+          <span>محور مشترك للجميع • خطة المعركة وتوزيع أدوار الإلقاء وسيناريو الدفاع الأكاديمي</span>
+        </div>
         <div class="card-title">
           <span>6. خطة الإلقاء وتوزيع الأدوار وسيناريو الدفاع الأكاديمي</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Speaker Battle Plan & Q-Bank</span>
         </div>
 
         <!-- Speaker 1: Laith -->
-        <div class="speaker-section spk-laith">
+        <div class="speaker-section spk-laith" data-speaker="laith">
           <div class="spk-header">
             <div>
               <h3 style="color:var(--p-laith); font-size:20px; font-weight:800;">1. ليث توفيق الجعفري</h3>
@@ -936,7 +1338,7 @@
         </div>
 
         <!-- Speaker 2: Aymen -->
-        <div class="speaker-section spk-aym">
+        <div class="speaker-section spk-aym" data-speaker="aym">
           <div class="spk-header">
             <div>
               <h3 style="color:var(--p-aym); font-size:20px; font-weight:800;">2. أيمن النزيلي</h3>
@@ -958,7 +1360,7 @@
         </div>
 
         <!-- Speaker 3: Abdulrahman -->
-        <div class="speaker-section spk-abd">
+        <div class="speaker-section spk-abd" data-speaker="abd">
           <div class="spk-header">
             <div>
               <h3 style="color:var(--p-abd); font-size:20px; font-weight:800;">3. عبدالرحمن إسماعيل سيف</h3>
@@ -984,7 +1386,11 @@
 
     <!-- ==================== TAB 7: INTERACTIVE SELF-QUIZ ==================== -->
     <section class="tab-panel" id="tab-6">
-      <div class="card">
+      <div class="card" data-speaker="all">
+        <div class="spk-focus-badge spk-focus-all">
+          <span class="spk-bdot" style="background:var(--gold)"></span>
+          <span>محور مشترك للجميع • بنك الاختبار الذاتي (8 أسئلة امتحانية مصنفة حسب المتحدث)</span>
+        </div>
         <div class="card-title">
           <span>7. بنك الاختبار الذاتي (8 أسئلة امتحانية مع تصحيح فوري)</span>
           <span style="font-size:14.5px; color:var(--navy);" id="quizScore">الدرجة: 0 / 8</span>
@@ -1148,8 +1554,11 @@
     // ==========================================
     // QUIZ DATA AND ENGINE
     // ==========================================
+    
     const QUIZ_DATA = [
       {
+        speaker: 'laith',
+        speakerLabel: 'محور ليث • الشرائح 1-4',
         q: "1. ما هو الفرق الجوهري بين آلة DFA التقليدية والآلة التتابعية (Sequential Machine)؟",
         options: [
           "الآلة التتابعية تقبل أو ترفض فقط دون أي خرج.",
@@ -1161,6 +1570,8 @@
         exp: "الآلة التتابعية مزودة بدالة خرج تجعلها محولاً مستمراً للبيانات (Transducer) تُصدر مخرجات تدفقية مع كل نبضة دخل."
       },
       {
+        speaker: 'laith',
+        speakerLabel: 'محور ليث • الشريحة 4',
         q: "2. في آلة Mealy، تعتمد دالة الخرج λ رياضياً على:",
         options: [
           "الحالة الراهنة فقط.",
@@ -1172,6 +1583,8 @@
         exp: "دالة Mealy هي λ : Q × Σ → Δ، أي ترتبط بالحالة الراهنة ورمز الدخل في نفس اللحظة."
       },
       {
+        speaker: 'aym',
+        speakerLabel: 'محور أيمن • الشريحة 6',
         q: "3. إذا أُدخلت سلسلة طولها n رموز إلى آلة Moore، فكم يكون طول سلسلة الخرج الناتجة؟",
         options: [
           "n",
@@ -1183,6 +1596,8 @@
         exp: "طول خرج Moore دائماً n + 1، لأن الحالة الابتدائية تطلق خرجها المسبق قبل بدء قراءة أي رمز دخل."
       },
       {
+        speaker: 'aym',
+        speakerLabel: 'محور أيمن • الشريحة 5',
         q: "4. ما هي الميزة الرئيسية لآلة Moore مقارنة بآلة Mealy عند التنفيذ العتادي على السيليكون؟",
         options: [
           "تتطلب عدداً أقل من الحالات دائماً.",
@@ -1194,6 +1609,8 @@
         exp: "في Moore الخرج ساكن داخل الحالة ولا يتغير إلا عند نبضة الساعة، مما يحميه من أي تقلبات لحظية على أسلاك الدخل."
       },
       {
+        speaker: 'aym',
+        speakerLabel: 'محور أيمن • الشريحة 7',
         q: "5. ما هو الترتيب الصحيح للخطوات الأربع المنهجية لتحليل الآلات التتابعية؟",
         options: [
           "رسم المخطط ← كتابة المعادلات ← التتبع ← بناء الجدول",
@@ -1205,6 +1622,8 @@
         exp: "الترتيب المعياري: استخراج المعادلات ثم الجدول ثم المخطط ثم تتبع السلوك بالسلاسل النموذجية."
       },
       {
+        speaker: 'abd',
+        speakerLabel: 'محور عبدالرحمن • الشريحة 10',
         q: "6. لماذا تنشطر الحالة (State Splitting) عند تحويل آلة Mealy إلى آلة Moore؟",
         options: [
           "لأن آلة Moore تفقد الذاكرة إذا لم تنشطر الحالات.",
@@ -1216,6 +1635,8 @@
         exp: "في Moore يستحيل أن يكون للحالة الواحدة أكثر من خرج، لذلك إذا استقبلت خروجاً مختلفة في Mealy وجب شطرها لنسخ منفصلة لكل خرج."
       },
       {
+        speaker: 'abd',
+        speakerLabel: 'محور عبدالرحمن • الشريحة 8',
         q: "7. في كاشف التكافؤ الفردي (Moore Parity Detector) في الشريحة 8، ما هو خرج الحالة الابتدائية E؟",
         options: [
           "1",
@@ -1227,6 +1648,8 @@
         exp: "الحالة الابتدائية E تمثل عدد فردي = 0 (زوجي)، وبالتالي خرجها الثابت هو 0."
       },
       {
+        speaker: 'abd',
+        speakerLabel: 'محور عبدالرحمن • الشريحة 9',
         q: "8. في كاشف النمط ab (Mealy Machine) في الشريحة 9، متى يُطلق الخرج 1؟",
         options: [
           "عندما نكون في الحالة S₀ ويصلنا الحرف a.",
@@ -1248,8 +1671,33 @@
       container.innerHTML = '';
 
       QUIZ_DATA.forEach((item, qIdx) => {
+        // If in hide mode and filter is active and doesn't match
+        if (currentFilterMode === 'hide' && currentSpeakerFilter !== 'all' && item.speaker !== currentSpeakerFilter) {
+          return;
+        }
+
         const card = document.createElement('div');
         card.className = 'quiz-card';
+        card.setAttribute('data-speaker', item.speaker);
+
+        // Highlight or dim
+        if (currentSpeakerFilter !== 'all') {
+          if (item.speaker === currentSpeakerFilter) {
+            card.style.borderColor = (currentSpeakerFilter === 'laith') ? 'var(--p-laith)' : (currentSpeakerFilter === 'aym' ? 'var(--p-aym)' : 'var(--p-abd)');
+            card.style.boxShadow = '0 0 0 2px rgba(20,48,79,0.15)';
+            card.style.opacity = '1';
+          } else if (currentFilterMode === 'highlight') {
+            card.style.opacity = '0.4';
+          }
+        }
+
+        // Speaker badge on question
+        const spkBadge = document.createElement('div');
+        spkBadge.className = 'spk-focus-badge ' + (item.speaker === 'laith' ? 'spk-focus-laith' : (item.speaker === 'aym' ? 'spk-focus-aym' : 'spk-focus-abd'));
+        spkBadge.style.fontSize = '11.5px';
+        spkBadge.style.marginBottom = '6px';
+        spkBadge.innerHTML = '<span class="spk-bdot" style="background:' + (item.speaker === 'laith' ? 'var(--p-laith)' : (item.speaker === 'aym' ? 'var(--p-aym)' : 'var(--p-abd)')) + '"></span>' + item.speakerLabel;
+        card.appendChild(spkBadge);
 
         const qTitle = document.createElement('div');
         qTitle.className = 'quiz-q';
@@ -1294,6 +1742,79 @@
       renderLabMealyRibbon();
       renderQuiz();
     });
+  
+    // ==========================================
+    // SPEAKER FILTERING AND VIEW MODE ENGINE
+    // ==========================================
+    let currentSpeakerFilter = 'all';
+    let currentFilterMode = 'highlight'; // 'highlight' or 'hide'
+
+    const SPEAKER_ADVICE = {
+      all: {
+        badge: "[المسار الأكاديمي الشامل مفعّل]",
+        text: "يُعرض الآن الدليل الأكاديمي كاملاً بجميع فصوله وتطبيقاته. يُوصى بأن يقرأ جميع أعضاء الفريق (ليث، أيمن، عبدالرحمن) كامل المحتوى بالترتيب لضمان الاستيعاب الشامل والترابط الذهني التام."
+      },
+      laith: {
+        badge: "[توصية أكاديمية لـ ليث توفيق الجعفري]",
+        text: "يا ليث، يركز هذا الفلتر على محاورك الافتتاحية والمفاهيمية (الشرائح 1 إلى 4 والشريحة 11 البرمجية). ومع ذلك، <b>يُوصى بشدة بقراءة واستيعاب الدليل كاملاً مع أيمن وعبدالرحمن</b>. الإلمام بخطوات التحليل وانشطار الحالات يمنحك ثقة مطلقة أمام الدكتورة رويدا، ويجعلك جاهزاً لمساندة الفريق في أي لحظة عند أي سؤال مباغت."
+      },
+      aym: {
+        badge: "[توصية أكاديمية لـ أيمن النزيلي]",
+        text: "يا أيمن، يركز هذا الفلتر على خطواتك التحليلية الأربع وجداول ومخططات الحالة وتمارين الحضور (الشرائح 5 إلى 7 والشريحة 12). ومع ذلك، <b>يُوصى بشدة بقراءة واستيعاب الدليل كاملاً مع ليث وعبدالرحمن</b>. فهم الفروق الفلسفية لـ Mealy ومحاكاة السلاسل يضمن ترابطاً محكماً بين شرحك وشرح زملائك أثناء العرض."
+      },
+      abd: {
+        badge: "[توصية أكاديمية لـ عبدالرحمن إسماعيل]",
+        text: "يا عبدالرحمن، يركز هذا الفلتر على محاكاة السلاسل الحية، كاشف التكافؤ وكاشف ab، وسر انشطار الحالات (الشرائح 8 إلى 10 والشريحة 13). ومع ذلك، <b>يُوصى بشدة بمراجعة واستيعاب الدليل كاملاً مع ليث وأيمن</b>. الاستيعاب الشامل لخطوات التحليل والتأسيس النظري يضمن إحكام السيطرة التامة على مجريات المناقشة."
+      }
+    };
+
+    function setFilterMode(mode) {
+      currentFilterMode = mode;
+      document.body.classList.remove('mode-highlight', 'mode-hide');
+      document.body.classList.add(mode === 'hide' ? 'mode-hide' : 'mode-highlight');
+      
+      document.getElementById('modeHighlightBtn').classList.toggle('active', mode === 'highlight');
+      document.getElementById('modeHideBtn').classList.toggle('active', mode === 'hide');
+    }
+
+    function setSpeakerFilter(speaker) {
+      currentSpeakerFilter = speaker;
+      
+      // Update body class
+      document.body.classList.remove('filter-all', 'filter-laith', 'filter-aym', 'filter-abd');
+      document.body.classList.add('filter-' + speaker);
+      
+      // Update pill active states
+      document.getElementById('pillAll').classList.toggle('active', speaker === 'all');
+      document.getElementById('pillLaith').classList.toggle('active', speaker === 'laith');
+      document.getElementById('pillAym').classList.toggle('active', speaker === 'aym');
+      document.getElementById('pillAbd').classList.toggle('active', speaker === 'abd');
+      
+      // Show/update recommendation banner
+      const alertBox = document.getElementById('filterRecommendationAlert');
+      const badgeEl = document.getElementById('recAlertBadge');
+      const textEl = document.getElementById('recAlertText');
+      
+      if (speaker === 'all') {
+        alertBox.style.display = 'none';
+      } else {
+        alertBox.style.display = 'block';
+        badgeEl.textContent = SPEAKER_ADVICE[speaker].badge;
+        textEl.innerHTML = SPEAKER_ADVICE[speaker].text;
+      }
+
+      // Re-render Quiz to reflect filtered speaker
+      if (typeof renderQuiz === 'function') {
+        renderQuiz();
+      }
+    }
+
+    // Initialize filter mode on load
+    document.addEventListener('DOMContentLoaded', () => {
+      setFilterMode('highlight');
+      setSpeakerFilter('all');
+    });
+
   </script>
 </body>
 </html>
