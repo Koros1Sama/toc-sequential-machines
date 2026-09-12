@@ -39,7 +39,7 @@
       background: var(--bg);
       color: var(--ink);
       font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
-      line-height: 1.65;
+      line-height: 1.68;
       direction: rtl;
       padding-bottom: 80px;
     }
@@ -62,9 +62,9 @@
       background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
       color: #fff;
       border-radius: 20px;
-      padding: 40px 36px;
+      padding: 38px 34px;
       box-shadow: 0 14px 36px rgba(20, 48, 79, 0.2);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       position: relative;
       overflow: hidden;
     }
@@ -93,7 +93,7 @@
     }
 
     .hero h1 {
-      font-size: 34px;
+      font-size: 32px;
       font-weight: 900;
       margin-bottom: 10px;
       letter-spacing: -0.5px;
@@ -101,11 +101,11 @@
     }
 
     .hero p {
-      font-size: 17px;
+      font-size: 16px;
       color: #cbd5e1;
-      max-width: 880px;
+      max-width: 900px;
       line-height: 1.7;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .team-chips {
@@ -119,7 +119,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 6px 16px;
       border-radius: 999px;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       color: #fff;
       display: flex;
@@ -133,406 +133,57 @@
       border-radius: 50%;
     }
 
-    /* Navigation Tabs */
-    .tabs-nav {
+    /* Quick Action Header Buttons */
+    .hero-actions {
+      margin-top: 22px;
       display: flex;
-      gap: 8px;
-      background: #fff;
-      padding: 8px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      margin-bottom: 28px;
-      overflow-x: auto;
-      scrollbar-width: thin;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 14.5px;
-      font-weight: 700;
-      font-family: inherit;
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
+    .hero-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .tab-btn:hover {
-      background: var(--cream);
-      color: var(--navy);
-    }
-
-    .tab-btn.active {
-      background: var(--navy);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(20, 48, 79, 0.2);
-    }
-
-    .tab-btn .badge-num {
-      background: rgba(255, 255, 255, 0.25);
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 999px;
-    }
-
-    .tab-btn:not(.active) .badge-num {
-      background: var(--line);
-      color: var(--ink);
-    }
-
-    /* Tab Content Panels */
-    .tab-panel {
-      display: none;
-      animation: fadeIn 0.35s ease;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Cards and Grids */
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .card-title {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--navy);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 10px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 860px) {
-      .grid-2, .grid-3 {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Callout Boxes */
-    .callout {
-      padding: 16px 20px;
-      border-radius: 12px;
-      margin: 16px 0;
-      border-right: 5px solid;
-    }
-
-    .callout-info {
-      background: rgba(20, 48, 79, 0.05);
-      border-color: var(--navy);
-      color: var(--navy);
-    }
-
-    .callout-gold {
-      background: rgba(183, 121, 31, 0.08);
-      border-color: var(--gold);
-      color: #784c0c;
-    }
-
-    .callout-success {
-      background: rgba(47, 125, 91, 0.08);
-      border-color: var(--ok);
-      color: #174e36;
-    }
-
-    .callout-warn {
-      background: rgba(161, 61, 45, 0.08);
-      border-color: var(--bad);
-      color: #6b2114;
-    }
-
-    /* Step Pill */
-    .step-box {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 18px;
-      background: #fff;
-      position: relative;
-    }
-
-    .step-badge {
-      display: inline-block;
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-      text-align: center;
-      background: var(--navy);
-      color: #fff;
-      font-weight: 800;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    /* Tables */
-    table.data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 14px 0;
-      font-size: 14.5px;
-    }
-
-    table.data-table th, table.data-table td {
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      text-align: center;
-    }
-
-    table.data-table th {
-      background: var(--cream);
-      color: var(--navy);
-      font-weight: 800;
-    }
-
-    table.data-table tr:hover {
-      background: rgba(244, 239, 230, 0.5);
-    }
-
-    /* Interactive Simulator Elements */
-    .sim-container {
-      background: #fdfdfc;
-      border: 2px solid var(--line);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 16px 0;
-    }
-
-    .sim-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .sim-input {
-      padding: 8px 14px;
-      font-size: 16px;
-      font-family: monospace;
-      border: 1.5px solid var(--line);
-      border-radius: 8px;
-      width: 220px;
-      font-weight: bold;
-      direction: ltr;
-      text-align: center;
-    }
-
-    .btn {
-      background: var(--navy);
-      color: #fff;
-      border: none;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn:hover {
-      background: var(--navy-light);
-      transform: translateY(-1px);
-    }
-
-    .btn-gold {
+    .btn-slides {
       background: var(--gold);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(183, 121, 31, 0.35);
     }
 
-    .btn-gold:hover {
+    .btn-slides:hover {
       background: var(--gold-light);
+      transform: translateY(-2px);
     }
 
-    .btn-outline {
-      background: transparent;
-      color: var(--navy);
-      border: 1.5px solid var(--line);
+    .btn-pdf {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      backdrop-filter: blur(4px);
     }
 
-    .btn-outline:hover {
-      background: var(--cream);
+    .btn-pdf:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
     }
 
-    .sim-ribbon {
-      display: flex;
-      gap: 6px;
-      direction: ltr;
-      justify-content: center;
-      margin: 14px 0;
-    }
-
-    .rib-item {
-      width: 38px;
-      height: 38px;
-      line-height: 34px;
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      text-align: center;
-      font-family: monospace;
-      font-size: 18px;
-      font-weight: 800;
-      background: #fff;
-      color: var(--navy);
-      transition: all 0.25s;
-    }
-
-    .rib-item.active {
-      background: var(--gold);
-      color: #fff;
-      border-color: var(--gold-light);
-      transform: scale(1.18);
-      box-shadow: 0 4px 12px rgba(183, 121, 31, 0.35);
-    }
-
-    .rib-item.done {
-      background: rgba(47, 125, 91, 0.15);
-      border-color: var(--ok);
-      color: var(--ok);
-    }
-
-    .sim-status {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      background: var(--cream);
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-size: 14.5px;
-      border: 1px solid var(--line);
-    }
-
-    /* Quiz Styles */
-    .quiz-card {
-      border: 1.5px solid var(--line);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 18px;
-      background: #fff;
-    }
-
-    .quiz-q {
-      font-size: 16.5px;
-      font-weight: 800;
-      color: var(--navy);
-      margin-bottom: 12px;
-    }
-
-    .quiz-opt {
-      display: block;
-      width: 100%;
-      text-align: right;
-      padding: 10px 16px;
-      margin-bottom: 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #faf8f4;
-      font-family: inherit;
-      font-size: 14.5px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .quiz-opt:hover {
-      background: var(--cream);
-      border-color: var(--navy);
-    }
-
-    .quiz-opt.correct {
-      background: rgba(47, 125, 91, 0.18) !important;
-      border-color: var(--ok) !important;
-      color: #0d4a2b !important;
-      font-weight: bold;
-    }
-
-    .quiz-opt.wrong {
-      background: rgba(161, 61, 45, 0.18) !important;
-      border-color: var(--bad) !important;
-      color: #5c180e !important;
-    }
-
-    .quiz-explanation {
-      display: none;
-      margin-top: 10px;
-      padding: 12px 16px;
-      border-radius: 8px;
-      background: rgba(20, 48, 79, 0.06);
-      font-size: 13.5px;
-      border-right: 4px solid var(--navy);
-    }
-
-    /* Speaker Defense Matrix */
-    .speaker-section {
-      border: 2px solid var(--line);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 24px;
-      background: #fff;
-    }
-
-    .spk-laith { border-color: rgba(13, 110, 110, 0.35); }
-    .spk-aym { border-color: rgba(124, 58, 45, 0.35); }
-    .spk-abd { border-color: rgba(20, 48, 79, 0.35); }
-
-    .spk-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .spk-badge {
-      padding: 4px 14px;
-      border-radius: 999px;
-      color: #fff;
-      font-weight: bold;
-      font-size: 13.5px;
-    }
-  
     /* ======================================================== */
-    /* SPEAKER FILTER & FOCUS SYSTEM (ZERO EMOJIS)             */
+    /* SPEAKER FILTER & FOCUS SYSTEM                           */
     /* ======================================================== */
     .speaker-filter-container {
       background: #ffffff;
       border: 1.5px solid var(--line);
       border-radius: 18px;
       padding: 18px 22px;
-      margin-top: 24px;
       margin-bottom: 22px;
       box-shadow: 0 8px 24px rgba(20, 48, 79, 0.06);
     }
@@ -710,7 +361,7 @@
       border-radius: 999px;
       font-size: 12.5px;
       font-weight: 800;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       letter-spacing: -0.2px;
     }
 
@@ -744,12 +395,7 @@
       border-radius: 50%;
     }
 
-    /* Card Highlighting / Dimming / Hiding Mechanics */
-    .card[data-speaker], .step-box[data-speaker], .speaker-section {
-      transition: all 0.3s ease;
-    }
-
-    /* Highlight Glow on Target Speaker */
+    /* Highlighting & Dimming */
     body.filter-laith .card[data-speaker="laith"],
     body.filter-laith .step-box[data-speaker="laith"],
     body.filter-laith .speaker-section.spk-laith {
@@ -771,7 +417,6 @@
       box-shadow: 0 0 0 2px rgba(20, 48, 79, 0.28), var(--shadow) !important;
     }
 
-    /* Dimming in Highlight Mode */
     body.mode-highlight.filter-laith .card[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
     body.mode-highlight.filter-laith .step-box[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
     body.mode-highlight.filter-laith .speaker-section:not(.spk-laith),
@@ -799,7 +444,6 @@
       filter: none;
     }
 
-    /* Hiding in Hide Mode */
     body.mode-hide.filter-laith .card[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
     body.mode-hide.filter-laith .step-box[data-speaker]:not([data-speaker="laith"]):not([data-speaker="all"]),
     body.mode-hide.filter-laith .speaker-section:not(.spk-laith),
@@ -812,7 +456,7 @@
       display: none !important;
     }
 
-    /* Tab Indicator Tags */
+    /* Tab Indicators */
     .tab-speaker-tag {
       display: none;
       font-size: 11px;
@@ -840,6 +484,454 @@
       color: #ffffff;
     }
 
+    /* Navigation Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      background: #fff;
+      padding: 8px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: var(--cream);
+      color: var(--navy);
+    }
+
+    .tab-btn.active {
+      background: var(--navy);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(20, 48, 79, 0.2);
+    }
+
+    .tab-btn .badge-num {
+      background: rgba(255, 255, 255, 0.25);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .tab-btn:not(.active) .badge-num {
+      background: var(--line);
+      color: var(--ink);
+    }
+
+    /* Tab Content Panels */
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards and Grids */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Intuitive Takeaway Card (60-second clarity) */
+    .intuitive-box {
+      background: linear-gradient(135deg, rgba(20, 48, 79, 0.03) 0%, rgba(183, 121, 31, 0.08) 100%);
+      border: 1.5px solid var(--gold-light);
+      border-right: 6px solid var(--gold);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+    }
+
+    .intuitive-header {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .intuitive-text {
+      font-size: 14.8px;
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    /* Callout Boxes */
+    .callout {
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin: 16px 0;
+      border-right: 5px solid;
+    }
+
+    .callout-gold {
+      background: var(--cream);
+      border-color: var(--gold);
+      color: #4a3810;
+    }
+
+    .callout-info {
+      background: #edf5fc;
+      border-color: var(--navy-light);
+      color: var(--navy-dark);
+    }
+
+    .callout-warn {
+      background: #fdf5e6;
+      border-color: #d97706;
+      color: #78350f;
+    }
+
+    .callout-success {
+      background: #ecfdf5;
+      border-color: var(--ok);
+      color: #064e3b;
+    }
+
+    /* Step Boxes */
+    .step-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .step-box:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14.5px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .data-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 12px 16px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .data-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .data-table tr:nth-child(even) td {
+      background: #faf8f4;
+    }
+
+    /* SVG State Diagram Wrappers */
+    .svg-diagram-wrapper {
+      background: #ffffff;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 18px;
+      margin: 22px 0;
+      box-shadow: 0 4px 16px rgba(20, 48, 79, 0.05);
+      text-align: center;
+    }
+
+    .svg-diagram-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .state-diagram-svg {
+      width: 100%;
+      max-width: 860px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.03));
+    }
+
+    /* Simulator Controls & Ribbon */
+    .sim-controls {
+      display: flex;
+      gap: 10px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sim-btn {
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: scale(1.03);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-light);
+      transform: scale(1.03);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--line);
+    }
+
+    .btn-outline:hover {
+      background: var(--cream);
+    }
+
+    .sim-ribbon {
+      display: flex;
+      gap: 6px;
+      direction: ltr;
+      justify-content: center;
+      margin: 14px 0;
+    }
+
+    .rib-item {
+      width: 38px;
+      height: 38px;
+      line-height: 34px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      text-align: center;
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: 800;
+      background: #fff;
+      color: var(--navy);
+      transition: all 0.25s;
+    }
+
+    .rib-item.active {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold-light);
+      transform: scale(1.18);
+      box-shadow: 0 4px 12px rgba(183, 121, 31, 0.35);
+    }
+
+    .rib-item.done {
+      background: rgba(47, 125, 91, 0.15);
+      border-color: var(--ok);
+      color: var(--ok);
+    }
+
+    .sim-status {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: var(--cream);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      border: 1px solid var(--line);
+    }
+
+    /* Quiz Styles */
+    .quiz-card {
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      background: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-q {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+
+    .quiz-opt {
+      display: block;
+      width: 100%;
+      text-align: right;
+      background: #faf8f4;
+      border: 1px solid var(--line);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-family: inherit;
+      font-size: 14.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt:hover {
+      background: var(--cream);
+      border-color: var(--navy);
+    }
+
+    .quiz-opt.correct {
+      background: rgba(47, 125, 91, 0.18) !important;
+      border-color: var(--ok) !important;
+      color: #0d4a2b !important;
+      font-weight: bold;
+    }
+
+    .quiz-opt.wrong {
+      background: rgba(161, 61, 45, 0.18) !important;
+      border-color: var(--bad) !important;
+      color: #5c180e !important;
+    }
+
+    .quiz-explanation {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: rgba(20, 48, 79, 0.06);
+      font-size: 13.5px;
+      border-right: 4px solid var(--navy);
+    }
+
+    /* Speaker Defense Matrix */
+    .speaker-section {
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 24px;
+      background: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .spk-laith { border-color: rgba(13, 110, 110, 0.35); }
+    .spk-aym { border-color: rgba(124, 58, 45, 0.35); }
+    .spk-abd { border-color: rgba(20, 48, 79, 0.35); }
+
+    .spk-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .spk-badge {
+      padding: 4px 14px;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 13.5px;
+    }
   </style>
 </head>
 <body>
@@ -851,7 +943,7 @@
       <div class="hero-badge">مادة نظرية الحوسبة • إشراف: د. رويدا العامري (2026م)</div>
       <h1>الدليل التفاعلي الشامل لتحليل الآلات التتابعية</h1>
       <p>
-        المرجع التفاعلي الشامل لعبدالرحمن، ليث، وأيمن: استيعاب المفاهيم النظرية من الصفر، فك أسرار آلات Mealy و Moore، محاكاة كواشف الأنماط، وسيناريو الدفاع الأكاديمي لإبهار الدكتورة في عرض الغد.
+        المرجع التفاعلي الشامل لعبدالرحمن، ليث، وأيمن: استيعاب المفاهيم النظرية من الصفر، فك أسرار آلات Mealy و Moore، المخططات البيانية لدوائر الحالات والأسهم، ومحاكاة كواشف الأنماط وسيناريو الدفاع الأكاديمي لإبهار الدكتورة في عرض الغد.
       </p>
       
       <div class="team-chips">
@@ -860,20 +952,17 @@
         <div class="team-chip"><span class="dot" style="background:var(--p-abd)"></span>عبدالرحمن إسماعيل سيف (الشرائح 8-10، 13)</div>
         <div class="team-chip"><span class="dot" style="background:var(--gold)"></span>الفريق معاً (الشريحة 14)</div>
       </div>
+
+      <div class="hero-actions">
+        <a href="presentation.html" target="_blank" class="hero-action-btn btn-slides">
+          <span>عرض الشرائح التقديمية (Slides Deck)</span>
+        </a>
+        <a href="presentation_notes.pdf" target="_blank" class="hero-action-btn btn-pdf">
+          <span>تحميل المذكرة الرسمية كاملة (PDF)</span>
+        </a>
+      </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    
-    <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-      <a href="presentation.html" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #b7791f; color: #ffffff; text-decoration: none; padding: 11px 24px; border-radius: 12px; font-weight: 800; font-size: 14.5px; box-shadow: 0 4px 14px rgba(183,121,31,0.35); transition: transform 0.2s;">
-        <span>عرض الشرائح التقديمية (Slides Deck)</span>
-      </a>
-      <a href="presentation_notes.pdf" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #ffffff; text-decoration: none; padding: 11px 24px; border-radius: 12px; font-weight: 800; font-size: 14.5px; backdrop-filter: blur(4px); transition: background 0.2s;">
-        <span>تحميل المذكرة الرسمية كاملة (PDF)</span>
-      </a>
-    </div>
-
-    
     <!-- ==================== SPEAKER FOCUS FILTER BAR ==================== -->
     <div class="speaker-filter-container" id="speakerFilterContainer">
       <div class="filter-top-row">
@@ -912,7 +1001,7 @@
         </button>
       </div>
 
-      <!-- Recommendation Alert Banner (appears when filtering for an individual) -->
+      <!-- Recommendation Alert Banner -->
       <div id="filterRecommendationAlert" class="filter-rec-alert" style="display: none;">
         <div class="rec-alert-badge" id="recAlertBadge">[توصية أكاديمية هامة للفريق]</div>
         <div class="rec-alert-text" id="recAlertText">
@@ -922,6 +1011,7 @@
       </div>
     </div>
 
+    <!-- Navigation Tabs -->
     <nav class="tabs-nav">
       <button class="tab-btn active" data-tabs-laith="true" onclick="switchTab(0)"><span class="badge-num">1</span>المدخل البديهي<span class="tab-speaker-tag">محورك</span></button>
       <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" onclick="switchTab(1)"><span class="badge-num">2</span>Mealy مقابل Moore<span class="tab-speaker-tag">محورك</span></button>
@@ -939,23 +1029,106 @@
           <span class="spk-bdot" style="background:var(--p-laith)"></span>
           <span>تركيز أساسي: ليث • الشرائح 1-4، 11 (الافتتاحية، المفهوم التأسيسي، والخماسية الرياضية)</span>
         </div>
+
         <div class="card-title">
           <span>1. لماذا نحتاج الآلات التتابعية؟ (ما قبل الآلات)</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Sequential vs. Finite Automata</span>
         </div>
 
-        <p style="font-size:16px; margin-bottom:14px;">
-          تخيل أنك في امتحان، والدكتورة رويدا سألتك فجأة: <b>«يا بني، درسنا الـ DFA والـ NFA لأسابيع... لماذا نوجع رؤوسنا بآلات Mealy و Moore؟ ما الذي ينقص الـ DFA؟»</b>
-        </p>
-
-        <div class="callout callout-gold">
-          <b>الجواب البديهي الحاسم:</b><br>
-          آلة DFA التقليدية هي آلة <b>«صامتة»</b>! تقرأ السلسلة كاملة حرفاً وراء حرف دون أن تنطق ببنت شفة، وفقط عند آخر حرف تقف في مكانها وتقول: <b>(مقبول) أو (مرفوض)</b>.
-          <br>
-          لكن في الحياة الواقعية، هل هذا ما تريده من المعالج، أو من موجه الإنترنت، أو من كيبورد الكمبيوتر؟ قطعاً لا! عندما تضغط زراً في الكيبورد تريد الحرف أن يُطبع فوراً، والراوتر عندما تصله حزمة بيانات يريد توجيهها فوراً دون انتظار إغلاق الإنترنت!
-          <br>
-          <b>إذن:</b> الآلة التتابعية هي ببساطة DFA تمت إضافة لسان ناطق لها يسمى <b>دالة الخرج (Output Function)</b>!
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (ما يجب أن يستقر في ذهنك فوراً):</div>
+          <div class="intuitive-text">
+            تخيل أنك في محل ألعاب: الـ DFA مثل آلة قديمة تضع فيها العملة وتلعب حتى تنتهي اللعبة، وفقط عند آخر لحظة تضيء لمبة إما خضراء <b>(مقبول)</b> أو حمراء <b>(مرفوض)</b> دون أن تعطيك أي جائزة أثناء اللعب!<br>
+            أما <b>الآلة التتابعية (Sequential Machine)</b> فهي مثل لعبة فيديو حديثة: مع كل حركة تضغطها على يد التحكم (الدخل)، يُطلق البطل حركة أو تسمع صوتاً وتكسب نقاطاً فورية (الخرج) ويتم تسجيل ما حدث في الذاكرة لتحديد المرحلة القادمة.<br>
+            <b>الآلة التتابعية ببساطة:</b> هي DFA تم تركيب <b>لسان ناطق</b> لها يسمى <b>دالة الخرج (Output Function)</b> لتتكلم وتصدر مخرجات مستمرة أثناء القراءة!
+          </div>
         </div>
+
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">مقارنة بصرية شاملة: آلة DFA الصامتة مقابل الآلة التتابعية الناطقة (Transducer)</div>
+  <svg viewBox="0 0 880 260" class="state-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr-navy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#14304f" />
+      </marker>
+      <marker id="arr-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#b7791f" />
+      </marker>
+      <marker id="arr-ok" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#2f7d5b" />
+      </marker>
+    </defs>
+
+    <!-- LEFT: DFA BOX -->
+    <rect x="15" y="15" width="410" height="230" rx="14" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5"/>
+    <rect x="15" y="15" width="410" height="36" rx="14" fill="#f4efe6"/>
+    <text x="220" y="38" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="900" fill="#14304f">1. آلة DFA التقليدية (آلة قرار صامتة)</text>
+
+    <!-- Start arrow into q0 -->
+    <path d="M 40 130 L 75 130" stroke="#14304f" stroke-width="2" marker-end="url(#arr-navy)"/>
+    <text x="55" y="122" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="700" fill="#14304f">بداية</text>
+
+    <!-- State q0 -->
+    <circle cx="115" cy="130" r="32" fill="#faf8f4" stroke="#14304f" stroke-width="2.5"/>
+    <text x="115" y="136" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="bold" fill="#14304f">q₀</text>
+
+    <!-- Transition q0 -> q1 -->
+    <path d="M 147 130 L 225 130" stroke="#14304f" stroke-width="2" marker-end="url(#arr-navy)"/>
+    <rect x="175" y="112" width="22" height="18" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="186" y="125" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#14304f">a</text>
+
+    <!-- State q1 (Accepting double circle) -->
+    <circle cx="265" cy="130" r="34" fill="#faf8f4" stroke="#2f7d5b" stroke-width="2.5"/>
+    <circle cx="265" cy="130" r="28" fill="#ffffff" stroke="#2f7d5b" stroke-width="1.8"/>
+    <text x="265" y="136" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="bold" fill="#2f7d5b">q₁</text>
+
+    <!-- Output verdict -->
+    <path d="M 300 130 L 345 130" stroke="#2f7d5b" stroke-dasharray="4,4" stroke-width="2" marker-end="url(#arr-ok)"/>
+    <rect x="350" y="115" width="62" height="30" rx="6" fill="#2f7d5b"/>
+    <text x="381" y="134" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">قبول / رفض</text>
+
+    <text x="220" y="195" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" fill="#5b6774">
+      تقرأ السلسلة كاملة بصمت تام، وفقط عند آخر حرف تقول: مقبول أو مرفوض!
+    </text>
+    <text x="220" y="215" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" font-weight="700" fill="#a13d2d">
+      لا تنتج أي تدفق بيانات أثناء القراءة (No Output Stream)
+    </text>
+
+    <!-- RIGHT: SEQUENTIAL TRANSDUCER BOX -->
+    <rect x="455" y="15" width="410" height="230" rx="14" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5"/>
+    <rect x="455" y="15" width="410" height="36" rx="14" fill="#f4efe6"/>
+    <text x="660" y="38" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="900" fill="#b7791f">2. الآلات التتابعية (محول تدفقي ناطق Transducer)</text>
+
+    <!-- Start arrow into S0 -->
+    <path d="M 480 130 L 515 130" stroke="#14304f" stroke-width="2" marker-end="url(#arr-navy)"/>
+    <text x="495" y="122" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="700" fill="#14304f">بداية</text>
+
+    <!-- State S0 -->
+    <circle cx="555" cy="130" r="32" fill="#faf8f4" stroke="#14304f" stroke-width="2.5"/>
+    <text x="555" y="136" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="bold" fill="#14304f">S₀</text>
+
+    <!-- Transition S0 -> S1 with input/output -->
+    <path d="M 587 130 L 670 130" stroke="#b7791f" stroke-width="2.5" marker-end="url(#arr-gold)"/>
+    <rect x="608" y="108" width="42" height="22" rx="5" fill="#ffffff" stroke="#b7791f" stroke-width="1.5"/>
+    <text x="629" y="123" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#14304f">a / <tspan fill="#b7791f">1</tspan></text>
+
+    <!-- State S1 -->
+    <circle cx="710" cy="130" r="32" fill="#faf8f4" stroke="#b7791f" stroke-width="2.5"/>
+    <text x="710" y="136" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="bold" fill="#b7791f">S₁</text>
+
+    <!-- Continuous stream emitting -->
+    <path d="M 742 130 L 785 130" stroke="#b7791f" stroke-dasharray="3,3" stroke-width="2" marker-end="url(#arr-gold)"/>
+    <rect x="790" y="115" width="65" height="30" rx="6" fill="#b7791f"/>
+    <text x="822" y="134" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#ffffff">z₁, z₂, z₃...</text>
+
+    <text x="660" y="195" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" fill="#5b6774">
+      مع كل رمز دخل، تنطق الآلة برمز خرج فوري عبر دالة الخرج λ
+    </text>
+    <text x="660" y="215" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" font-weight="700" fill="#2f7d5b">
+      توليد تدفق مستمر للبيانات (Continuous Output Stream)
+    </text>
+  </svg>
+</div>
 
         <div class="grid-2" style="margin-top:20px;">
           <div class="step-box">
@@ -963,9 +1136,9 @@
             <h3 style="color:var(--navy); font-size:17px; margin-bottom:8px;">الآلات المحددة التقليدية (DFA / NFA)</h3>
             <ul style="padding-right:20px; font-size:14.5px; line-height:1.8;">
               <li>تتعامل مع المشكلة كـ <b>مسألة قرار (Decision Problem)</b>.</li>
-              <li>لا يوجد أي خرج أثناء القراءة.</li>
-              <li>النتيجة ثنائية حصراً: نعم (Accept) أو لا (Reject).</li>
-              <li>تُستخدم للتحقق من صحة القواعد (Validation).</li>
+              <li>لا يوجد أي خرج أثناء القراءة (صامتة تماماً).</li>
+              <li>النتيجة ثنائية حصراً في النهاية: نعم (Accept) أو لا (Reject).</li>
+              <li>تُستخدم للتحقق من صحة القواعد وصياغة الكلمات (Validation).</li>
             </ul>
           </div>
 
@@ -973,16 +1146,16 @@
             <div class="step-badge">B</div>
             <h3 style="color:var(--gold); font-size:17px; margin-bottom:8px;">الآلات التتابعية (Mealy & Moore)</h3>
             <ul style="padding-right:20px; font-size:14.5px; line-height:1.8;">
-              <li>تتعامل مع المشكلة كـ <b>محول بيانات مستمر (Transducer)</b>.</li>
+              <li>تتعامل مع المشكلة كـ <b>محول تدفقي للبيانات (Transducer)</b>.</li>
               <li>تُنتج رمز خرج مع كل رمز دخل تتم قراءته.</li>
               <li>النتيجة سلسلة خروج متدفقة (Continuous Output Stream).</li>
-              <li>تُستخدم لبناء دوائر المعالجات، التشفير، والتحكم.</li>
+              <li>تُستخدم لبناء دوائر المعالجات، التشفير، والتحكم الرقمي.</li>
             </ul>
           </div>
         </div>
 
         <div class="card-title" style="margin-top:28px;">
-          <span>الخماسية الرياضية الموحدة (The 5-Tuple) بأسلوب مبسط</span>
+          <span>الخماسية الرياضية الموحدة (The 5-Tuple) باللغة البسيطة</span>
         </div>
 
         <p style="font-size:15px; margin-bottom:12px;">
@@ -1039,10 +1212,93 @@
           <span class="spk-bdot" style="background:var(--p-aym)"></span>
           <span>محور أيمن: نموذج Moore والمقارنة المعيارية (الشرائح 5، 6)</span>
         </div>
+
         <div class="card-title">
-          <span>2. المقارنة المعيارية: Mealy مقابل Moore</span>
+          <span>2. المقارنة المعيارية الفاصلة: Mealy مقابل Moore</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Mealy vs. Moore Breakdown</span>
         </div>
+
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (كيف تفرق بينهما بمجرد النظر للرسمة):</div>
+          <div class="intuitive-text">
+            الفرق كله يتلخص في مكان وضع الخرج:<br>
+            1. <b>في ميلي (Mealy):</b> الخرج يسكن <b>على السهم</b> في الهواء بجانب الدخل: <code class="en">a / 1</code>. بمجرد أن يلمس الدخل السلك، يتفاعل فوراً وينطق الخرج كالبرق دون انتظار نبضة الساعة.<br>
+            2. <b>في مور (Moore):</b> الخرج يسكن <b>داخل بطن الدائرة</b>: <code class="en">q₀ / 0</code> والسهم عليه فقط الدخل <code class="en">a</code>. الخرج معزول داخل الحصن ولا يتغير إلا عندما تدق ساعة التوقيت (Clock) وتنتقل الآلة فعلياً إلى حالة جديدة.
+          </div>
+        </div>
+
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">تشريح دوائر الحالات: أين يوضع الخرج في آلة ميلي مقابل آلة مور؟</div>
+  <svg viewBox="0 0 880 300" class="state-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr2-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#0d6e6e" />
+      </marker>
+      <marker id="arr2-rust" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#7c3a2d" />
+      </marker>
+    </defs>
+
+    <!-- LEFT: MEALY ANATOMY -->
+    <rect x="15" y="15" width="410" height="270" rx="14" fill="#ffffff" stroke="#0d6e6e" stroke-width="1.5"/>
+    <rect x="15" y="15" width="410" height="36" rx="14" fill="rgba(13, 110, 110, 0.1)"/>
+    <text x="220" y="38" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="900" fill="#0d6e6e">تشريح آلة Mealy (الخرج يسكن على السهم)</text>
+
+    <!-- Mealy Circle -->
+    <circle cx="120" cy="145" r="44" fill="#ffffff" stroke="#0d6e6e" stroke-width="3"/>
+    <text x="120" y="152" text-anchor="middle" font-family="Cairo, sans-serif" font-size="20" font-weight="900" fill="#0d6e6e">S₀</text>
+
+    <!-- Callout pointing to inside of circle -->
+    <path d="M 120 90 L 120 100" stroke="#0d6e6e" stroke-width="1.5"/>
+    <rect x="35" y="60" width="170" height="30" rx="6" fill="rgba(13, 110, 110, 0.12)" stroke="rgba(13, 110, 110, 0.3)"/>
+    <text x="120" y="79" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" font-weight="bold" fill="#0d6e6e">الدائرة تحتوي فقط اسم الحالة!</text>
+
+    <!-- Transition arrow leaving S0 -->
+    <path d="M 164 145 L 350 145" stroke="#0d6e6e" stroke-width="3" marker-end="url(#arr2-teal)"/>
+
+    <!-- Label on the arrow: input / output -->
+    <rect x="220" y="115" width="75" height="34" rx="6" fill="#ffffff" stroke="#0d6e6e" stroke-width="2"/>
+    <text x="257" y="137" text-anchor="middle" font-family="Cairo, sans-serif" font-size="15" font-weight="900" fill="#14304f">a / <tspan fill="#0d6e6e">1</tspan></text>
+
+    <!-- Pointer to arrow label -->
+    <path d="M 257 195 L 257 155" stroke="#0d6e6e" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <rect x="175" y="195" width="170" height="42" rx="6" fill="#f4efe6" stroke="#e4ddcf"/>
+    <text x="260" y="212" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#14304f">الدخل: a  |  الخرج: 1</text>
+    <text x="260" y="228" text-anchor="middle" font-family="Cairo, sans-serif" font-size="10.5" fill="#0d6e6e">الخرج يظهر فوراً بمجرد وصول الدخل!</text>
+
+    <!-- RIGHT: MOORE ANATOMY -->
+    <rect x="455" y="15" width="410" height="270" rx="14" fill="#ffffff" stroke="#7c3a2d" stroke-width="1.5"/>
+    <rect x="455" y="15" width="410" height="36" rx="14" fill="rgba(124, 58, 45, 0.1)"/>
+    <text x="660" y="38" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="900" fill="#7c3a2d">تشريح آلة Moore (الخرج يسكن في بطن الدائرة)</text>
+
+    <!-- Moore Circle Split -->
+    <circle cx="560" cy="145" r="46" fill="#ffffff" stroke="#7c3a2d" stroke-width="3"/>
+    <line x1="514" y1="145" x2="606" y2="145" stroke="#7c3a2d" stroke-width="2"/>
+    <text x="560" y="134" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" font-weight="900" fill="#14304f">q₀</text>
+    <text x="560" y="172" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="bold" fill="#7c3a2d">خرج: 0</text>
+
+    <!-- Pointer to top of Moore circle -->
+    <path d="M 520 90 L 540 115" stroke="#7c3a2d" stroke-width="1.5"/>
+    <rect x="465" y="60" width="115" height="28" rx="5" fill="rgba(124, 58, 45, 0.12)" stroke="rgba(124, 58, 45, 0.3)"/>
+    <text x="522" y="78" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#7c3a2d">اسم الحالة بالأعلى</text>
+
+    <!-- Pointer to bottom of Moore circle -->
+    <path d="M 520 220 L 540 180" stroke="#7c3a2d" stroke-width="1.5"/>
+    <rect x="465" y="220" width="125" height="28" rx="5" fill="rgba(124, 58, 45, 0.12)" stroke="rgba(124, 58, 45, 0.3)"/>
+    <text x="527" y="238" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#7c3a2d">الخرج محفوظ بالأسفل</text>
+
+    <!-- Transition arrow leaving Moore state: ONLY INPUT -->
+    <path d="M 606 145 L 790 145" stroke="#7c3a2d" stroke-width="3" marker-end="url(#arr2-rust)"/>
+    <rect x="675" y="125" width="45" height="26" rx="6" fill="#ffffff" stroke="#7c3a2d" stroke-width="2"/>
+    <text x="697" y="143" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="900" fill="#7c3a2d">a</text>
+
+    <!-- Pointer to arrow -->
+    <path d="M 697 195 L 697 155" stroke="#7c3a2d" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <rect x="615" y="195" width="170" height="42" rx="6" fill="#f4efe6" stroke="#e4ddcf"/>
+    <text x="700" y="212" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#14304f">السهم يحمل الدخل فقط!</text>
+    <text x="700" y="228" text-anchor="middle" font-family="Cairo, sans-serif" font-size="10.5" fill="#7c3a2d">الخرج محمي ولا يتأثر بضوضاء الأسلاك</text>
+  </svg>
+</div>
 
         <div class="grid-2">
           <!-- Mealy Card -->
@@ -1055,7 +1311,7 @@
             <div class="callout callout-info" style="margin:8px 0; padding:10px 14px;">
               <b>المعادلة الرياضية:</b><br>
               <span class="en" style="font-weight:bold; font-size:16px;">λ : Q × Σ → Δ</span><br>
-              الخرج دالة تعتمد على <b>الحالة الحالية والدخل الحالي معاً</b>.
+              الخرج دالة تعتمد على <b>الحالة الحالية والدخل الحالي معاً</b> في نفس اللحظة.
             </div>
             <ul style="padding-right:20px; font-size:14px; line-height:1.8;">
               <li><b>مكان الكتابة:</b> على سهم الانتقال بجانب الدخل: <span class="en">input / output</span> (مثل <code>a/1</code>).</li>
@@ -1075,13 +1331,13 @@
             <div class="callout callout-gold" style="margin:8px 0; padding:10px 14px;">
               <b>المعادلة الرياضية:</b><br>
               <span class="en" style="font-weight:bold; font-size:16px;">λ : Q → Δ</span><br>
-              الخرج دالة تعتمد على <b>الحالة الحالية فقط</b>، ولا دخل للمدخلات به.
+              الخرج دالة تعتمد على <b>الحالة الحالية فقط</b>، ولا علاقة للدخل اللحظي به.
             </div>
             <ul style="padding-right:20px; font-size:14px; line-height:1.8;">
               <li><b>مكان الكتابة:</b> داخل دائرة الحالة أسفل اسمها: <span class="en">State / Output</span> (مثل <code>q₀ / 0</code>).</li>
               <li><b>الاستجابة:</b> متزامنة ومستقرة؛ لا يتغير الخرج إلا عند حدوث نبضة الساعة وانتقال الحالة فعلياً.</li>
               <li><b>طول سلسلة الخرج:</b> أطول ببت واحد: <span class="en">|Output| = |Input| + 1</span>.</li>
-              <li><b>الأمان العتادي:</b> معزولة تماماً عن الضوضاء والتقلبات اللحظية (Glitch-Free).</li>
+              <li><b>الأمان العتادي:</b> معزولة تماماً عن الضوضاء والتقلبات اللحظية على أسلاك الدخل (Glitch-Free).</li>
             </ul>
           </div>
         </div>
@@ -1093,13 +1349,10 @@
           </div>
           <h4 style="margin-bottom:6px;">السؤال الفخ في الامتحان: لماذا خرج Moore أطول ببت واحد دائماً؟</h4>
           <p style="font-size:15px; line-height:1.75;">
-            لأن آلة Moore بمجرد تشغيلها تستقر في الحالة الابتدائية <span class="en">q₀</span>، وهذه الحالة لها خرج محدد سلفاً داخل دائرتها، فيظهر هذا الخرج على الشاشة <b>قبل أن يدخل أي رمز</b>!
-            <br>
-            فلو أدخلت السلسلة <code class="en">10110</code> (طولها 5 رموز):
-            <br>
-            - في Mealy: يُنتج 5 بتات خرج.
-            <br>
-            - في Moore: يُنتج 6 بتات خرج (البت الأول هو خرج الحالة الابتدائية، تليه 5 بتات للانتقالات الخمسة).
+            لأن آلة Moore بمجرد تشغيلها تستقر في الحالة الابتدائية <span class="en">q₀</span>، وهذه الحالة لها خرج محدد سلفاً مسجل في بطن دائرتها، فيظهر هذا الخرج على الشاشة فوراً <b>قبل أن يدخل أي رمز</b>!<br>
+            فلو أدخلت السلسلة <code class="en">10110</code> (طولها 5 رموز):<br>
+            - في Mealy: يُنتج 5 بتات خرج (مع كل رمز خرج).<br>
+            - في Moore: يُنتج 6 بتات خرج (البت الأول خرج الحالة الابتدائية، تليه 5 بتات للانتقالات الخمسة: <span class="en">|Input| + 1</span>).
           </p>
         </div>
       </div>
@@ -1112,22 +1365,64 @@
           <span class="spk-bdot" style="background:var(--p-aym)"></span>
           <span>تركيز أساسي: أيمن • الشرائح 5-7، 12 (المنهجية التحليلية، جداول الحالة، ومخططات الانتقال)</span>
         </div>
+
         <div class="card-title">
           <span>3. الخطوات الأربع المنهجية لتحليل أي آلة تتابعية</span>
-          <span class="en" style="color:var(--gold); font-size:15px;">Systematic Analysis Method</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Systematic Analysis Pipeline</span>
         </div>
 
-        <p style="font-size:15.5px; margin-bottom:18px;">
-          إذا أعطتك الدكتورة دائرة منطقية أو مسألة وطلبت تحليلها، اتبع هذه الخطوات الأربع بالترتيب، وستحصل على الدرجة الكاملة بلا شك:
-        </p>
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (خريطة الطريق المباشرة لحل أي مسألة):</div>
+          <div class="intuitive-text">
+            مهما كانت الدائرة المعطاة في الامتحان، اتبع الخطوات الأربع المتسلسلة التالية وستصل للحل الرياضي المضمون 100%:<br>
+            1. <b>استخراج المعادلات:</b> اقرأ معادلات مداخل عناصر الذاكرة (Flip-Flops) ومعادلة الخرج من بوابات الدائرة المنطقية.<br>
+            2. <b>تفريغ الجدول:</b> املأ جدول الانتقال: (الحالة الحالية + الدخل) ينتجان (الحالة التالية + الخرج).<br>
+            3. <b>رسم المخطط:</b> ارسم دوائر الحالات والأسهم الموجهة بناءً على أسطر الجدول.<br>
+            4. <b>تتبع السلوك:</b> خذ سلسلة أرقام تجريبية وافحص المخرجات للتأكد من الوظيفة الحقيقية للدائرة.
+          </div>
+        </div>
 
-        <div class="grid-2">
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">خريطة التدفق المنهجية: الخطوات الأربع لتحليل أي آلة تتابعية</div>
+  <svg viewBox="0 0 880 160" class="state-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="20" width="185" height="110" rx="12" fill="#ffffff" stroke="#14304f" stroke-width="2"/>
+    <rect x="15" y="20" width="185" height="30" rx="12" fill="#14304f"/>
+    <text x="107" y="40" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13" font-weight="bold" fill="#ffffff">الخطوة 1: المعادلات</text>
+    <text x="107" y="75" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#14304f">معادلات الدخل والخرج</text>
+    <text x="107" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#5b6774">D_A = A·x + B·x'</text>
+
+    <path d="M 200 75 L 235 75" stroke="#14304f" stroke-width="3" marker-end="url(#arr-navy)"/>
+
+    <rect x="240" y="20" width="185" height="110" rx="12" fill="#ffffff" stroke="#b7791f" stroke-width="2"/>
+    <rect x="240" y="20" width="185" height="30" rx="12" fill="#b7791f"/>
+    <text x="332" y="40" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13" font-weight="bold" fill="#ffffff">الخطوة 2: الجدول</text>
+    <text x="332" y="75" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#14304f">جدول الانتقال والخرج</text>
+    <text x="332" y="98" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" fill="#5b6774">Present | Next | Out</text>
+
+    <path d="M 425 75 L 460 75" stroke="#b7791f" stroke-width="3" marker-end="url(#arr-gold)"/>
+
+    <rect x="465" y="20" width="185" height="110" rx="12" fill="#ffffff" stroke="#0d6e6e" stroke-width="2"/>
+    <rect x="465" y="20" width="185" height="30" rx="12" fill="#0d6e6e"/>
+    <text x="557" y="40" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13" font-weight="bold" fill="#ffffff">الخطوة 3: المخطط</text>
+    <text x="557" y="75" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#14304f">رسم الدوائر والأسهم</text>
+    <text x="557" y="98" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" fill="#5b6774">State Diagram Graph</text>
+
+    <path d="M 650 75 L 685 75" stroke="#0d6e6e" stroke-width="3" marker-end="url(#arr-navy)"/>
+
+    <rect x="690" y="20" width="175" height="110" rx="12" fill="#ffffff" stroke="#2f7d5b" stroke-width="2"/>
+    <rect x="690" y="20" width="175" height="30" rx="12" fill="#2f7d5b"/>
+    <text x="777" y="40" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13" font-weight="bold" fill="#ffffff">الخطوة 4: التتبع</text>
+    <text x="777" y="75" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#14304f">فحص سلوك السلاسل</text>
+    <text x="777" y="98" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" fill="#5b6774">Trace & Verification</text>
+  </svg>
+</div>
+
+        <div class="grid-2" style="margin-top:20px;">
           <div class="step-box">
             <div class="step-badge">1</div>
             <h3 style="color:var(--navy); font-size:17px; margin-bottom:6px;">استخراج معادلات الدخل والخرج</h3>
             <p style="font-size:14px; color:var(--ink); line-height:1.7;">
-              كتابة المعادلات البولينية لمداخل عناصر الذاكرة (Flip-Flops) مثل <span class="en">D, JK, T</span> ومعادلة الخرج <span class="en">Z</span> كتابع للحالة الراهنة والدخل.
-              <br>
+              كتابة المعادلات البولينية لمداخل عناصر الذاكرة (Flip-Flops) مثل <span class="en">D, JK, T</span> ومعادلة الخرج <span class="en">Z</span> كتابع للحالة الراهنة والدخل.<br>
               <b>مثال:</b> <code class="en">D_A = A·x + B·x'</code> و <code class="en">Z = A·B</code>.
             </p>
           </div>
@@ -1167,80 +1462,175 @@
 
     <!-- ==================== TAB 4: INTERACTIVE LAB ==================== -->
     <section class="tab-panel" id="tab-3">
-      
-      <!-- Experiment 1: Moore Parity Detector -->
-      <div class="card">
+      <!-- Lab 1: Moore Parity Detector -->
+      <div class="card" data-speaker="abd">
+        <div class="spk-focus-badge spk-focus-abd">
+          <span class="spk-bdot" style="background:var(--p-abd)"></span>
+          <span>تركيز أساسي: عبدالرحمن • الشريحة 8 (التتبع العملي المباشر لكاشف التكافؤ Parity)</span>
+        </div>
+
         <div class="card-title">
           <span>المختبر 1: محاكي كاشف التكافؤ الفردي (آلة Moore — الشريحة 8)</span>
-          <span class="en" style="color:var(--navy); font-size:14px;">Odd Parity Detector Simulator</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Odd Parity Detector Simulator</span>
+        </div>
+
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (وظيفة كاشف التكافؤ):</div>
+          <div class="intuitive-text">
+            هذه الآلة تعد كم حرف <code>a</code> ظهر حتى الآن في السلسلة:
+            - إذا كان عدد أحرف a زوجياً (0، 2، 4...)، تقف الآلة في الحالة <b>E (زوجي)</b> ويكون خرجها <b>0</b>.<br>
+            - إذا كان عدد أحرف a فردياً (1، 3، 5...)، تنتقل الآلة للحالة <b>O (فردي)</b> ويكون خرجها <b>1</b>.<br>
+            - أما الحرف <code>b</code> فلا يغير العدد إطلاقاً، فتدور الآلة سهم دوران ذاتي (Self-loop) لتبقى في نفس حالتها دون تغيير!
+          </div>
         </div>
 
         <p style="font-size:15px; margin-bottom:14px;">
-          <b>فكرة الآلة:</b> تكتشف هل عدد أحرف <code>a</code> المقروءة حتى الآن فردي أم زوجي؟
-          إذا كان فردياً تخرج <b>1</b>، وإذا كان زوجياً تخرج <b>0</b>. الحرف <code>b</code> لا يغير الحالة.
+          <b>المخطط الحي متصل بأزرار المحاكي:</b> اضغط على «خطوة تالية» وشاهد الدائرة النشطة تضيء وتنبض بلون ذهبي في الرسمة أدناه مع كل نبضة دخل!
         </p>
 
-        <div class="sim-container">
-          <div class="sim-controls">
-            <label style="font-weight:bold; font-size:14.5px;">سلسلة الدخل التجريبية:</label>
-            <input type="text" id="labParityInput" class="sim-input" value="aabab" placeholder="مثال: aabab">
-            <button class="btn btn-gold" onclick="loadCustomParity()">تطبيق السلسلة</button>
-            <button class="btn" onclick="stepLabParity()">خطوة بخطوة ▶</button>
-            <button class="btn btn-outline" onclick="resetLabParity()">إعادة ضبط ↺</button>
-          </div>
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">المخطط البياني الحي لآلة كاشف التكافؤ (Moore Machine) — متفاعل مع أزرار المحاكي أدناه</div>
+  <svg viewBox="0 0 760 280" class="state-diagram-svg" id="svgParityMachine" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 120 150 L 180 150" stroke="#14304f" stroke-width="2.5" marker-end="url(#arr-navy)"/>
+    <text x="145" y="140" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="800" fill="#14304f">البداية (q₀)</text>
 
-          <!-- Simulation Ribbon -->
-          <div class="sim-ribbon" id="labParityRibbon"></div>
+    <!-- State E (Even) -->
+    <g id="svg_node_E" transform="translate(240, 150)">
+      <circle id="svg_circ_E" r="48" fill="#fef9ee" stroke="#b7791f" stroke-width="5" style="transition: all 0.3s;"/>
+      <line x1="-48" y1="0" x2="48" y2="0" stroke="#14304f" stroke-width="1.5" />
+      <text x="0" y="-12" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" font-weight="900" fill="#14304f">E (زوجي)</text>
+      <text id="svg_txt_E_out" x="0" y="26" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="900" fill="#b7791f">خرج: 0</text>
+    </g>
 
-          <!-- Status Box -->
-          <div class="sim-status">
-            <span>الحالة الحالية: <b id="labParityState" style="color:var(--navy); font-size:16px;">E (زوجي)</b></span>
-            <span style="color:var(--line);">|</span>
-            <span>الرمز المقروء: <b id="labParityChar" style="color:var(--gold); font-size:16px;">—</b></span>
-            <span style="color:var(--line);">|</span>
-            <span>سلسلة الخرج التراكمية: <b id="labParityOut" style="color:var(--ok); font-family:monospace; font-size:16px;">0</b></span>
-            <span style="color:var(--line);">|</span>
-            <span id="labParityDesc" style="color:var(--muted);">الحالة الابتدائية E تعطي خرج 0 قبل بدء القراءة</span>
-          </div>
+    <!-- State O (Odd) -->
+    <g id="svg_node_O" transform="translate(520, 150)">
+      <circle id="svg_circ_O" r="48" fill="#ffffff" stroke="#14304f" stroke-width="3" style="transition: all 0.3s;"/>
+      <line x1="-48" y1="0" x2="48" y2="0" stroke="#14304f" stroke-width="1.5" />
+      <text x="0" y="-12" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" font-weight="900" fill="#14304f">O (فردي)</text>
+      <text id="svg_txt_O_out" x="0" y="26" text-anchor="middle" font-family="Cairo, sans-serif" font-size="16" font-weight="900" fill="#2f7d5b">خرج: 1</text>
+    </g>
+
+    <path id="svg_edge_E_O" d="M 276 116 C 340 70, 420 70, 484 116" fill="none" stroke="#14304f" stroke-width="3" marker-end="url(#arr-navy)" style="transition: stroke 0.3s;"/>
+    <rect x="365" y="65" width="30" height="24" rx="5" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5"/>
+    <text x="380" y="82" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#14304f">a</text>
+
+    <path id="svg_edge_O_E" d="M 484 184 C 420 230, 340 230, 276 184" fill="none" stroke="#14304f" stroke-width="3" marker-end="url(#arr-navy)" style="transition: stroke 0.3s;"/>
+    <rect x="365" y="200" width="30" height="24" rx="5" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5"/>
+    <text x="380" y="217" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#14304f">a</text>
+
+    <path id="svg_edge_E_self" d="M 215 116 C 170 50, 220 40, 240 100" fill="none" stroke="#5b6774" stroke-width="2.2" marker-end="url(#arr-navy)"/>
+    <rect x="180" y="45" width="26" height="20" rx="4" fill="#ffffff" stroke="#e4ddcf"/>
+    <text x="193" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#5b6774">b</text>
+
+    <path id="svg_edge_O_self" d="M 545 116 C 590 50, 540 40, 520 100" fill="none" stroke="#5b6774" stroke-width="2.2" marker-end="url(#arr-navy)"/>
+    <rect x="555" y="45" width="26" height="20" rx="4" fill="#ffffff" stroke="#e4ddcf"/>
+    <text x="568" y="60" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#5b6774">b</text>
+  </svg>
+</div>
+
+        <div class="sim-controls">
+          <button class="sim-btn btn-gold" onclick="stepLabParity()">خطوة تالية (Next Step)</button>
+          <button class="sim-btn btn-outline" onclick="resetLabParity()">إعادة ضبط (Reset)</button>
+          <input type="text" id="labParityInput" value="aabab" style="padding:8px 12px; border-radius:8px; border:1.5px solid var(--line); font-family:monospace; font-size:16px; width:140px; text-align:center;">
+          <button class="sim-btn btn-navy" onclick="loadCustomParity()">تحميل سلسلة جديدة</button>
+        </div>
+
+        <div class="sim-ribbon" id="labParityRibbon"></div>
+
+        <div class="sim-status">
+          <div><b>الحالة الراهنة:</b> <span id="labParityState" style="color:var(--gold); font-weight:bold;">E (زوجي)</span></div>
+          <div><b>الرمز المقروء:</b> <span id="labParityChar" style="font-family:monospace; font-weight:bold;">—</span></div>
+          <div><b>سلسلة الخرج التراكمية:</b> <span id="labParityOut" class="en" style="color:var(--ok); font-weight:bold; font-size:17px;">0</span></div>
+        </div>
+
+        <div id="labParityDesc" style="text-align:center; font-size:14px; margin-top:10px; color:var(--muted);">
+          اضغط «خطوة تالية» لتتبع انتقال الحالة نبضة بنبضة مع حركة الدوائر والأسهم أعلاه.
         </div>
       </div>
 
-      <!-- Experiment 2: Mealy ab Detector -->
-      <div class="card" style="margin-top:24px;">
+      <!-- Lab 2: Mealy Sequence Detector ab -->
+      <div class="card" data-speaker="abd" style="margin-top:24px;">
+        <div class="spk-focus-badge spk-focus-abd">
+          <span class="spk-bdot" style="background:var(--p-abd)"></span>
+          <span>تركيز أساسي: عبدالرحمن • الشريحة 9 (التتبع العملي المباشر لكاشف النمط ab)</span>
+        </div>
+
         <div class="card-title">
           <span>المختبر 2: محاكي كاشف النمط ab اللحظي (آلة Mealy — الشريحة 9)</span>
-          <span class="en" style="color:var(--p-laith); font-size:14px;">Sequence Detector ab Simulator</span>
+          <span class="en" style="color:var(--gold); font-size:15px;">Sequence Detector ab Simulator</span>
+        </div>
+
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (كيف يصطاد النمط ab):</div>
+          <div class="intuitive-text">
+            الآلة تبدأ في <b>S₀</b> بانتظار الحرف الأول من النمط وهو <code>a</code>.<br>
+            - إذا جاء <code>a</code>، تنتقل إلى <b>S₁</b> (تقول لنفسها: ممتاز، لقد رأيت a، والآن أنا أنتظر b ليكتمل النمط).<br>
+            - في <b>S₁</b>، إذا جاء <code>b</code> فوراً، يكتمل النمط <code class="en">ab</code> وتطلق الخرج <b>1</b> لحظياً على السهم وتعود إلى S₀ لتصطاد نمطاً جديداً!<br>
+            - وإذا لم يأتِ النمط المطلوب، يكون الخرج <b>0</b> دائماً.
+          </div>
         </div>
 
         <p style="font-size:15px; margin-bottom:14px;">
-          <b>فكرة الآلة:</b> مراقبة التدفق واكتشاف النمط <code>ab</code> فور اكتماله. بمجرد أن نكون في الحالة $S_1$ (التي تعني رأينا $a$) ويصل الحرف $b$، تُطلق الآلة الخرج <b>1</b> فوراً وتعود إلى $S_0$.
+          <b>المخطط الحي متصل بأزرار المحاكي:</b> عند اكتمال النمط ab، شاهد سهم الانتقال الأخضر ومستطيل الخرج <code class="en">b/1</code> وهو يتوهج بالأخضر فوراً!
         </p>
 
-        <div class="sim-container">
-          <div class="sim-controls">
-            <label style="font-weight:bold; font-size:14.5px;">سلسلة الدخل التجريبية:</label>
-            <input type="text" id="labMealyInput" class="sim-input" value="aabbab" placeholder="مثال: aabbab">
-            <button class="btn btn-gold" onclick="loadCustomMealy()">تطبيق السلسلة</button>
-            <button class="btn" onclick="stepLabMealy()">خطوة بخطوة ▶</button>
-            <button class="btn btn-outline" onclick="resetLabMealy()">إعادة ضبط ↺</button>
-          </div>
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">المخطط البياني الحي لكاشف النمط ab (Mealy Machine) — متفاعل مع أزرار المحاكي أدناه</div>
+  <svg viewBox="0 0 760 280" class="state-diagram-svg" id="svgMealyMachine" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 120 150 L 180 150" stroke="#14304f" stroke-width="2.5" marker-end="url(#arr-navy)"/>
+    <text x="145" y="140" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="800" fill="#14304f">البداية</text>
 
-          <!-- Simulation Ribbon -->
-          <div class="sim-ribbon" id="labMealyRibbon"></div>
+    <!-- State S0 -->
+    <g id="svg_node_S0" transform="translate(240, 150)">
+      <circle id="svg_circ_S0" r="46" fill="#fef9ee" stroke="#b7791f" stroke-width="5" style="transition: all 0.3s;"/>
+      <text x="0" y="6" text-anchor="middle" font-family="Cairo, sans-serif" font-size="20" font-weight="900" fill="#14304f">S₀</text>
+      <text x="0" y="24" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" fill="#5b6774">انتظار a</text>
+    </g>
 
-          <!-- Status Box -->
-          <div class="sim-status">
-            <span>الحالة الحالية: <b id="labMealyState" style="color:var(--p-laith); font-size:16px;">S₀</b></span>
-            <span style="color:var(--line);">|</span>
-            <span>الرمز المقروء: <b id="labMealyChar" style="color:var(--gold); font-size:16px;">—</b></span>
-            <span style="color:var(--line);">|</span>
-            <span>سلسلة الخرج التراكمية: <b id="labMealyOut" style="color:var(--ok); font-family:monospace; font-size:16px;">—</b></span>
-            <span style="color:var(--line);">|</span>
-            <span id="labMealyDesc" style="color:var(--muted);">جاهزة لبدء التتبع؛ انقر على خطوة بخطوة</span>
-          </div>
+    <!-- State S1 -->
+    <g id="svg_node_S1" transform="translate(520, 150)">
+      <circle id="svg_circ_S1" r="46" fill="#ffffff" stroke="#14304f" stroke-width="3" style="transition: all 0.3s;"/>
+      <text x="0" y="6" text-anchor="middle" font-family="Cairo, sans-serif" font-size="20" font-weight="900" fill="#14304f">S₁</text>
+      <text x="0" y="24" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" fill="#5b6774">رصدنا a</text>
+    </g>
+
+    <path id="svg_edge_S0_S1" d="M 276 116 C 340 70, 420 70, 484 116" fill="none" stroke="#14304f" stroke-width="3" marker-end="url(#arr-navy)" style="transition: all 0.3s;"/>
+    <rect x="355" y="65" width="50" height="24" rx="5" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5"/>
+    <text x="380" y="82" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13" font-weight="bold" fill="#14304f">a / <tspan fill="#b7791f">0</tspan></text>
+
+    <path id="svg_edge_S1_S0" d="M 484 184 C 420 230, 340 230, 276 184" fill="none" stroke="#14304f" stroke-width="3" marker-end="url(#arr-navy)" style="transition: all 0.3s;"/>
+    <rect id="svg_rect_detect" x="350" y="200" width="60" height="26" rx="5" fill="#ffffff" stroke="#e4ddcf" stroke-width="1.5" style="transition: all 0.3s;"/>
+    <text id="svg_txt_detect" x="380" y="218" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="900" fill="#14304f">b / <tspan fill="#2f7d5b">1</tspan></text>
+
+    <path id="svg_edge_S0_self" d="M 215 116 C 170 50, 220 40, 240 100" fill="none" stroke="#5b6774" stroke-width="2.2" marker-end="url(#arr-navy)"/>
+    <rect x="175" y="45" width="40" height="20" rx="4" fill="#ffffff" stroke="#e4ddcf"/>
+    <text x="195" y="60" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#5b6774">b / 0</text>
+
+    <path id="svg_edge_S1_self" d="M 545 116 C 590 50, 540 40, 520 100" fill="none" stroke="#5b6774" stroke-width="2.2" marker-end="url(#arr-navy)"/>
+    <rect x="545" y="45" width="40" height="20" rx="4" fill="#ffffff" stroke="#e4ddcf"/>
+    <text x="565" y="60" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#5b6774">a / 0</text>
+  </svg>
+</div>
+
+        <div class="sim-controls">
+          <button class="sim-btn btn-gold" onclick="stepLabMealy()">خطوة تالية (Next Step)</button>
+          <button class="sim-btn btn-outline" onclick="resetLabMealy()">إعادة ضبط (Reset)</button>
+          <input type="text" id="labMealyInput" value="aabbab" style="padding:8px 12px; border-radius:8px; border:1.5px solid var(--line); font-family:monospace; font-size:16px; width:140px; text-align:center;">
+          <button class="sim-btn btn-navy" onclick="loadCustomMealy()">تحميل سلسلة جديدة</button>
+        </div>
+
+        <div class="sim-ribbon" id="labMealyRibbon"></div>
+
+        <div class="sim-status">
+          <div><b>الحالة الراهنة:</b> <span id="labMealyState" style="color:var(--gold); font-weight:bold;">S₀</span></div>
+          <div><b>الرمز المقروء:</b> <span id="labMealyChar" style="font-family:monospace; font-weight:bold;">—</span></div>
+          <div><b>سلسلة الخرج التراكمية:</b> <span id="labMealyOut" class="en" style="color:var(--ok); font-weight:bold; font-size:17px;">—</span></div>
+        </div>
+
+        <div id="labMealyDesc" style="text-align:center; font-size:14px; margin-top:10px; color:var(--muted);">
+          اضغط «خطوة تالية» وشاهد السهم الأخضر ينبض فور رصد النمط ab.
         </div>
       </div>
-
     </section>
 
     <!-- ==================== TAB 5: STATE SPLITTING ==================== -->
@@ -1250,33 +1640,111 @@
           <span class="spk-bdot" style="background:var(--p-abd)"></span>
           <span>تركيز أساسي: عبدالرحمن • الشريحة 10 (سر انشطار الحالات عند التحويل من Mealy إلى Moore)</span>
         </div>
+
         <div class="card-title">
           <span>5. سر انشطار الحالات عند التحويل من Mealy إلى Moore</span>
           <span class="en" style="color:var(--gold); font-size:15px;">State Splitting Secret</span>
         </div>
 
-        <div class="callout callout-gold">
-          <b>اللغز الذي يحير الطلاب دائماً:</b><br>
-          عندما نحول آلة Mealy إلى آلة Moore، نلاحظ دائماً أن عدد الحالات يزداد! لماذا تتضاعف الحالات؟ ما السر الرياضي؟
+        <div class="intuitive-box">
+          <div class="intuitive-header">الفهم البديهي في دقيقة واحدة (لماذا تتضاعف الحالات؟):</div>
+          <div class="intuitive-text">
+            تخيل غرفة (حالة) في ميلي يدخلها شخص من الباب الأول ومعه كرت أبيض (خرج 0)، ويدخلها شخص من الباب الثاني ومعه كرت أسود (خرج 1). في ميلي لا توجد مشكلة لأن الكرت معلق على الباب الخارجي!<br>
+            لكن عندما نحولها إلى مور، قانون مور الصارم يفرض: <b>«اطبع لون الكرت على جدار الغرفة الداخلي حصراً»</b>.<br>
+            هنا تقع المعضلة: هل ندهن الغرفة بالأبيض أم بالأسود؟ لو دهناها بالأبيض سنظلم الشخص الثاني، ولو بالأسود سنظلم الشخص الأول!<br>
+            <b>الحل الرياضي العبقري:</b> نقسم الغرفة إلى نسختين توأم: غرفة $S_{0A}$ بخرج 0 للأول، وغرفة $S_{0B}$ بخرج 1 للثاني، وكلاهما ترثان نفس أبواب الخروج. هذا هو انشطار الحالات ببساطة تامة!
+          </div>
         </div>
 
-        <p style="font-size:15.5px; line-height:1.8; margin:14px 0;">
-          تخيل حالة في آلة Mealy اسمها <span class="en" style="font-weight:bold;">S₀</span>.
-          <br>
-          - قد يدخلها سهم انتقال من الحالة $S_1$ ومعه خرج <b>0</b>.
-          <br>
-          - وقد يدخلها سهم انتقال آخر من الحالة $S_2$ ومعه خرج <b>1</b>.
-          <br>
-          في آلة Mealy هذا مسموح وطبيعي جداً، لأن الخرج مكتوب على السهم القادم وليس داخل الحالة.
-          <br><br>
-          <b>لكن ماذا يحدث عندما نقرر تحويل هذه الآلة إلى Moore؟</b><br>
-          في آلة Moore، القاعدة الصارمة تقول: <b>«الخرج يجب أن يوضع داخل بطن الحالة حصراً»</b>.
-          حسناً، ماذا سنكتب في بطن الحالة $S_0$؟ هل نكتب 0 أم 1؟
-          لو كتبنا 0 سنظلم الانتقال القادم بخرج 1! ولو كتبنا 1 سنظلم الانتقال القادم بخرج 0!
-          <br>
-          <b>الحل الرياضي العبقري:</b><br>
-          نقوم بـ <b>شطر الحالة (State Splitting)</b> إلى نسختين توأم:
-        </p>
+<div class="svg-diagram-wrapper">
+  <div class="svg-diagram-title">المخطط الهندسي لسر انشطار الحالات: لماذا تتضاعف الحالات عند التحويل من ميلي إلى مور؟</div>
+  <svg viewBox="0 0 880 320" class="state-diagram-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr3-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#a13d2d" />
+      </marker>
+      <marker id="arr3-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#2f7d5b" />
+      </marker>
+      <marker id="arr3-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 10 5 L 0 9 z" fill="#b7791f" />
+      </marker>
+    </defs>
+
+    <!-- LEFT: THE MEALY PROBLEM -->
+    <rect x="15" y="15" width="370" height="290" rx="14" fill="#ffffff" stroke="#a13d2d" stroke-width="1.5"/>
+    <rect x="15" y="15" width="370" height="34" rx="14" fill="rgba(161, 61, 45, 0.08)"/>
+    <text x="200" y="37" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13.5" font-weight="900" fill="#a13d2d">المعضلة في Mealy: مدخلان بمخرجين متناقضين!</text>
+
+    <!-- Source State S1 -->
+    <circle cx="70" cy="90" r="26" fill="#faf8f4" stroke="#14304f" stroke-width="2"/>
+    <text x="70" y="96" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="bold" fill="#14304f">S₁</text>
+
+    <!-- Source State S2 -->
+    <circle cx="70" cy="220" r="26" fill="#faf8f4" stroke="#14304f" stroke-width="2"/>
+    <text x="70" y="226" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="bold" fill="#14304f">S₂</text>
+
+    <!-- Target State S0 -->
+    <circle cx="280" cy="155" r="38" fill="#fff" stroke="#a13d2d" stroke-width="3"/>
+    <text x="280" y="162" text-anchor="middle" font-family="Cairo, sans-serif" font-size="18" font-weight="900" fill="#a13d2d">S₀</text>
+
+    <!-- Arrow from S1 with output 0 -->
+    <path d="M 96 95 L 243 140" stroke="#14304f" stroke-width="2" marker-end="url(#arr-navy)"/>
+    <rect x="150" y="98" width="44" height="20" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="172" y="112" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" font-weight="bold" fill="#14304f">x / <tspan fill="#2f7d5b">0</tspan></text>
+
+    <!-- Arrow from S2 with output 1 -->
+    <path d="M 96 215 L 243 170" stroke="#14304f" stroke-width="2" marker-end="url(#arr-navy)"/>
+    <rect x="150" y="196" width="44" height="20" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="172" y="210" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11.5" font-weight="bold" fill="#14304f">y / <tspan fill="#a13d2d">1</tspan></text>
+
+    <!-- Conflict warning box -->
+    <rect x="35" y="255" width="330" height="38" rx="6" fill="rgba(161, 61, 45, 0.12)" stroke="rgba(161, 61, 45, 0.3)"/>
+    <text x="200" y="278" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#a13d2d">
+      تناقض: لو حولناها إلى Moore، ماذا نكتب داخل بطن S₀؟ 0 أم 1؟!
+    </text>
+
+    <!-- MIDDLE ARROW (TRANSFORMATION) -->
+    <g transform="translate(395, 135)">
+      <path d="M 10 25 L 80 25" stroke="#b7791f" stroke-width="5" stroke-linecap="round" marker-end="url(#arr3-gold)"/>
+      <text x="45" y="15" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#b7791f">انشطار</text>
+      <text x="45" y="48" text-anchor="middle" font-family="Cairo, sans-serif" font-size="10" font-weight="bold" fill="#5b6774">Splitting</text>
+    </g>
+
+    <!-- RIGHT: THE MOORE SOLUTION -->
+    <rect x="495" y="15" width="370" height="290" rx="14" fill="#ffffff" stroke="#2f7d5b" stroke-width="1.5"/>
+    <rect x="495" y="15" width="370" height="34" rx="14" fill="rgba(47, 125, 91, 0.08)"/>
+    <text x="680" y="37" text-anchor="middle" font-family="Cairo, sans-serif" font-size="13.5" font-weight="900" fill="#2f7d5b">الحل في Moore: نسختان توأم S₀A و S₀B!</text>
+
+    <!-- Split State S0A (output 0) -->
+    <circle cx="740" cy="100" r="38" fill="#ffffff" stroke="#2f7d5b" stroke-width="2.5"/>
+    <line x1="702" y1="100" x2="778" y2="100" stroke="#2f7d5b" stroke-width="1.5"/>
+    <text x="740" y="90" text-anchor="middle" font-family="Cairo, sans-serif" font-size="15" font-weight="bold" fill="#14304f">S₀A</text>
+    <text x="740" y="122" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="bold" fill="#2f7d5b">خرج: 0</text>
+
+    <!-- Split State S0B (output 1) -->
+    <circle cx="740" cy="210" r="38" fill="#ffffff" stroke="#a13d2d" stroke-width="2.5"/>
+    <line x1="702" y1="210" x2="778" y2="210" stroke="#a13d2d" stroke-width="1.5"/>
+    <text x="740" y="200" text-anchor="middle" font-family="Cairo, sans-serif" font-size="15" font-weight="bold" fill="#14304f">S₀B</text>
+    <text x="740" y="232" text-anchor="middle" font-family="Cairo, sans-serif" font-size="14" font-weight="bold" fill="#a13d2d">خرج: 1</text>
+
+    <!-- Arrow x -> S0A -->
+    <path d="M 530 100 L 700 100" stroke="#2f7d5b" stroke-width="2.2" marker-end="url(#arr3-green)"/>
+    <rect x="580" y="85" width="45" height="20" rx="4" fill="#ffffff" stroke="#2f7d5b"/>
+    <text x="602" y="99" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#2f7d5b">دخل: x</text>
+
+    <!-- Arrow y -> S0B -->
+    <path d="M 530 210 L 700 210" stroke="#a13d2d" stroke-width="2.2" marker-end="url(#arr3-red)"/>
+    <rect x="580" y="195" width="45" height="20" rx="4" fill="#ffffff" stroke="#a13d2d"/>
+    <text x="602" y="209" text-anchor="middle" font-family="Cairo, sans-serif" font-size="12" font-weight="bold" fill="#a13d2d">دخل: y</text>
+
+    <!-- Solution note -->
+    <rect x="515" y="255" width="330" height="38" rx="6" fill="rgba(47, 125, 91, 0.12)" stroke="rgba(47, 125, 91, 0.3)"/>
+    <text x="680" y="278" text-anchor="middle" font-family="Cairo, sans-serif" font-size="11" font-weight="bold" fill="#2f7d5b">
+      تم فض النزاع! كل انتقال يذهب للنسخة التي تطابق خرجه تماماً.
+    </text>
+  </svg>
+</div>
 
         <div class="grid-2" style="margin:20px 0;">
           <div class="step-box" style="border-right:4px solid var(--ok);">
@@ -1309,6 +1777,7 @@
           <span class="spk-bdot" style="background:var(--gold)"></span>
           <span>محور مشترك للجميع • خطة المعركة وتوزيع أدوار الإلقاء وسيناريو الدفاع الأكاديمي</span>
         </div>
+
         <div class="card-title">
           <span>6. خطة الإلقاء وتوزيع الأدوار وسيناريو الدفاع الأكاديمي</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Speaker Battle Plan & Q-Bank</span>
@@ -1391,6 +1860,7 @@
           <span class="spk-bdot" style="background:var(--gold)"></span>
           <span>محور مشترك للجميع • بنك الاختبار الذاتي (8 أسئلة امتحانية مصنفة حسب المتحدث)</span>
         </div>
+
         <div class="card-title">
           <span>7. بنك الاختبار الذاتي (8 أسئلة امتحانية مع تصحيح فوري)</span>
           <span style="font-size:14.5px; color:var(--navy);" id="quizScore">الدرجة: 0 / 8</span>
@@ -1424,6 +1894,27 @@
     let labParityCurState = 'E';
     let labParityHistory = ['0'];
 
+    function updateParitySvgState(state) {
+      const cE = document.getElementById('svg_circ_E');
+      const cO = document.getElementById('svg_circ_O');
+      if (!cE || !cO) return;
+      if (state === 'E') {
+        cE.setAttribute('stroke', '#b7791f');
+        cE.setAttribute('stroke-width', '5');
+        cE.setAttribute('fill', '#fef9ee');
+        cO.setAttribute('stroke', '#14304f');
+        cO.setAttribute('stroke-width', '3');
+        cO.setAttribute('fill', '#ffffff');
+      } else {
+        cO.setAttribute('stroke', '#2f7d5b');
+        cO.setAttribute('stroke-width', '5');
+        cO.setAttribute('fill', '#eefbf4');
+        cE.setAttribute('stroke', '#14304f');
+        cE.setAttribute('stroke-width', '3');
+        cE.setAttribute('fill', '#ffffff');
+      }
+    }
+
     function renderLabParityRibbon() {
       const rib = document.getElementById('labParityRibbon');
       if (!rib) return;
@@ -1455,6 +1946,7 @@
       document.getElementById('labParityOut').textContent = '0';
       document.getElementById('labParityDesc').textContent = 'تمت إعادة الضبط للحالة الابتدائية E مع الخرج المبدئي 0';
       renderLabParityRibbon();
+      updateParitySvgState('E');
     }
 
     function stepLabParity() {
@@ -1476,6 +1968,7 @@
       document.getElementById('labParityOut').textContent = labParityHistory.join('');
       document.getElementById('labParityDesc').textContent = 'قراءة ' + ch + ': انتقال من ' + prev + ' إلى ' + labParityCurState + ' مع إطلاق البت ' + out;
       renderLabParityRibbon();
+      updateParitySvgState(labParityCurState);
     }
 
     // ==========================================
@@ -1485,6 +1978,47 @@
     let labMealyIdx = 0;
     let labMealyCurState = 'S₀';
     let labMealyHistory = [];
+
+    function updateMealySvgState(state, isDetected) {
+      const c0 = document.getElementById('svg_circ_S0');
+      const c1 = document.getElementById('svg_circ_S1');
+      const edgeDetect = document.getElementById('svg_edge_S1_S0');
+      const rectDetect = document.getElementById('svg_rect_detect');
+      const txtDetect = document.getElementById('svg_txt_detect');
+      if (!c0 || !c1) return;
+
+      if (state === 'S₀') {
+        c0.setAttribute('stroke', '#b7791f');
+        c0.setAttribute('stroke-width', '5');
+        c0.setAttribute('fill', '#fef9ee');
+        c1.setAttribute('stroke', '#14304f');
+        c1.setAttribute('stroke-width', '3');
+        c1.setAttribute('fill', '#ffffff');
+      } else {
+        c1.setAttribute('stroke', '#b7791f');
+        c1.setAttribute('stroke-width', '5');
+        c1.setAttribute('fill', '#fef9ee');
+        c0.setAttribute('stroke', '#14304f');
+        c0.setAttribute('stroke-width', '3');
+        c0.setAttribute('fill', '#ffffff');
+      }
+
+      if (edgeDetect && rectDetect) {
+        if (isDetected) {
+          edgeDetect.setAttribute('stroke', '#2f7d5b');
+          edgeDetect.setAttribute('stroke-width', '5');
+          rectDetect.setAttribute('fill', '#2f7d5b');
+          rectDetect.setAttribute('stroke', '#2f7d5b');
+          if (txtDetect) txtDetect.setAttribute('fill', '#ffffff');
+        } else {
+          edgeDetect.setAttribute('stroke', '#14304f');
+          edgeDetect.setAttribute('stroke-width', '3');
+          rectDetect.setAttribute('fill', '#ffffff');
+          rectDetect.setAttribute('stroke', '#e4ddcf');
+          if (txtDetect) txtDetect.setAttribute('fill', '#14304f');
+        }
+      }
+    }
 
     function renderLabMealyRibbon() {
       const rib = document.getElementById('labMealyRibbon');
@@ -1517,6 +2051,7 @@
       document.getElementById('labMealyOut').textContent = '—';
       document.getElementById('labMealyDesc').textContent = 'تمت إعادة الضبط للحالة الابتدائية S₀';
       renderLabMealyRibbon();
+      updateMealySvgState('S₀', false);
     }
 
     function stepLabMealy() {
@@ -1527,6 +2062,7 @@
       const ch = labMealySeq[labMealyIdx];
       const prev = labMealyCurState;
       let out = '0';
+      let detected = false;
       if (labMealyCurState === 'S₀') {
         if (ch === 'a') labMealyCurState = 'S₁';
       } else if (labMealyCurState === 'S₁') {
@@ -1535,6 +2071,7 @@
         } else {
           labMealyCurState = 'S₀';
           out = '1'; // Detected!
+          detected = true;
         }
       }
       labMealyHistory.push(out);
@@ -1549,12 +2086,12 @@
         document.getElementById('labMealyDesc').textContent = 'قراءة ' + ch + ': انتقال من ' + prev + ' إلى ' + labMealyCurState + ' مع خرج ' + out;
       }
       renderLabMealyRibbon();
+      updateMealySvgState(labMealyCurState, detected);
     }
 
     // ==========================================
-    // QUIZ DATA AND ENGINE
+    // QUIZ DATA AND ENGINE WITH SPEAKER TAGS
     // ==========================================
-    
     const QUIZ_DATA = [
       {
         speaker: 'laith',
@@ -1671,7 +2208,6 @@
       container.innerHTML = '';
 
       QUIZ_DATA.forEach((item, qIdx) => {
-        // If in hide mode and filter is active and doesn't match
         if (currentFilterMode === 'hide' && currentSpeakerFilter !== 'all' && item.speaker !== currentSpeakerFilter) {
           return;
         }
@@ -1680,7 +2216,6 @@
         card.className = 'quiz-card';
         card.setAttribute('data-speaker', item.speaker);
 
-        // Highlight or dim
         if (currentSpeakerFilter !== 'all') {
           if (item.speaker === currentSpeakerFilter) {
             card.style.borderColor = (currentSpeakerFilter === 'laith') ? 'var(--p-laith)' : (currentSpeakerFilter === 'aym' ? 'var(--p-aym)' : 'var(--p-abd)');
@@ -1691,7 +2226,6 @@
           }
         }
 
-        // Speaker badge on question
         const spkBadge = document.createElement('div');
         spkBadge.className = 'spk-focus-badge ' + (item.speaker === 'laith' ? 'spk-focus-laith' : (item.speaker === 'aym' ? 'spk-focus-aym' : 'spk-focus-abd'));
         spkBadge.style.fontSize = '11.5px';
@@ -1736,23 +2270,16 @@
       });
     }
 
-    // Init simulators and quiz
-    window.addEventListener('DOMContentLoaded', () => {
-      renderLabParityRibbon();
-      renderLabMealyRibbon();
-      renderQuiz();
-    });
-  
     // ==========================================
     // SPEAKER FILTERING AND VIEW MODE ENGINE
     // ==========================================
     let currentSpeakerFilter = 'all';
-    let currentFilterMode = 'highlight'; // 'highlight' or 'hide'
+    let currentFilterMode = 'highlight';
 
     const SPEAKER_ADVICE = {
       all: {
         badge: "[المسار الأكاديمي الشامل مفعّل]",
-        text: "يُعرض الآن الدليل الأكاديمي كاملاً بجميع فصوله وتطبيقاته. يُوصى بأن يقرأ جميع أعضاء الفريق (ليث، أيمن، عبدالرحمن) كامل المحتوى بالترتيب لضمان الاستيعاب الشامل والترابط الذهني التام."
+        text: "يُعرض الآن الدليل الأكاديمي كاملاً بجميع فصوله ورسوماته وتطبيقاته. يُوصى بأن يقرأ جميع أعضاء الفريق (ليث، أيمن، عبدالرحمن) كامل المحتوى بالترتيب لضمان الاستيعاب الشامل والترابط الذهني التام."
       },
       laith: {
         badge: "[توصية أكاديمية لـ ليث توفيق الجعفري]",
@@ -1780,17 +2307,14 @@
     function setSpeakerFilter(speaker) {
       currentSpeakerFilter = speaker;
       
-      // Update body class
       document.body.classList.remove('filter-all', 'filter-laith', 'filter-aym', 'filter-abd');
       document.body.classList.add('filter-' + speaker);
       
-      // Update pill active states
       document.getElementById('pillAll').classList.toggle('active', speaker === 'all');
       document.getElementById('pillLaith').classList.toggle('active', speaker === 'laith');
       document.getElementById('pillAym').classList.toggle('active', speaker === 'aym');
       document.getElementById('pillAbd').classList.toggle('active', speaker === 'abd');
       
-      // Show/update recommendation banner
       const alertBox = document.getElementById('filterRecommendationAlert');
       const badgeEl = document.getElementById('recAlertBadge');
       const textEl = document.getElementById('recAlertText');
@@ -1803,18 +2327,19 @@
         textEl.innerHTML = SPEAKER_ADVICE[speaker].text;
       }
 
-      // Re-render Quiz to reflect filtered speaker
       if (typeof renderQuiz === 'function') {
         renderQuiz();
       }
     }
 
-    // Initialize filter mode on load
+    // Initialize simulators and quiz on load
     document.addEventListener('DOMContentLoaded', () => {
+      resetLabParity();
+      resetLabMealy();
+      renderQuiz();
       setFilterMode('highlight');
       setSpeakerFilter('all');
     });
-
   </script>
 </body>
 </html>
