@@ -484,6 +484,217 @@
       color: #ffffff;
     }
 
+    
+    /* ======================================================== */
+    /* YOUTUBE CURATED VIDEO HUB & CONTEXT CALLOUTS            */
+    /* ======================================================== */
+    .btn-video {
+      background: #c4302b;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(196, 48, 43, 0.35);
+    }
+
+    .btn-video:hover {
+      background: #e03a35;
+      transform: translateY(-2px);
+    }
+
+    .yt-context-callout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #fff9f8;
+      border: 1.5px solid rgba(196, 48, 43, 0.22);
+      border-right: 5px solid #c4302b;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 20px 0;
+      box-shadow: 0 3px 10px rgba(196, 48, 43, 0.05);
+    }
+
+    .yt-context-info {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .yt-channel-tag {
+      background: rgba(20, 48, 79, 0.08);
+      color: var(--navy);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1px solid rgba(20, 48, 79, 0.15);
+    }
+
+    .yt-duration-tag {
+      background: rgba(196, 48, 43, 0.1);
+      color: #c4302b;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      direction: ltr;
+      border: 1px solid rgba(196, 48, 43, 0.2);
+    }
+
+    .yt-context-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #c4302b;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(196, 48, 43, 0.25);
+    }
+
+    .yt-context-btn:hover {
+      background: #e03a35;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(196, 48, 43, 0.35);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .yt-card {
+      background: #ffffff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(20, 48, 79, 0.04);
+    }
+
+    .yt-card:hover {
+      border-color: #c4302b;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(196, 48, 43, 0.12);
+    }
+
+    .yt-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .yt-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .yt-card-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .yt-focus-box {
+      background: var(--cream);
+      border-right: 3px solid var(--gold);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #4a3810;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .yt-watch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #c4302b;
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 13.5px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(196, 48, 43, 0.25);
+    }
+
+    .yt-watch-btn:hover {
+      background: #e03a35;
+      box-shadow: 0 5px 14px rgba(196, 48, 43, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .fast-track-card {
+      background: linear-gradient(135deg, #14304f 0%, #1e456e 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 28px rgba(20, 48, 79, 0.15);
+    }
+
+    .fast-track-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fast-track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .fast-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fast-item-badge {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
     /* Navigation Tabs */
     .tabs-nav {
       display: flex;
@@ -960,6 +1171,9 @@
         <a href="presentation_notes.pdf" target="_blank" class="hero-action-btn btn-pdf">
           <span>تحميل المذكرة الرسمية كاملة (PDF)</span>
         </a>
+        <button type="button" onclick="switchTab(7)" class="hero-action-btn btn-video">
+          <span>شروحات يوتيوب المعتمدة (YouTube Hub)</span>
+        </button>
       </div>
     </header>
 
@@ -1020,6 +1234,7 @@
       <button class="tab-btn" data-tabs-abd="true" onclick="switchTab(4)"><span class="badge-num">5</span>سر انشطار الحالات<span class="tab-speaker-tag">محورك</span></button>
       <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" data-tabs-abd="true" onclick="switchTab(5)"><span class="badge-num">6</span>خطة الإلقاء والدفاع<span class="tab-speaker-tag">محورك</span></button>
       <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" data-tabs-abd="true" onclick="switchTab(6)"><span class="badge-num">7</span>الاختبار الذاتي</button>
+      <button class="tab-btn" data-tabs-laith="true" data-tabs-aym="true" data-tabs-abd="true" onclick="switchTab(7)"><span class="badge-num">8</span>شروحات يوتيوب المعتمدة<span class="tab-speaker-tag">محورك</span></button>
     </nav>
 
     <!-- ==================== TAB 1: THE INTUITIVE FOUNDATION ==================== -->
@@ -1033,6 +1248,17 @@
         <div class="card-title">
           <span>1. لماذا نحتاج الآلات التتابعية؟ (ما قبل الآلات)</span>
           <span class="en" style="color:var(--gold); font-size:15px;">Sequential vs. Finite Automata</span>
+        </div>
+
+        <div class="yt-context-callout">
+          <div class="yt-context-info">
+            <span class="yt-channel-tag">Gate Smashers</span>
+            <span style="font-weight:800; font-size:14.5px; color:var(--navy);">شرح مرئي سريع: آلة ميلي والتعريف الرياضي السداسي (7 دقائق)</span>
+            <span class="yt-duration-tag">7:45</span>
+          </div>
+          <a href="https://www.youtube.com/watch?v=kikut5SJVTE" target="_blank" rel="noopener noreferrer" class="yt-context-btn">
+            <span>مشاهدة الشرح على YouTube</span>
+          </a>
         </div>
 
         <div class="intuitive-box">
@@ -1361,6 +1587,16 @@
     <!-- ==================== TAB 3: 4-STEP ANALYSIS ==================== -->
     <section class="tab-panel" id="tab-2">
       <div class="card" data-speaker="aym">
+        <div class="yt-context-callout">
+          <div class="yt-context-info">
+            <span class="yt-channel-tag">Neso Academy</span>
+            <span style="font-weight:800; font-size:14.5px; color:var(--navy);">شرح مرئي منهجي: خطوات تحليل الدوائر التتابعية بالـ D Flip Flop (13 دقيقة)</span>
+            <span class="yt-duration-tag">13:30</span>
+          </div>
+          <a href="https://www.youtube.com/watch?v=ntiv1g7G_C4" target="_blank" rel="noopener noreferrer" class="yt-context-btn">
+            <span>مشاهدة الشرح على YouTube</span>
+          </a>
+        </div>
         <div class="spk-focus-badge spk-focus-aym">
           <span class="spk-bdot" style="background:var(--p-aym)"></span>
           <span>تركيز أساسي: أيمن • الشرائح 5-7، 12 (المنهجية التحليلية، جداول الحالة، ومخططات الانتقال)</span>
@@ -1636,6 +1872,16 @@
     <!-- ==================== TAB 5: STATE SPLITTING ==================== -->
     <section class="tab-panel" id="tab-4">
       <div class="card" data-speaker="abd">
+        <div class="yt-context-callout">
+          <div class="yt-context-info">
+            <span class="yt-channel-tag">Neso Academy</span>
+            <span style="font-weight:800; font-size:14.5px; color:var(--navy);">شرح مرئي دقيق: خوارزمية تحويل ميلي إلى مور وانشطار الحالات بالجدول (8 دقائق)</span>
+            <span class="yt-duration-tag">8:45</span>
+          </div>
+          <a href="https://www.youtube.com/watch?v=j8IkqBJNMwA" target="_blank" rel="noopener noreferrer" class="yt-context-btn">
+            <span>مشاهدة الشرح على YouTube</span>
+          </a>
+        </div>
         <div class="spk-focus-badge spk-focus-abd">
           <span class="spk-bdot" style="background:var(--p-abd)"></span>
           <span>تركيز أساسي: عبدالرحمن • الشريحة 10 (سر انشطار الحالات عند التحويل من Mealy إلى Moore)</span>
@@ -1872,6 +2118,336 @@
 
         <div id="quizContainer"></div>
       </div>
+    </section>
+
+
+    <!-- ==================== TAB 8: CURATED YOUTUBE VIDEO REFS ==================== -->
+    <section class="tab-panel" id="tab-7">
+      
+      <!-- Fast Track Emergency Roadmap -->
+      <div class="fast-track-card">
+        <div class="fast-track-title">
+          <span>خطة الطوارئ السريعة لليلة العرض (فيديو واحد فائق الأهمية لكل متحدث - أقل من 10 دقائق)</span>
+        </div>
+        <p style="font-size:14.5px; color:#cbd5e1; margin-bottom:12px; line-height:1.7;">
+          إذا كان وقتك ضيقاً وتريد مراجعة وتثبيت أهم محور سيسألك عنه الجمهور والدكتورة غداً، شاهد هذا الفيديو المخصص لك:
+        </p>
+
+        <div class="fast-track-grid">
+          <!-- Fast Item 1: Laith -->
+          <div class="fast-item">
+            <div>
+              <span class="fast-item-badge" style="background:rgba(13, 110, 110, 0.4); color:#a5f3fc; border:1px solid #0d6e6e;">ليث توفيق (الشرائح 1-4، 11)</span>
+              <h4 style="font-size:15.5px; color:#ffffff; margin-bottom:6px;">مفهوم آلة Mealy والتعريف الرياضي</h4>
+              <div style="font-size:12.5px; color:#94a3b8; margin-bottom:12px;">Gate Smashers • المدة: 7:45 دقيقة</div>
+              <div style="font-size:13px; color:#e2e8f0; line-height:1.6; margin-bottom:14px;">
+                يركز على الدوال الست (6-tuple) وكيف يوضع الخرج على السهم لارتباطه بالدخل والحالة معاً.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=kikut5SJVTE" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">مشاهدة فيديو ليث (7:45 د)</a>
+          </div>
+
+          <!-- Fast Item 2: Aymen -->
+          <div class="fast-item">
+            <div>
+              <span class="fast-item-badge" style="background:rgba(124, 58, 45, 0.4); color:#fecdd3; border:1px solid #7c3a2d;">أيمن النزيلي (الشرائح 5-7، 12)</span>
+              <h4 style="font-size:15.5px; color:#ffffff; margin-bottom:6px;">الفروق الستة الحاسمة بين Mealy و Moore</h4>
+              <div style="font-size:12.5px; color:#94a3b8; margin-bottom:12px;">Gate Smashers • المدة: 7:55 دقيقة</div>
+              <div style="font-size:13px; color:#e2e8f0; line-height:1.6; margin-bottom:14px;">
+                يركز على قاعدة طول الخرج (|w|+1 في مور)، ومقاومة التشويش (Glitch-Free)، وحساب عدد الحالات.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=JM_xEXqYUgI" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">مشاهدة فيديو أيمن (7:55 د)</a>
+          </div>
+
+          <!-- Fast Item 3: Abdulrahman -->
+          <div class="fast-item">
+            <div>
+              <span class="fast-item-badge" style="background:rgba(20, 48, 79, 0.6); color:#bae6fd; border:1px solid #14304f;">عبدالرحمن إسماعيل (الشرائح 8-10، 13)</span>
+              <h4 style="font-size:15.5px; color:#ffffff; margin-bottom:6px;">التحويل بالجدول وسر انشطار الحالات</h4>
+              <div style="font-size:12.5px; color:#94a3b8; margin-bottom:12px;">Neso Academy • المدة: 8:45 دقيقة</div>
+              <div style="font-size:13px; color:#e2e8f0; line-height:1.6; margin-bottom:14px;">
+                يركز على حل مسألة انشطار الحالات خطوة بخطوة بالجدول، وتبرير سبب تضاعف الحالات في آلة Moore.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=j8IkqBJNMwA" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">مشاهدة فيديو عبدالرحمن (8:45 د)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presenter 1: Laith Section -->
+      <div class="card" data-speaker="laith">
+        <div class="spk-focus-badge spk-focus-laith">
+          <span class="spk-bdot" style="background:var(--p-laith)"></span>
+          <span>شروحات مخصصة لـ ليث توفيق الجعفري • الشرائح 1-4، 11</span>
+        </div>
+
+        <div class="card-title">
+          <span>شروحات ومراجع آلة Mealy، التأسيس النظري، والتطبيق البرمجي</span>
+          <span class="en" style="color:var(--p-laith); font-size:14.5px;">Laith's Video Hub</span>
+        </div>
+
+        <p style="font-size:15px; color:var(--ink); line-height:1.75; margin-bottom:14px;">
+          هذه الفيديوهات تغطي بدقة الشرائح المسندة إليك، من التعريف الرياضي حتى كتابة الكود البرمجي في بايثون:
+        </p>
+
+        <div class="video-grid">
+          <!-- Video 1 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Gate Smashers</span>
+                <span class="yt-duration-tag">7:45</span>
+              </div>
+              <div class="yt-card-title">Mealy Machine in TOC | Formal Definition</div>
+              <div class="yt-card-desc">
+                شرح ملخص وسريع جداً للمحددات الرياضية الستة لآلة Mealy مع مثال توضيحي لرسم المخطط وجدول الحالات.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> لاحظ أن الخرج يُكتب على السهم بجانب الدخل (a/0)، لأن الخرج مرتبط بالحالة والدخل معاً في نفس اللحظة.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=kikut5SJVTE" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Neso Academy</span>
+                <span class="yt-duration-tag">15:26</span>
+              </div>
+              <div class="yt-card-title">Mealy Machines (Comprehensive)</div>
+              <div class="yt-card-desc">
+                شرح أكاديمي تفصيلي يعلمك كيف تبني آلة Mealy خطوة بخطوة، وكيف تملأ جدول الحالات بدقة عالية.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> تدرب على كيفية الإجابة إذا طلبت منك الدكتورة رسم جدول الانتقال لمدخلين مختلفين.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=-_m8yxgTdB4" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Dekxterr</span>
+                <span class="yt-duration-tag">0:36</span>
+              </div>
+              <div class="yt-card-title">Build a Finite State Machine in Python (60 Seconds)</div>
+              <div class="yt-card-desc">
+                فيديو فائق السرعة في نصف دقيقة يوضح كيف يتحول جدول الحالات إلى Dictionary ومصفوفة انتقالات في لغة بايثون.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> يمنحك استيعاباً سريعاً لكيفية كتابة كود الشريحة 11 في ثوانٍ معدودة.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=q64eSejYg0c" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Anchor the Educator</span>
+                <span class="yt-duration-tag">22:11</span>
+              </div>
+              <div class="yt-card-title">Finite-State Machines (FSM) in Python Tutorial</div>
+              <div class="yt-card-desc">
+                درس تطبيقي متكامل لبناء State Pattern وFSM في بايثون، مفيد جداً للمناقشة التقنية المتقدمة.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> كيف تفصل الحالة الحالية وتدير الانتقالات الشرطية في الأنظمة الواقعية.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=E45v2dD3IQU" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presenter 2: Aymen Section -->
+      <div class="card" data-speaker="aym">
+        <div class="spk-focus-badge spk-focus-aym">
+          <span class="spk-bdot" style="background:var(--p-aym)"></span>
+          <span>شروحات مخصصة لـ أيمن النزيلي • الشرائح 5-7، 12</span>
+        </div>
+
+        <div class="card-title">
+          <span>شروحات ومراجع آلة Moore، المقارنة المعيارية، وتحليل الدوائر</span>
+          <span class="en" style="color:var(--p-aym); font-size:14.5px;">Aymen's Video Hub</span>
+        </div>
+
+        <p style="font-size:15px; color:var(--ink); line-height:1.75; margin-bottom:14px;">
+          هذه الفيديوهات تغطي أسس آلة مور والفروق الجوهرية والخطوات الأربع لتحليل أي دائرة تتابعية:
+        </p>
+
+        <div class="video-grid">
+          <!-- Video 1 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Gate Smashers</span>
+                <span class="yt-duration-tag">7:55</span>
+              </div>
+              <div class="yt-card-title">Difference between Mealy and Moore Machine</div>
+              <div class="yt-card-desc">
+                أهم فيديو على الإطلاق للشريحة 6! يلخص الفروق الأساسية بين النموذجين في جدول منظم وواضح.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> ركز على ميزة Glitch-Free لآلة مور، ولماذا يكون طول سلسلة خرج مور n+1 دائماً.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=JM_xEXqYUgI" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Gate Smashers</span>
+                <span class="yt-duration-tag">9:51</span>
+              </div>
+              <div class="yt-card-title">Moore Machine in TOC with Example</div>
+              <div class="yt-card-desc">
+                شرح تفصيلي لكيفية رسم دوائر آلة Moore وكتابة الخرج بداخل الحالة (State / Output) وليس على الأسهم.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> دالة الخرج في مور تأخذ وسيطاً واحداً فقط وهو الحالة الراهنة lambda(q).
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=_88FzOc9GzA" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Neso Academy</span>
+                <span class="yt-duration-tag">13:30</span>
+              </div>
+              <div class="yt-card-title">Analysis of Clocked Sequential Circuits (D Flip Flop)</div>
+              <div class="yt-card-desc">
+                التطبيق العملي المباشر لخطوات الشريحة 7: من الدائرة المنطقية إلى معادلات الحالة والجدول والرسم.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> تسلسل الخطوات الأربع: استخراج المعادلات -> ملء جدول الحالة -> رسم المخطط -> فحص الموجات.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=ntiv1g7G_C4" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Neso Academy</span>
+                <span class="yt-duration-tag">8:52</span>
+              </div>
+              <div class="yt-card-title">Construction of Moore Machine</div>
+              <div class="yt-card-desc">
+                كيف تبني آلة مور لمسألة جديدة وتحسب عدد الحالات المطلوبة بدقة هندسية متكاملة.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> كيفية تحديد الحالة الابتدائية وتعيين خرجها الأولي الثابت.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=MFnRF07SoFo" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presenter 3: Abdulrahman Section -->
+      <div class="card" data-speaker="abd">
+        <div class="spk-focus-badge spk-focus-abd">
+          <span class="spk-bdot" style="background:var(--p-abd)"></span>
+          <span>شروحات مخصصة لـ عبدالرحمن إسماعيل • الشرائح 8-10، 13</span>
+        </div>
+
+        <div class="card-title">
+          <span>شروحات ومراجع التحويل المكافئ، انشطار الحالات، وكواشف الأنماط والتكافؤ</span>
+          <span class="en" style="color:var(--p-abd); font-size:14.5px;">Abdulrahman's Video Hub</span>
+        </div>
+
+        <p style="font-size:15px; color:var(--ink); line-height:1.75; margin-bottom:14px;">
+          هذه الفيديوهات تغطي أصعب النقاط الرياضية النظرية وتوضح سر انشطار الحالات وتصميم كواشف الأنماط:
+        </p>
+
+        <div class="video-grid">
+          <!-- Video 1 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Neso Academy</span>
+                <span class="yt-duration-tag">8:45</span>
+              </div>
+              <div class="yt-card-title">Conversion of Mealy to Moore (Transition Table)</div>
+              <div class="yt-card-desc">
+                الفيديو الأساسي لشرح الشريحة 10: كيفية تحويل آلة Mealy إلى Moore خطوة بخطوة عبر جدول الانتقال.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> قاعدة انشطار الحالة: إذا جاءت أسهم بخرجات مختلفة لنفس الحالة، تنقسم إلى حالتين فرعيتين (مثل S0/0 و S0/1).
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=j8IkqBJNMwA" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Gate Smashers</span>
+                <span class="yt-duration-tag">12:11</span>
+              </div>
+              <div class="yt-card-title">Mealy to Moore Conversion with Example</div>
+              <div class="yt-card-desc">
+                حل مسألة امتحانية كاملة لتحويل آلة ميلي إلى مور مع إعادة رسم مخطط الحالات بعد الانشطار.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> تبرير لماذا لا تنشطر الحالة إذا كانت كل الأسهم الداخلة إليها تحمل نفس الخرج دائماً.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=_gazATZF0R8" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">Neso Academy</span>
+                <span class="yt-duration-tag">9:02</span>
+              </div>
+              <div class="yt-card-title">Sequence or Pattern Detector</div>
+              <div class="yt-card-desc">
+                يشرح كيف تعمل آلات كشف الأنماط مثل كاشف التسلسل 101 أو ab المستخدم في الشريحة 9 ومحاكينا التفاعلي.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> التمييز بين النمط المتداخل (Overlapping) وغير المتداخل، وكيفية إعادة توجيه السهم عند عدم التطابق.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=XNAK-L7NlOM" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="yt-card">
+            <div>
+              <div class="yt-card-header">
+                <span class="yt-channel-tag">ALL ABOUT ELECTRONICS</span>
+                <span class="yt-duration-tag">14:09</span>
+              </div>
+              <div class="yt-card-title">شرح مولد التكافؤ ومدقق التكافؤ (Parity Checker)</div>
+              <div class="yt-card-desc">
+                شرح عربي متميز يوضح مفهوم التكافؤ الزوجي والفردي وتطبيق آلة الحالة لمراقبة صحة البيانات وتصحيح الأخطاء.
+              </div>
+              <div class="yt-focus-box">
+                <b>نقطة التركيز:</b> كيف تكفي حالتان فقط (E و O) لتدقيق سيل غير منتهٍ من البتات وإصدار إنذار عند حدوث خلل.
+              </div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=c8qAti1zBVQ" target="_blank" rel="noopener noreferrer" class="yt-watch-btn">فتح الفيديو على YouTube</a>
+          </div>
+        </div>
+      </div>
+
     </section>
 
   </div>
